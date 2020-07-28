@@ -423,7 +423,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Product_dialog.isShowing) {
             Product_dialog.dismiss()
         }
-        Itemid=itemsModel.id
+        Itemid= itemsModel.id!!
         edt_product.setText(itemsModel.name+"-"+itemsModel.itemCategory)
     }
 
@@ -431,7 +431,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Shop_dialog.isShowing) {
             Shop_dialog.dismiss()
         }
-        shopid=shopModel.id
+        shopid= shopModel.id!!
         edt_storename.setText(shopModel.name+"-"+shopModel.location)
 
     }

@@ -1,17 +1,20 @@
 package com.example.bakkerykotlin
 
 import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkerykotlin.Model.OrdersModel
 import com.example.bakkerykotlin.RetrofitService.ApiManager
 import com.example.bakkerykotlin.RetrofitService.ApiService
+import com.example.bakkerykotlin.Utils.RecyclerItemClickListener
 import com.example.bakkerykotlin.adapter.Orders_Adapter
 import com.example.bakkerykotlin.sessionManager.SessionKeys
 import com.example.bakkerykotlin.sessionManager.SessionManager
@@ -39,6 +42,20 @@ class ViewDeliveredItems : AppCompatActivity() {
         sessionManager = SessionManager(this)
         progressDialog = ProgressDialog(this)
         ordersmethod()
+
+
+        recyclerview.addOnItemTouchListener(
+            RecyclerItemClickListener(this, object : RecyclerItemClickListener.OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+                    Log.e( "orderd list", orderslist[position].itemId+" "+orderslist[position].shopId)
+                    val intent=Intent(applicationContext,ViewSingleItem::class.java)
+                    intent.putExtra("itemId",orderslist[position].itemId)
+                    intent.putExtra("shopId",orderslist[position].shopId)
+                    startActivity(intent)
+
+                }
+            })
+        )
     }
 
     private fun ordersmethod() {
