@@ -18,7 +18,12 @@
     <style name="SearchViewTheme" parent="Widget.AppCompat.Light.SearchView">
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:editTextColor">@android:color/white</item>
-
-
     </style>
+
+    <style name="MyThemeOverlay_Toolbar2" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
 </resources>

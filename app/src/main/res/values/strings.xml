@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BakkeryApp</string>
+    <string name="app_name">BakeryApp</string>
 
 
     <string name="email">Email Id</string>
@@ -16,4 +16,48 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //Bottom Menu
+    <string name="view_stock">View Stock</string>
+    <string name="add_item">Add Stock</string>
+
+    //Side Menu
+    <string name="stock_move">Stock &amp; Move</string>
+    <string name="add_stock">Add Stock</string>
+    <string name="remove_stock">Remove Stock</string>
+    <string name="move_stock">Move Stock</string>
+    <string name="count_stock">Physical Count</string>
+    <string name="stock_summary">Stock Summary</string>
+    <string name="menu_item">Item</string>
+    <string name="buy_sell">Buy &amp; Sell</string>
+    <string name="crew_craft">Crew &amp; Craft</string>
+    <string name="dashboard">DashBoard</string>
+    <string name="menu_reports">Reports</string>
+    <string name="log_out">Log Out</string>
+
+    //Add Item
+    <string name="create_item">Create Item</string>
+    <string name="item_type">Item Type</string>
+    <string name="item_product">Product</string>
+    <string name="item_service">Service</string>
+    <string name="item_category">Item Category</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_sku">SKU</string>
+    <string name="item_units">Units</string>
+    <string name="cost_of_price">Cost of Price</string>
+    <string name="include_tax">Include Tax</string>
+    <string name="selling_price">Selling Price</string>
+    <string name="hsn_code">HSN Code</string>
+    <string name="tax">Tax %</string>
+    <string name="trackinventory">Track Inventory</string>
+
+
+    <string name="filter_items">Filter Items</string>
+    <string name="view_item">View Item</string>
+    <string name="view_price_history">Price History</string>
+    <string name="view_by_location">By Location</string>
+    <string name="view_by_item">By Item</string>
+
 </resources>
