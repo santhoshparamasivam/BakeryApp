@@ -41,11 +41,8 @@ interface ApiService {
   @GET("/orders/formatted")
   fun GetOrders(): Call<OrdersModel>
 
-//  @FormUrlEncoded
-//  @POST("/items")
-//  fun SaveOrders(@Field("name")name:String,@Field("itemCategory")itemCategory:String,@Field("costPrice")costPrice:Int,@Field("sellingPrice")sellingPrice:String,@Field("taxPercentage")taxPercentage:Int,@Field("taxIncluded")taxIncluded:String,@Field("unitOfMeasure")unitofMesure:Int,@Field("taxIncluded")taxIncluded:String): Call<ResponseBody>
-@Multipart
-@POST("/items")
+  @Multipart
+  @POST("/items")
   fun SaveOrders(@Part image: MultipartBody.Part,
                  @Part("name") item_name: RequestBody?,
                  @Part("itemCategory") itemCategory: RequestBody?,
@@ -55,8 +52,10 @@ interface ApiService {
                  @Part("unitOfMeasure")unitOfMeasure: RequestBody?,
                  @Part("taxInclude") taxIncluded: RequestBody?,
                  @Part("hsnCode") hsn_Code: RequestBody?,
-                 @Part("sku") sku: RequestBody?
-  ): Call<ResponseBody>
+                 @Part("sku") sku: RequestBody?): Call<ResponseBody>
+
+
+
 
 
 }

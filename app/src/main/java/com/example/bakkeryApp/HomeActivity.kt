@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.EditText
@@ -144,6 +145,7 @@ class HomeActivity : AppCompatActivity() {
         val headerView: View = navView.getHeaderView(0)
         headerView.userName.text = sessionManager.getStringKey(SessionKeys.FIRST_NAME)
         Userid = sessionManager.getStringKey(SessionKeys.USER_ID).toString()
+        Log.e("user token", sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString())
             hideNaviItems()
         loadFragment(HomeFragment())
 

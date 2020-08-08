@@ -18,12 +18,11 @@ import kotlin.collections.ArrayList
 
 class Product_Adapter(
     var ItemList: ArrayList<ItemsModel>,
-    val homeActivity: AddItemActivity
+    private val homeActivity: AddItemActivity
 
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    private var mCallback: OnClickListener? = null
     var FilterList = ArrayList<ItemsModel>()
 
     var mcontext: Context
@@ -54,17 +53,10 @@ class Product_Adapter(
         holder.itemView.select_country_text.text = FilterList[position].name+" - "+FilterList[position].itemCategory
 
         holder.itemView.select_country_text.setOnClickListener {
-            if (mCallback != null)
-                mCallback!!.onClick(FilterList.get(position));
-            homeActivity.ProductSetUp(FilterList[position])
 
+            homeActivity.ProductSetUp(FilterList[position])
+            homeActivity.ProductSetUp(FilterList[position])
         }
-    }
-    fun setOnClickListener(callback: OnClickListener) {
-        mCallback = callback
-    }
-    interface OnClickListener {
-        fun onClick(clickedItem: ItemsModel)
     }
 
     override fun getFilter(): Filter {

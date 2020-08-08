@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.model.OrdersModel
 import com.example.bakkeryApp.R
-import com.example.bakkeryApp.ViewDeliveredItems
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class Orders_Adapter(
     var ItemList: ArrayList<OrdersModel.Datum>,
-    val homeActivity: ViewDeliveredItems
+    val homeActivity: FragmentActivity?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
@@ -29,7 +29,7 @@ class Orders_Adapter(
 
     init {
         FilterList = ItemList
-        mcontext=homeActivity
+        mcontext= this!!.homeActivity!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

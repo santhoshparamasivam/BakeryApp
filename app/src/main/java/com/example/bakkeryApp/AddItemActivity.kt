@@ -51,7 +51,7 @@ class AddItemActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     lateinit var viewUtils: ViewUtils
-    lateinit var Product_dialog: Dialog
+    private lateinit var Product_dialog: Dialog
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
     lateinit var adapter: Product_Adapter
@@ -79,6 +79,7 @@ class AddItemActivity : AppCompatActivity() {
         StrictMode.setVmPolicy(builder.build())
          toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Product_dialog = Dialog(this)
         supportActionBar?.title ="Add Items"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -368,7 +369,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun showItemNameDialog() {
-        Product_dialog = this?.let { Dialog(it) }!!
+        Product_dialog = Dialog(this)
         Product_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         Product_dialog.setCancelable(true)
         Product_dialog.setContentView(R.layout.custom_layout)
@@ -385,7 +386,7 @@ class AddItemActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        adapter = Product_Adapter(Itemlist, AddItemActivity())
+        adapter = Product_Adapter(Itemlist, this)
         recyclerview.adapter = adapter
 
 
@@ -401,15 +402,12 @@ class AddItemActivity : AppCompatActivity() {
 
     }
 
-
     fun ProductSetUp(itemsModel: ItemsModel) {
-        if (Product_dialog.isShowing){
-            Product_dialog.dismiss()
-            edt_category.setText(itemsModel.name)
-        }
-
-
+//            if(Product_dialog!=null)
+                if (Product_dialog.isShowing){
+                    Product_dialog.dismiss()
+                    edt_category.setText(itemsModel.name)
+                }
 
     }
-
 }
