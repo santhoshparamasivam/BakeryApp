@@ -16,14 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddItemActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
+        <activity android:name=".AddStockActivity"></activity>
+        <activity
+            android:name=".AddItemActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
-        <activity android:name=".ViewSingleItem"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".ViewSingleItem"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ViewDeliveredItems"
             android:theme="@style/AppTheme.NoActionBar" />

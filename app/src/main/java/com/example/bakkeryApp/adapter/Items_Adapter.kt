@@ -1,6 +1,7 @@
 package com.example.bakkeryApp.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bakkeryApp.R
+import com.example.bakkeryApp.ViewSingleItem
 import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.retrofitService.ApiManager.Companion.BASE_URL
 import kotlinx.android.synthetic.main.itemsview_row.view.*
@@ -56,9 +58,17 @@ class Items_Adapter(
 //                .load( uri)
 //                .into(holder.itemView.imageView);
 //        }
-        holder.itemView.name_text.setText("ITEM NAME :  "+FilterList.get(position).name)
-        holder.itemView.units_text.setText("UNITS :  "+FilterList.get(position).unitOfMeasure)
-        holder.itemView.sale_text.setText("Sale Text :  "+FilterList.get(position).sellingPrice)
+        holder.itemView.name_text.setText("Item Name :  "+FilterList.get(position).name)
+        holder.itemView.units_text.setText("Units :  "+FilterList.get(position).unitOfMeasure)
+        holder.itemView.sale_text.setText("Sale Price :  "+FilterList.get(position).sellingPrice+" Rs")
+
+        holder.itemView.layout_container.setOnClickListener{
+            val intent= Intent(mcontext, ViewSingleItem::class.java)
+            mcontext.startActivity(intent)
+
+        }
+
+
 
     }
 

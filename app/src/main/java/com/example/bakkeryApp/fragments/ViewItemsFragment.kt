@@ -51,10 +51,9 @@ class ViewItemsFragment : Fragment() {
             activity?.startActivity(intent)
         }
 
-        view_item.setOnClickListener {
-            val intent= Intent(activity,ViewSingleItem::class.java)
-            activity?.startActivity(intent)
-        }
+//        view_item.setOnClickListener {
+//
+//        }
         ordersmethod()
       return view
     }
