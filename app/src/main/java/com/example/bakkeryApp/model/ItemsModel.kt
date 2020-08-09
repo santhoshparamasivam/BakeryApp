@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class ItemsModel {
+    @SerializedName("id")
+    @Expose
+    var id: Int? = null
+
     @SerializedName("createdBy")
     @Expose
     var createdBy: Any? = null
@@ -12,29 +16,33 @@ class ItemsModel {
     @Expose
     var createdOn: String? = null
 
-    @SerializedName("updatedOn")
+    @SerializedName("modifiedOn")
     @Expose
-    var updatedOn: Any? = null
+    var modifiedOn: String? = null
 
-    @SerializedName("updatedBy")
+    @SerializedName("modifiedBy")
     @Expose
-    var updatedBy: Any? = null
+    var modifiedBy: Any? = null
 
-    @SerializedName("id")
+    @SerializedName("itemCategory")
     @Expose
-    var id: String? = null
+    var itemCategory: String? = null
+
+    @SerializedName("type")
+    @Expose
+    var type: String? = null
 
     @SerializedName("name")
     @Expose
     var name: String? = null
 
-    @SerializedName("nameInTamil")
+    @SerializedName("sku")
     @Expose
-    var nameInTamil: Any? = null
+    var sku: String? = null
 
-    @SerializedName("itemCategory")
+    @SerializedName("unitOfMeasure")
     @Expose
-    var itemCategory: String? = null
+    var unitOfMeasure: String? = null
 
     @SerializedName("costPrice")
     @Expose
@@ -44,6 +52,10 @@ class ItemsModel {
     @Expose
     var sellingPrice: Int? = null
 
+    @SerializedName("hsnCode")
+    @Expose
+    var hsnCode: String? = null
+
     @SerializedName("taxPercentage")
     @Expose
     var taxPercentage: Int? = null
@@ -52,58 +64,8 @@ class ItemsModel {
     @Expose
     var taxIncluded: Boolean? = null
 
-    @SerializedName("unitOfMeasure")
-    @Expose
-    var unitOfMeasure: String? = null
-
     @SerializedName("imageFileName")
     @Expose
     var imageFileName: String? = null
 
-    @SerializedName("itemHistory")
-    @Expose
-    var itemHistory: List<ItemHistory>? = null
-
-    @SerializedName("imagePath")
-    @Expose
-    var imagePath: Any? = null
-
-    inner class ItemHistory {
-        @SerializedName("name")
-        @Expose
-        var name: Any? = null
-
-        @SerializedName("nameInTamil")
-        @Expose
-        var nameInTamil: Any? = null
-
-        @SerializedName("itemCategory")
-        @Expose
-        var itemCategory: String? = null
-
-        @SerializedName("costPrice")
-        @Expose
-        var costPrice: Int? = null
-
-        @SerializedName("sellingPrice")
-        @Expose
-        var sellingPrice: Int? = null
-
-        @SerializedName("taxPercentage")
-        @Expose
-        var taxPercentage: Int? = null
-
-        @SerializedName("taxIncluded")
-        @Expose
-        var taxIncluded: Boolean? = null
-
-        @SerializedName("unitOfMeasure")
-        @Expose
-        var unitOfMeasure: String? = null
-
-        @SerializedName("createdOn")
-        @Expose
-        var createdOn: String? = null
-
-    }
 }

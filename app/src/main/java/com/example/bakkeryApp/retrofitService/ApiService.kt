@@ -20,8 +20,7 @@ interface ApiService {
   @POST("/api/auth/signin")
   fun UserLogin(@Body jsonObject: JsonObject ): Call<LoginModel>
 
-  @GET("/items")
-  fun GetItems(): Call<ArrayList<ItemsModel>>
+
 
   @GET("/shops")
   fun GetShops(): Call<ArrayList<ShopModel>>
@@ -38,8 +37,8 @@ interface ApiService {
   @POST("/api/auth/getToken")
   fun GetToken(@Body jsonObject: JsonObject): Call<LoginModel>
 
-  @GET("/orders/formatted")
-  fun GetOrders(): Call<OrdersModel>
+    @GET("/items")
+    fun GetItems(): Call<ArrayList<ItemsModel>>
 
   @Multipart
   @POST("/items")

@@ -41,7 +41,7 @@ class ViewDeliveredItems : AppCompatActivity() {
         recyclerview=findViewById(R.id.recyclerview)
         sessionManager = SessionManager(this)
         progressDialog = ProgressDialog(this)
-        ordersmethod()
+//        ordersmethod()
 
 
         recyclerview.addOnItemTouchListener(
@@ -58,56 +58,56 @@ class ViewDeliveredItems : AppCompatActivity() {
         )
     }
 
-    private fun ordersmethod() {
-        progressDialog.setMessage("Loading...")
-        progressDialog.show()
-        val user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-            val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
-                .build()
-            chain.proceed(newRequest)
-        }.build()
-        val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
-        requestInterface.GetOrders().enqueue(object : Callback<OrdersModel> {
-            override fun onResponse(
-                call: Call<OrdersModel>,
-                response: Response<OrdersModel>
-            ) {
-                progressDialog.dismiss()
-                Log.e("response", response.code().toString() + " error")
-                if (response.code() == 200) {
-                    progressDialog.dismiss()
-                    for (item in response.body().data!!) {
-
-//                        val list = arrayListOf(response.body().data!!.toTypedArray())
-                        orderslist.addAll(listOf(item))
-                        }
-//                    orderslist = response.body().data!!
-                    Log.e("orderslist", orderslist.size.toString() + " error")
-                    setadaptermethod()
-                } else {
-                    progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<OrdersModel>, t: Throwable) {
-                t.printStackTrace()
-                progressDialog.dismiss()
-                Toast.makeText(
-                    applicationContext,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
-    }
+//    private fun ordersmethod() {
+//        progressDialog.setMessage("Loading...")
+//        progressDialog.show()
+//        val user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+//        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+//            val newRequest: Request = chain.request().newBuilder()
+//                .addHeader("Authorization", "Bearer $user_token")
+//                .build()
+//            chain.proceed(newRequest)
+//        }.build()
+//        val requestInterface = Retrofit.Builder()
+//            .baseUrl(ApiManager.BASE_URL)
+//            .client(client)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build().create(ApiService::class.java)
+//        requestInterface.GetOrders().enqueue(object : Callback<OrdersModel> {
+//            override fun onResponse(
+//                call: Call<OrdersModel>,
+//                response: Response<OrdersModel>
+//            ) {
+//                progressDialog.dismiss()
+//                Log.e("response", response.code().toString() + " error")
+//                if (response.code() == 200) {
+//                    progressDialog.dismiss()
+//                    for (item in response.body().data!!) {
+//
+////                        val list = arrayListOf(response.body().data!!.toTypedArray())
+//                        orderslist.addAll(listOf(item))
+//                        }
+////                    orderslist = response.body().data!!
+//                    Log.e("orderslist", orderslist.size.toString() + " error")
+//                    setadaptermethod()
+//                } else {
+//                    progressDialog.dismiss()
+//                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG)
+//                        .show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<OrdersModel>, t: Throwable) {
+//                t.printStackTrace()
+//                progressDialog.dismiss()
+//                Toast.makeText(
+//                    applicationContext,
+//                    "Connection failed,Please try again later",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
+//        })
+//    }
 
     private fun setadaptermethod() {
 
