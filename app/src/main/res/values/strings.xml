@@ -65,5 +65,7 @@
     <string name="add_stock_text">Add Stock</string>
     <string name="add_item_text">Add Item</string>
     <string name="create_stock_text">Create Stock</string>
+    <string name="location">Location</string>
+    <string name="quantity">Quantity</string>
 
 </resources>

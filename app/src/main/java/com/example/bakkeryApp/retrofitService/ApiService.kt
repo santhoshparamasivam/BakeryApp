@@ -40,6 +40,9 @@ interface ApiService {
     @GET("/items")
     fun GetItems(): Call<ArrayList<ItemsModel>>
 
+    @GET("/items/{id}")
+    fun getItem(@Path(value = "id", encoded = true) id: Int): Call<ItemsModel>
+
   @Multipart
   @POST("/items")
   fun SaveOrders(@Part image: MultipartBody.Part,

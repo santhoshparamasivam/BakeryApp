@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:background="@drawable/rectangle_bg"
     tools:ignore="MissingDefaultResource">
 
     <LinearLayout
@@ -28,7 +30,7 @@
                 android:layout_weight="0.4"
 
                 android:textSize="@dimen/dimen_15sp"
-                android:hint="Location :"
+                android:hint="@string/location"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black" />
 
@@ -37,12 +39,13 @@
                 android:id="@+id/edtLocation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Location"
+                android:hint="@string/location"
                 android:layout_weight="1"
                 android:textColorHint="@color/black"
                 android:imeOptions="actionNext"
                 android:inputType="text"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:importantForAutofill="no" />
 
         </LinearLayout>
   <LinearLayout
@@ -56,7 +59,7 @@
           android:layout_height="wrap_content"
           android:layout_weight="0.4"
           android:textSize="@dimen/dimen_15sp"
-          android:hint="Quantity :"
+          android:hint="@string/quantity"
           android:textColorHint="@color/black"
           android:textColor="@color/black" />
 
@@ -65,7 +68,7 @@
           android:id="@+id/edtQuantity"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:hint="Quantity"
+          android:hint="@string/quantity"
           android:layout_weight="1"
           android:textColorHint="@color/black"
           android:imeOptions="actionNext"

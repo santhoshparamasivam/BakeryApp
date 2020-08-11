@@ -65,7 +65,7 @@
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint=" Select Category "
+                        android:hint=" Select Item"
                         android:layout_weight="1"
                         android:inputType="text"
                         android:id="@+id/edt_category"
