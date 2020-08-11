@@ -1,9 +1,6 @@
 package com.example.bakkeryApp.retrofitService
 
-import com.example.bakkeryApp.model.ItemsModel
-import com.example.bakkeryApp.model.LoginModel
-import com.example.bakkeryApp.model.OrdersModel
-import com.example.bakkeryApp.model.ShopModel
+import com.example.bakkeryApp.model.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -56,8 +53,8 @@ interface ApiService {
                  @Part("hsnCode") hsn_Code: RequestBody?,
                  @Part("sku") sku: RequestBody?): Call<ResponseBody>
 
-
-
+    @GET("/items/hist/{id}")
+    fun getItemPriceHistory(@Path(value = "id", encoded = true) id: Int): Call<ArrayList<ItemHistoryModel>>
 
 
 }

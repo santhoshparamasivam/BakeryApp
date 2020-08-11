@@ -51,9 +51,6 @@ class ViewItemsFragment : Fragment() {
             activity?.startActivity(intent)
         }
 
-//        view_item.setOnClickListener {
-//
-//        }
         ordersmethod()
       return view
     }

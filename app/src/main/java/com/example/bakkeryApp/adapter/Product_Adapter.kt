@@ -54,8 +54,8 @@ class Product_Adapter(
 
         holder.itemView.select_country_text.setOnClickListener {
 
-            homeActivity.ProductSetUp(FilterList[position])
-            homeActivity.ProductSetUp(FilterList[position])
+            homeActivity.productSetUp(FilterList[position])
+            homeActivity.productSetUp(FilterList[position])
         }
     }
 

@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -35,6 +34,8 @@ import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import com.example.bakkeryApp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.activity_add_item.edt_item
+import kotlinx.android.synthetic.main.activity_add_item.edt_sku
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,13 +52,13 @@ class AddItemActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     lateinit var viewUtils: ViewUtils
-    private lateinit var Product_dialog: Dialog
+    private lateinit var productDialog: Dialog
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
     lateinit var adapter: Product_Adapter
-    lateinit var edt_category: EditText
-    lateinit var product_ImageView: ImageView
-    var Itemlist: ArrayList<ItemsModel> = ArrayList()
+    lateinit var edtCategory: EditText
+    lateinit var productImageView: ImageView
+    var itemslist: ArrayList<ItemsModel> = ArrayList()
     private val SELECT_PICTURE = 10
     private val REQUEST_CAMERA = 11
     lateinit var toolbar: Toolbar
@@ -72,24 +73,24 @@ class AddItemActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         progressDialog = ProgressDialog(this)
         viewUtils = ViewUtils()
-        edt_category=findViewById(R.id.edt_category)
-        product_ImageView=findViewById(R.id.product_ImageView)
+        edtCategory=findViewById(R.id.edt_category)
+        productImageView=findViewById(R.id.product_ImageView)
 
         val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
          toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Product_dialog = Dialog(this)
+        productDialog = Dialog(this)
         supportActionBar?.title ="Add Items"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
             toolbar.setNavigationOnClickListener {
               finish()
             }
-        edt_category.setOnClickListener {
+        edtCategory.setOnClickListener {
             getProductName()
         }
-        product_ImageView.setOnClickListener {
+        productImageView.setOnClickListener {
             checkRunTimePermission();
             }
         checkbox_cost_tax.setOnClickListener{
@@ -105,8 +106,8 @@ class AddItemActivity : AppCompatActivity() {
 
 
         create_item.setOnClickListener {
-            if(edt_category.text.toString().isEmpty()){
-                edt_category.error = "Please Select Category"
+            if(edtCategory.text.toString().isEmpty()){
+                edtCategory.error = "Please Select Category"
             }else if(edt_item.text.toString().isEmpty()){
                 edt_item.error="Please Enter Item Name"
             }else if(edt_sku.text.toString().isEmpty()){
@@ -140,7 +141,7 @@ class AddItemActivity : AppCompatActivity() {
             MultipartBody.Part.createFormData("files", file.name, requestFile)
 
         val item_Name: RequestBody? = createPartFromString(edt_item.text.toString())
-        val item_category: RequestBody? = createPartFromString(edt_category.text.toString())
+        val item_category: RequestBody? = createPartFromString(edtCategory.text.toString())
         val cost_Price: RequestBody? = createPartFromString(edt_price.text.toString())
         val sell_Price: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
         val tax_percentage: RequestBody? = createPartFromString(edt_tax.text.toString())
@@ -299,13 +300,13 @@ class AddItemActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
-                product_ImageView.setImageURI(outputFileUri)
+                productImageView.setImageURI(outputFileUri)
 
 
             } else if (requestCode == SELECT_PICTURE) {
                 val selectedImageUri = data?.data
                 outputFileUri= selectedImageUri!!
-                product_ImageView.setImageURI(selectedImageUri)
+                productImageView.setImageURI(selectedImageUri)
             }
         }
     }
@@ -345,8 +346,8 @@ class AddItemActivity : AppCompatActivity() {
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
-                    Itemlist = response.body()
-                    Log.e("Itemlist", Itemlist.size.toString() + " error")
+                    itemslist = response.body()
+                    Log.e("Itemlist", itemslist.size.toString() + " error")
                     showItemNameDialog()
                 } else {
 
@@ -369,12 +370,12 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun showItemNameDialog() {
-        Product_dialog = Dialog(this)
-        Product_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        Product_dialog.setCancelable(true)
-        Product_dialog.setContentView(R.layout.custom_layout)
-        recyclerview = Product_dialog.findViewById(R.id.recyclerview)
-        search = Product_dialog.findViewById(R.id.search)
+        productDialog = Dialog(this)
+        productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        productDialog.setCancelable(true)
+        productDialog.setContentView(R.layout.custom_layout)
+        recyclerview = productDialog.findViewById(R.id.recyclerview)
+        search = productDialog.findViewById(R.id.search)
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
         search.addTextChangedListener(object : TextWatcher {
@@ -386,7 +387,7 @@ class AddItemActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        adapter = Product_Adapter(Itemlist, this)
+        adapter = Product_Adapter(itemslist, this)
         recyclerview.adapter = adapter
 
 
@@ -397,17 +398,15 @@ class AddItemActivity : AppCompatActivity() {
 
         val width = (metrics.widthPixels * 0.9)
 
-        Product_dialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
-        Product_dialog.show()
+        productDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
+        productDialog.show()
 
     }
 
-    fun ProductSetUp(itemsModel: ItemsModel) {
-//            if(Product_dialog!=null)
-                if (Product_dialog.isShowing){
-                    Product_dialog.dismiss()
-                    edt_category.setText(itemsModel.name)
-                }
-
+    fun productSetUp(itemsModel: ItemsModel) {
+        if (productDialog.isShowing){
+            productDialog.dismiss()
+            edtCategory.setText(itemsModel.name)
+        }
     }
 }

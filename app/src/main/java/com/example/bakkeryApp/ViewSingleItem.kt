@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bakkeryApp.adapter.PriceHistoryAdapter
-import com.example.bakkeryApp.adapter.Product_Adapter
 import com.example.bakkeryApp.model.ItemHistoryModel
 import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.retrofitService.ApiManager
@@ -43,7 +42,7 @@ class ViewSingleItem : AppCompatActivity() {
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
     lateinit var adapter: PriceHistoryAdapter
-    var ItemHistorylist: ArrayList<ItemHistoryModel> = ArrayList()
+    var itemHistoryList: ArrayList<ItemHistoryModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +65,8 @@ class ViewSingleItem : AppCompatActivity() {
         }
 
         priceHistory.setOnClickListener {
-            showItemNameDialog();
+            getPriceHistory(id);
+            //showItemHistDialog();
         }
 
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
@@ -91,7 +91,6 @@ class ViewSingleItem : AppCompatActivity() {
                 if (response.code() == 200) {
 
                     var itemsModel: ItemsModel = ItemsModel();
-
                     itemsModel = response.body();
 
                     val encodedURL: String = URLEncoder.encode(itemsModel.imageFileName,"UTF-8").replace("+", "%20")
@@ -103,11 +102,8 @@ class ViewSingleItem : AppCompatActivity() {
                     edt_name.setText(itemsModel.name)
                     edt_hsnCode.setText(itemsModel.hsnCode)
                     edt_sku.setText(itemsModel.sku)
-                    //edt_salePrice.setText(0)
                     edt_unitOfMeasure.setText(itemsModel.unitOfMeasure)
                     edt_taxIncluded.isChecked = itemsModel.taxIncluded!!
-                    //itemsModel.costPrice?.let { edt_costPrice.setText(it) }
-                    //itemsModel.taxPercentage?.let { edt_taxPercentage.setText(it) }
                 } else {
                 }
             }
@@ -117,24 +113,24 @@ class ViewSingleItem : AppCompatActivity() {
         })
     }
 
-    fun showItemNameDialog() {
+    fun showItemHistDialog() {
         priceHistDialog = Dialog(this)
         priceHistDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         priceHistDialog.setCancelable(true)
         priceHistDialog.setContentView(R.layout.price_history)
-        recyclerview = priceHistDialog.findViewById(R.id.recyclerview)
+        recyclerview = priceHistDialog.findViewById(R.id.price_history_recyclerview)
+        search = priceHistDialog.findViewById(R.id.search)
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 adapter.filter.filter(charSequence.toString())
-
             }
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        adapter = PriceHistoryAdapter(ItemHistorylist, this)
+        adapter = PriceHistoryAdapter(itemHistoryList, this)
         recyclerview.adapter = adapter
 
 
@@ -148,5 +144,47 @@ class ViewSingleItem : AppCompatActivity() {
         priceHistDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
         priceHistDialog.show()
 
+    }
+
+    fun priceHistorySetUp(itemHistoryModel: ItemHistoryModel) {
+        if (priceHistDialog.isShowing){
+            priceHistDialog.dismiss()
+            edt_category.setText(itemHistoryModel.name)
+        }
+    }
+
+    fun getPriceHistory(id: Int) {
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $userToken")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+
+        requestInterface.getItemPriceHistory(id).enqueue(object : Callback<ArrayList<ItemHistoryModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<ItemHistoryModel>>,
+                response: Response<ArrayList<ItemHistoryModel>>
+            ) {
+                Log.e("response", response.code().toString() + "  rss")
+                if (response.code() == 200) {
+
+                   itemHistoryList = response.body();
+
+                    showItemHistDialog();
+
+                } else {
+                }
+            }
+            override fun onFailure(call: Call<ArrayList<ItemHistoryModel>>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
     }
 }
