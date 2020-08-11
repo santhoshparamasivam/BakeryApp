@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.DialogInterface.OnShowListener
 import androidx.appcompat.app.AlertDialog
+import com.example.bakkeryApp.model.MultiStockAdd
+import java.util.*
 
 
 class ViewUtils {
@@ -42,5 +44,14 @@ class ViewUtils {
         }
         return alert
     }
+//    var multiStockList: List<MultiStockAdd> = ArrayList<MultiStockAdd>(
+//        listOf(
+//            MultiStockAdd(
+//                "" + 0,
+//                ""
+//            )
+//        )
+//    )
+
 
 }

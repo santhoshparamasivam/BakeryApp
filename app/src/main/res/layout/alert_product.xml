@@ -4,10 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-<!--  <ListView-->
-<!--      android:layout_width="match_parent"-->
-<!--      android:id="@+id/list_item"-->
-<!--      android:scrollbars="none"-->
-<!--      android:layout_height="wrap_content" />-->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search"
+        android:hint="search here"
+        />
+  <ListView
+      android:layout_width="match_parent"
+      android:id="@+id/list_item"
+      android:scrollbars="none"
+      android:layout_height="wrap_content" />
 
 </LinearLayout>

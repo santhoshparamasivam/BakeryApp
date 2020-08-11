@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.AddItemActivity
+import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.R
 import com.example.bakkeryApp.adapter.Items_Adapter
 import com.example.bakkeryApp.adapter.Orders_Adapter
@@ -49,7 +50,8 @@ class ViewStockFragment : Fragment(){
             activity?.startActivity(intent)
         }
         view_item.setOnClickListener {
-
+            val intent= Intent(activity, AddStockActivity::class.java)
+            activity?.startActivity(intent)
         }
 
         ViewStockMethod()
@@ -78,13 +80,14 @@ class ViewStockFragment : Fragment(){
                 progressDialog.dismiss()
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
+                    progressDialog.dismiss()
                     itemList = response.body()
                     setadaptermethod()
                     Log.e("Itemlist", itemList.size.toString() + " error")
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
-                        .show()
+//                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
+//                        .show()
                 }
             }
             override fun onFailure(call: Call<ArrayList<ItemsModel>>, t: Throwable) {
