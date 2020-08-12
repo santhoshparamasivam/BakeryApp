@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/view_item"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/edt_radio_product"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -108,6 +110,7 @@
                             android:layout_marginEnd="5dp" />
 
                         <RadioButton
+                            android:id="@+id/edt_radio_service"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -149,9 +152,6 @@
                         android:hint=" Select Category "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -186,9 +186,6 @@
                         android:hint=" Enter Item Name "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -223,9 +220,6 @@
                         android:hint=" Enter Sku "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -260,9 +254,6 @@
                         android:hint=" Enter units "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -297,9 +288,6 @@
                         android:hint=" Enter Price "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -359,15 +347,12 @@
                         android:gravity="start" />
 
                     <EditText
-                        android:id="@+id/edt_salePrice"
+                        android:id="@+id/edt_sellingPrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Enter Price "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -402,9 +387,6 @@
                         android:hint=" Enter Code "
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -438,10 +420,7 @@
                         android:layout_height="wrap_content"
                         android:hint=" Enter Tax % "
                         android:layout_weight="1"
-                        android:inputType="text"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:cursorVisible="false"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>

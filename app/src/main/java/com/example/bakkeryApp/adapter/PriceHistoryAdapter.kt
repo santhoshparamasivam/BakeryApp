@@ -50,11 +50,9 @@ class PriceHistoryAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.itemView.costPrice.text = filterList[position].costPrice.toString()
-
-        holder.itemView.select_country_text.setOnClickListener {
-
-        }
+        holder.itemView.costPrice.text = "Cost Price: " + filterList[position].costPrice.toString()
+        holder.itemView.sellingPrice.text = "Selling Price: " + filterList[position].sellingPrice.toString()
+        holder.itemView.modifiedOn.text = "Modified On: " + filterList[position].modifiedOn.toString()
     }
 
     override fun getFilter(): Filter {

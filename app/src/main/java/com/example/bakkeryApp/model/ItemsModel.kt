@@ -69,4 +69,7 @@ class ItemsModel {
     @Expose
     var imageFileName: String? = null
 
+    @SerializedName("trackInventory")
+    @Expose
+    val trackInventory: Boolean? = null
 }

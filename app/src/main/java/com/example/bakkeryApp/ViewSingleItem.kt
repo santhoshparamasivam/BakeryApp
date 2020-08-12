@@ -116,6 +116,18 @@ class ViewSingleItem : AppCompatActivity() {
                     edt_sku.setText(itemsModel.sku)
                     edt_unitOfMeasure.setText(itemsModel.unitOfMeasure)
                     edt_taxIncluded.isChecked = itemsModel.taxIncluded!!
+                    edt_taxPercentage.setText(itemsModel.taxPercentage.toString())
+                    edt_sellingPrice.setText(itemsModel.sellingPrice.toString())
+                    edt_costPrice.setText(itemsModel.costPrice.toString())
+                    edt_trackInventory.isChecked = itemsModel.trackInventory!!
+                    if(itemsModel.type=="PRODUCT") {
+                        edt_radio_product.isChecked = true
+                        edt_radio_service.isChecked = false
+                    }
+                    else {
+                        edt_radio_service.isChecked = true
+                        edt_radio_product.isChecked = false
+                    }
                 } else {
                     progressDialog.dismiss()
                  Toast.makeText(applicationContext,"Please try again later",Toast.LENGTH_SHORT).show()
@@ -136,20 +148,19 @@ class ViewSingleItem : AppCompatActivity() {
         priceHistDialog.setCancelable(true)
         priceHistDialog.setContentView(R.layout.price_history)
         recyclerview = priceHistDialog.findViewById(R.id.price_history_recyclerview)
-        search = priceHistDialog.findViewById(R.id.search)
+        //search = priceHistDialog.findViewById(R.id.search)
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
-        search.addTextChangedListener(object : TextWatcher {
+        /*search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 adapter.filter.filter(charSequence.toString())
             }
 
             override fun afterTextChanged(editable: Editable) {}
-        })
+        })*/
         adapter = PriceHistoryAdapter(itemHistoryList, this)
         recyclerview.adapter = adapter
-
 
         val metrics = DisplayMetrics()
 
