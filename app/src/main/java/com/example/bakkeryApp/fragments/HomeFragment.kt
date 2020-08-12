@@ -10,7 +10,7 @@ import com.example.bakkeryApp.R
 class HomeFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view:View= inflater.inflate(R.layout.fragment_home,container,false)
-        activity?.title  ="DashBoard"
+        activity?.title  ="Dashboard"
 
 
    return view }
