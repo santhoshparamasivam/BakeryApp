@@ -65,7 +65,7 @@ class AddItemActivity : AppCompatActivity() {
     private var isPermitted:Boolean = false
     lateinit var outputFileUri : Uri
     var taxIncluded : Boolean=false
-
+    lateinit var type: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +97,13 @@ class AddItemActivity : AppCompatActivity() {
 
         checkbox_cost_tax.setOnClickListener{
             taxIncluded=true
+        }
+
+        radio_product.setOnClickListener{
+            type="PRODUCT"
+        }
+        radio_service.setOnClickListener {
+            type="SERVICE"
         }
 
         checkbox_sell_tax.setOnClickListener{
@@ -142,15 +149,16 @@ class AddItemActivity : AppCompatActivity() {
         val body: MultipartBody.Part =
             MultipartBody.Part.createFormData("files", file.name, requestFile)
 
-        val item_Name: RequestBody? = createPartFromString(edt_item.text.toString())
+        val item_Type: RequestBody? = createPartFromString(type)
         val item_category: RequestBody? = createPartFromString(edtCategory.text.toString())
+        val item_Name: RequestBody? = createPartFromString(edt_item.text.toString())
+        val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
+        val unit_measures: RequestBody? = createPartFromString(edt_units.text.toString())
         val cost_Price: RequestBody? = createPartFromString(edt_price.text.toString())
+        val tax_included: RequestBody? = createPartFromString(taxIncluded.toString())
         val sell_Price: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
         val tax_percentage: RequestBody? = createPartFromString(edt_tax.text.toString())
-        val tax_included: RequestBody? = createPartFromString(taxIncluded.toString())
-        val unit_measures: RequestBody? = createPartFromString(edt_units.text.toString())
         val hsn_Code: RequestBody? = createPartFromString(edt_hsn.text.toString())
-        val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
         var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
 
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor{ chain ->
@@ -164,7 +172,7 @@ class AddItemActivity : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.SaveOrders(body,item_Name,item_category,cost_Price,sell_Price,tax_percentage,unit_measures,tax_included,hsn_Code,sku).enqueue(object : Callback<ResponseBody> {
+        requestInterface.SaveOrders(body, item_Type, item_Name,item_category,cost_Price,sell_Price,tax_percentage,unit_measures,tax_included,hsn_Code,sku).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 progressDialog.dismiss()
                 if (response.code() == 200) {

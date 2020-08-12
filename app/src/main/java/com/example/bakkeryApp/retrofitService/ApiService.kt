@@ -47,6 +47,7 @@ interface ApiService {
   @Multipart
   @POST("/items")
   fun SaveOrders(@Part image: MultipartBody.Part,
+                 @Part("type") type: RequestBody?,
                  @Part("name") item_name: RequestBody?,
                  @Part("itemCategory") itemCategory: RequestBody?,
                  @Part("costPrice") costPrice: RequestBody?,
