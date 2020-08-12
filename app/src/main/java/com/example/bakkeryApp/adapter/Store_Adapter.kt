@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class Store_Adapter(
     var ItemList: ArrayList<ShopModel>,
-    val homeActivity: HomeActivity
+    val homeActivity: Context
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
@@ -47,12 +47,11 @@ class Store_Adapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
-        holder.itemView.select_country_text.setTextColor(Color.WHITE)
+//        holder.itemView.select_country_text.setTextColor(Color.BLACK)
         holder.itemView.select_country_text.text = FilterList[position].name+" - "+FilterList[position].location
 
         holder.itemView.select_country_text.setOnClickListener {
 
-//            homeActivity.StoreSetUp(FilterList[position])
 
         }
     }

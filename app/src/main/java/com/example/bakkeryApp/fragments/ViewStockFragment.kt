@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.R
-import com.example.bakkeryApp.adapter.Items_Adapter
-import com.example.bakkeryApp.adapter.Orders_Adapter
-import com.example.bakkeryApp.model.ItemsModel
+import com.example.bakkeryApp.adapter.Stock_Adapter
+import com.example.bakkeryApp.model.StockModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
@@ -35,8 +34,8 @@ class ViewStockFragment : Fragment(){
     lateinit var  recyclerview: RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
-    var itemList: ArrayList<ItemsModel> = ArrayList()
-    lateinit var Itemsadapter: Items_Adapter
+    var stockList: ArrayList<StockModel> = ArrayList()
+    lateinit var stockadapter: Stock_Adapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view :View= inflater.inflate(R.layout.fragment_view_stock,container,false)
         create_item=view.findViewById(R.id.create_item)
@@ -45,16 +44,16 @@ class ViewStockFragment : Fragment(){
         activity?.title  ="View Stock"
         progressDialog= ProgressDialog(activity)
         sessionManager= SessionManager(activity)
+//        create_item.setOnClickListener {
+//            val intent= Intent(activity, AddItemActivity::class.java)
+//            activity?.startActivity(intent)
+//        }
         create_item.setOnClickListener {
-            val intent= Intent(activity, AddItemActivity::class.java)
-            activity?.startActivity(intent)
-        }
-        view_item.setOnClickListener {
             val intent= Intent(activity, AddStockActivity::class.java)
             activity?.startActivity(intent)
         }
 
-        ViewStockMethod()
+
 
     return view}
 
@@ -73,24 +72,24 @@ class ViewStockFragment : Fragment(){
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.GetItems().enqueue(object : Callback<ArrayList<ItemsModel>> {
+        requestInterface.GetViewStock().enqueue(object : Callback<ArrayList<StockModel>> {
             override fun onResponse(
-                call: Call<ArrayList<ItemsModel>>,
-                response: Response<ArrayList<ItemsModel>>) {
+                call: Call<ArrayList<StockModel>>,
+                response: Response<ArrayList<StockModel>>) {
                 progressDialog.dismiss()
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-                    itemList = response.body()
+                    stockList = response.body()
                     setadaptermethod()
-                    Log.e("Itemlist", itemList.size.toString() + " error")
+                    Log.e("Itemlist", stockList.size.toString() + " error")
                 } else {
                     progressDialog.dismiss()
-//                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
-//                        .show()
+                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
-            override fun onFailure(call: Call<ArrayList<ItemsModel>>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
                 Toast.makeText(
@@ -104,7 +103,13 @@ class ViewStockFragment : Fragment(){
     private fun setadaptermethod() {
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
-        Itemsadapter = Items_Adapter(itemList, activity)
-        recyclerview.adapter =Itemsadapter
+        stockadapter = Stock_Adapter(stockList, activity)
+        recyclerview.adapter =stockadapter
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        ViewStockMethod()
     }
 }

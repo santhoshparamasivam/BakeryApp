@@ -25,7 +25,7 @@
 
     //Side Menu
     <string name="stock_move">Stock &amp; Move</string>
-    <string name="add_stock">Add Stock</string>
+    <string name="add_stock">Stock</string>
     <string name="remove_stock">Remove Stock</string>
     <string name="move_stock">Move Stock</string>
     <string name="count_stock">Physical Count</string>
@@ -53,7 +53,7 @@
     <string name="tax">Tax %</string>
     <string name="trackinventory">Track Inventory</string>
 
-
+    <string name="item">Item</string>
     <string name="filter_items">Filter Items</string>
     <string name="view_item">View Item</string>
     <string name="view_price_history">Price History</string>
@@ -64,6 +64,7 @@
     //Add Stock
     <string name="add_stock_text">Add Stock</string>
     <string name="add_item_text">Add Item</string>
+    <string name="add_location_text">Add Item</string>
     <string name="create_stock_text">Create Stock</string>
     <string name="location">Location</string>
     <string name="quantity">Quantity</string>

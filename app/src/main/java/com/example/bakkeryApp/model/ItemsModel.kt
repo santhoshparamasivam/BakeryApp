@@ -46,11 +46,12 @@ class ItemsModel {
 
     @SerializedName("costPrice")
     @Expose
-    var costPrice: Float? = null
+    var costPrice: Any? = null
+
 
     @SerializedName("sellingPrice")
     @Expose
-    var sellingPrice: Float? = null
+    var sellingPrice: Any? = null
 
     @SerializedName("hsnCode")
     @Expose

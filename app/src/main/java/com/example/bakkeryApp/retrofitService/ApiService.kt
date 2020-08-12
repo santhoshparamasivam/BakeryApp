@@ -56,5 +56,12 @@ interface ApiService {
     @GET("/items/hist/{id}")
     fun getItemPriceHistory(@Path(value = "id", encoded = true) id: Int): Call<ArrayList<ItemHistoryModel>>
 
+    @GET("/stock")
+    fun GetViewStock(): Call<ArrayList<StockModel>>
+
+
+  @POST("/stock/byItem")
+  fun StockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
+
 
 }

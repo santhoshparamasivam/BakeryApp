@@ -47,7 +47,6 @@ class Orders_Adapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
-        holder.itemView.select_country_text.setTextColor(Color.WHITE)
         holder.itemView.select_country_text.text = FilterList[position].shopId +"\n"+ FilterList[position].itemId
 
         holder.itemView.select_country_text.setOnClickListener {

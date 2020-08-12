@@ -35,17 +35,20 @@
                 android:textColor="@color/black" />
 
 
-            <EditText
-                android:id="@+id/edtLocation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/location"
-                android:layout_weight="1"
-                android:textColorHint="@color/black"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:importantForAutofill="no" />
+
+<!--            <EditText-->
+<!--               />-->
+           <AutoCompleteTextView
+               android:id="@+id/edtLocation"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:hint=""
+               android:layout_weight="1"
+               android:textColorHint="@color/black"
+               android:imeOptions="actionNext"
+               android:inputType="text"
+               android:textColor="@color/black"
+               />
 
         </LinearLayout>
   <LinearLayout
@@ -83,7 +86,7 @@
     <ImageView
         android:id="@+id/btnDelete"
         android:layout_width="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.2"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
         android:padding="10dp"

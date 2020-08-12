@@ -51,7 +51,7 @@ class ViewItemsFragment : Fragment() {
             activity?.startActivity(intent)
         }
 
-        ordersmethod()
+
       return view
     }
 
@@ -107,5 +107,10 @@ class ViewItemsFragment : Fragment() {
         recyclerview.setHasFixedSize(true)
         Itemsadapter = Items_Adapter(itemList, activity)
         recyclerview.adapter =Itemsadapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ordersmethod()
     }
     }
