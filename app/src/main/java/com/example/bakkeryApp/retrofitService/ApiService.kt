@@ -63,5 +63,8 @@ interface ApiService {
   @POST("/stock/byItem")
   fun StockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
 
+  @POST("/stock/byLocation")
+  fun StockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
+
 
 }

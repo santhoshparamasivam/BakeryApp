@@ -149,6 +149,9 @@
                         android:hint=" Select Category "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -183,6 +186,9 @@
                         android:hint=" Enter Item Name "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -217,6 +223,9 @@
                         android:hint=" Enter Sku "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -251,6 +260,9 @@
                         android:hint=" Enter units "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -285,6 +297,9 @@
                         android:hint=" Enter Price "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -350,6 +365,9 @@
                         android:hint=" Enter Price "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -384,6 +402,9 @@
                         android:hint=" Enter Code "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -418,6 +439,9 @@
                         android:hint=" Enter Tax % "
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>

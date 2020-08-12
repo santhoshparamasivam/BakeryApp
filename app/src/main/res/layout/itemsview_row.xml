@@ -16,11 +16,12 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/dimen_10sp"
         android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView"
                 android:src="@drawable/logo"
                 android:adjustViewBounds="true"

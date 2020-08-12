@@ -1,30 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorAccent"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        android:theme="@style/MyThemeOverlay_Toolbar2"
-        app:popupTheme="@style/AppTheme.PopupOverlay" >
-    </androidx.appcompat.widget.Toolbar>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:layout_above="@+id/nav_bottomView"
-        android:layout_below="@+id/toolbar"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_stock_item"
+            android:text="@string/add_location_item"
             android:layout_margin="20dp"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -49,28 +35,30 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/item"
+                        android:text="@string/location"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:layout_weight="0.4"
                         android:textSize="16sp"
                         android:gravity="start" />
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text=" : "-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:gravity="start" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text=" : "-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="16sp"-->
+                    <!--                        android:gravity="start" />-->
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=""
                         android:editable="false"
+                        android:focusable="false"
                         android:layout_weight="1"
                         android:inputType="text"
+                        android:clickable="false"
                         android:id="@+id/edt_category"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -90,14 +78,14 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text=" : "-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:gravity="start" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text=" : "-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="16sp"-->
+                    <!--                        android:gravity="start" />-->
 
                     <EditText
                         android:layout_width="0dp"
@@ -127,14 +115,14 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text=" : "-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:gravity="start" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:text=" : "-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="16sp"-->
+                    <!--                        android:gravity="start" />-->
 
                     <EditText
                         android:layout_width="0dp"
@@ -174,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="@string/add_location_text"
+                        android:text="@string/add_item"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -202,22 +190,4 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/nav_bottomView"/>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bottomView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemIconTint="@color/white"
-        app:labelVisibilityMode="labeled"
-        android:background="@color/colorAccent"
-        app:itemTextColor="@color/white"
-        app:menu="@menu/navigation"/>
-
 </RelativeLayout>

@@ -8,6 +8,6 @@
         android:layout_centerInParent="true"
         android:textSize="18sp"
         android:gravity="center"
-        android:text="Dash Board"
+        android:text="@string/dashboard"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

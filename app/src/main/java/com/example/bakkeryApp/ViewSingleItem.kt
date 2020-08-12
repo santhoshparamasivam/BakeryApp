@@ -1,6 +1,7 @@
 package com.example.bakkeryApp
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,13 +45,16 @@ class ViewSingleItem : AppCompatActivity() {
     lateinit var search: EditText
     lateinit var adapter: PriceHistoryAdapter
     var itemHistoryList: ArrayList<ItemHistoryModel> = ArrayList()
+    var id:Int = 0
+    lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var id = intent.getIntExtra("id", 0)
         setContentView(R.layout.activity_view_single_item)
+        id = intent.getIntExtra("id", 0)
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        progressDialog = ProgressDialog(this)
         mcontext= this!!
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -69,6 +74,12 @@ class ViewSingleItem : AppCompatActivity() {
             //showItemHistDialog();
         }
 
+     LoadSingleItem()
+    }
+
+    private fun LoadSingleItem() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
@@ -77,7 +88,7 @@ class ViewSingleItem : AppCompatActivity() {
             chain.proceed(newRequest)
         }.build()
         val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
@@ -87,10 +98,11 @@ class ViewSingleItem : AppCompatActivity() {
                 call: Call<ItemsModel>,
                 response: Response<ItemsModel>
             ) {
+                progressDialog.dismiss()
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
-
-                    var itemsModel: ItemsModel = ItemsModel();
+                    progressDialog.dismiss()
+                    var itemsModel = ItemsModel();
                     itemsModel = response.body();
 
                     val encodedURL: String = URLEncoder.encode(itemsModel.imageFileName,"UTF-8").replace("+", "%20")
@@ -105,12 +117,17 @@ class ViewSingleItem : AppCompatActivity() {
                     edt_unitOfMeasure.setText(itemsModel.unitOfMeasure)
                     edt_taxIncluded.isChecked = itemsModel.taxIncluded!!
                 } else {
+                    progressDialog.dismiss()
+                 Toast.makeText(applicationContext,"Please try again later",Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<ItemsModel>, t: Throwable) {
                 t.printStackTrace()
+                progressDialog.dismiss()
+                Toast.makeText(applicationContext,"Connection Failed,Please try again later",Toast.LENGTH_SHORT).show()
             }
         })
+
     }
 
     fun showItemHistDialog() {
@@ -162,7 +179,7 @@ class ViewSingleItem : AppCompatActivity() {
             chain.proceed(newRequest)
         }.build()
         val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)

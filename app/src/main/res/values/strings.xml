@@ -33,7 +33,7 @@
     <string name="menu_item">Item</string>
     <string name="buy_sell">Buy &amp; Sell</string>
     <string name="crew_craft">Crew &amp; Craft</string>
-    <string name="dashboard">DashBoard</string>
+    <string name="dashboard">Dashboard</string>
     <string name="menu_reports">Reports</string>
     <string name="log_out">Log Out</string>
 
@@ -63,8 +63,10 @@
 
     //Add Stock
     <string name="add_stock_text">Add Stock</string>
+    <string name="add_stock_item">Add Stock By Item</string>
     <string name="add_item_text">Add Item</string>
-    <string name="add_location_text">Add Item</string>
+    <string name="add_location_text">Add Location</string>
+    <string name="add_location_item">Add Stock By Location</string>
     <string name="create_stock_text">Create Stock</string>
     <string name="location">Location</string>
     <string name="quantity">Quantity</string>

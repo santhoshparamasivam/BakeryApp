@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bottom_nav_Home"
-        android:title="@string/view_item"
-        android:icon= "@drawable/password"
+        android:title="@string/add_stock_item"
+
         />
     <item
         android:id="@+id/bottom_nav_stock"
-        android:icon= "@drawable/password"
-        android:title="@string/add_item"/>
+        android:title="@string/add_location_item"/>
 <!--    <item-->
 <!--        android:id="@+id/nav_viewOrders"-->
 <!--        android:icon= "@drawable/password"-->
