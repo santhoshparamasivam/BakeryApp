@@ -152,6 +152,7 @@ class AddItemActivity : AppCompatActivity() {
         val hsn_Code: RequestBody? = createPartFromString(edt_hsn.text.toString())
         val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
         var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
+
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor{ chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $user_token")
