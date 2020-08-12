@@ -35,9 +35,9 @@ class ViewUtils {
             alert!!.setOnShowListener(OnShowListener {
                 if (alert != null) {
                     alert!!.getButton(AlertDialog.BUTTON_NEGATIVE)
-                        .setTextColor(mContext.resources.getColor(R.color.darker_gray))
+                        .setTextColor(mContext.resources.getColor(R.color.black))
                     alert!!.getButton(AlertDialog.BUTTON_POSITIVE)
-                        .setTextColor(mContext.resources.getColor(R.color.darker_gray))
+                        .setTextColor(mContext.resources.getColor(R.color.black))
                 }
             })
             alert!!.show()

@@ -80,9 +80,9 @@ class HomeActivity : AppCompatActivity() {
         logout_menu.setOnClickListener {
             viewUtils.alert_view_dialog(this,
                     "",
-                    "Are you Sure You want to Logout?",
-                    "Okay",
-                    "Cancel",
+                    "Are you sure you want to Logout?",
+                    "Yes",
+                    "No",
                     true,
                     postive_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
                         dialog.dismiss()
