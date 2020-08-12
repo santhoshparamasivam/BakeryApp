@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 class ItemsModel {
     @SerializedName("id")
     @Expose
-    var id: Int? = null
+    var id: Long? = null
 
     @SerializedName("createdBy")
     @Expose

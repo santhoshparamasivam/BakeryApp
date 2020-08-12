@@ -65,7 +65,7 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:id="@+id/product_ImageView"
+                    android:id="@+id/itemImageView"
                     android:layout_width="100dp"
                     android:layout_gravity="center"
                     android:layout_height="100dp"

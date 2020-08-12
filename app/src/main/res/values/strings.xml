@@ -45,7 +45,7 @@
     <string name="item_category">Item Category</string>
     <string name="item_name">Item Name</string>
     <string name="item_sku">SKU</string>
-    <string name="item_units">Units</string>
+    <string name="item_units">Unit of Measure</string>
     <string name="cost_of_price">Cost Price</string>
     <string name="include_tax">Include Tax</string>
     <string name="selling_price">Sale Price</string>

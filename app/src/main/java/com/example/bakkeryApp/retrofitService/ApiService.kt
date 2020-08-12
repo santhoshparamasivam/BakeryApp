@@ -1,5 +1,6 @@
 package com.example.bakkeryApp.retrofitService
 
+import com.cbe.inventory.model.ItemCategoryModel
 import com.example.bakkeryApp.model.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
@@ -33,6 +34,9 @@ interface ApiService {
 
   @POST("/api/auth/getToken")
   fun GetToken(@Body jsonObject: JsonObject): Call<LoginModel>
+
+    @GET("/item/categories")
+    fun getItemCategories(): Call<ArrayList<ItemCategoryModel>>
 
     @GET("/items")
     fun GetItems(): Call<ArrayList<ItemsModel>>

@@ -26,8 +26,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.adapter.Product_Adapter
-import com.example.bakkeryApp.model.ItemsModel
+import com.cbe.inventory.model.ItemCategoryModel
+import com.example.bakkeryApp.adapter.ItemCategoryAdapter
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
@@ -52,13 +52,13 @@ class AddItemActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     lateinit var viewUtils: ViewUtils
-    private lateinit var productDialog: Dialog
+    private lateinit var itemCategoryDialog: Dialog
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
-    lateinit var adapter: Product_Adapter
+    lateinit var adapter: ItemCategoryAdapter
     lateinit var edtCategory: EditText
-    lateinit var productImageView: ImageView
-    var itemslist: ArrayList<ItemsModel> = ArrayList()
+    lateinit var itemImageView: ImageView
+    var itemCategoryModelList: ArrayList<ItemCategoryModel> = ArrayList()
     private val SELECT_PICTURE = 10
     private val REQUEST_CAMERA = 11
     lateinit var toolbar: Toolbar
@@ -74,13 +74,13 @@ class AddItemActivity : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         viewUtils = ViewUtils()
         edtCategory=findViewById(R.id.edt_category)
-        productImageView=findViewById(R.id.product_ImageView)
+        itemImageView=findViewById(R.id.itemImageView)
 
         val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
          toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        productDialog = Dialog(this)
+        itemCategoryDialog = Dialog(this)
         supportActionBar?.title ="Add Items"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -88,22 +88,24 @@ class AddItemActivity : AppCompatActivity() {
               finish()
             }
         edtCategory.setOnClickListener {
-            getProductName()
+            getItemCategory()
         }
-        productImageView.setOnClickListener {
+
+        itemImageView.setOnClickListener {
             checkRunTimePermission();
-            }
+        }
+
         checkbox_cost_tax.setOnClickListener{
             taxIncluded=true
         }
+
         checkbox_sell_tax.setOnClickListener{
             taxIncluded=true
         }
+
         checkbox_tax.setOnClickListener{
             taxIncluded=true
         }
-
-
 
         create_item.setOnClickListener {
             if(edtCategory.text.toString().isEmpty()){
@@ -300,13 +302,13 @@ class AddItemActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
-                productImageView.setImageURI(outputFileUri)
+                itemImageView.setImageURI(outputFileUri)
 
 
             } else if (requestCode == SELECT_PICTURE) {
                 val selectedImageUri = data?.data
                 outputFileUri= selectedImageUri!!
-                productImageView.setImageURI(selectedImageUri)
+                itemImageView.setImageURI(selectedImageUri)
             }
         }
     }
@@ -322,7 +324,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
 
-    private fun getProductName() {
+    private fun getItemCategory() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
@@ -337,17 +339,17 @@ class AddItemActivity : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.GetItems().enqueue(object : Callback<ArrayList<ItemsModel>> {
+        requestInterface.getItemCategories().enqueue(object : Callback<ArrayList<ItemCategoryModel>> {
             override fun onResponse(
-                call: Call<ArrayList<ItemsModel>>,
-                response: Response<ArrayList<ItemsModel>>
+                call: Call<ArrayList<ItemCategoryModel>>,
+                response: Response<ArrayList<ItemCategoryModel>>
             ) {
                 progressDialog.dismiss()
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
-                    itemslist = response.body()
-                    Log.e("Itemlist", itemslist.size.toString() + " error")
+                    itemCategoryModelList = response.body()
+                    Log.e("Itemlist", itemCategoryModelList.size.toString() + " error")
                     showItemNameDialog()
                 } else {
 
@@ -357,7 +359,7 @@ class AddItemActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<ArrayList<ItemsModel>>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<ItemCategoryModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
                 Toast.makeText(
@@ -370,12 +372,12 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun showItemNameDialog() {
-        productDialog = Dialog(this)
-        productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        productDialog.setCancelable(true)
-        productDialog.setContentView(R.layout.custom_layout)
-        recyclerview = productDialog.findViewById(R.id.recyclerview)
-        search = productDialog.findViewById(R.id.search)
+        itemCategoryDialog = Dialog(this)
+        itemCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        itemCategoryDialog.setCancelable(true)
+        itemCategoryDialog.setContentView(R.layout.custom_layout)
+        recyclerview = itemCategoryDialog.findViewById(R.id.recyclerview)
+        search = itemCategoryDialog.findViewById(R.id.search)
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
         search.addTextChangedListener(object : TextWatcher {
@@ -387,7 +389,7 @@ class AddItemActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        adapter = Product_Adapter(itemslist, this)
+        adapter = ItemCategoryAdapter(itemCategoryModelList, this)
         recyclerview.adapter = adapter
 
 
@@ -398,15 +400,15 @@ class AddItemActivity : AppCompatActivity() {
 
         val width = (metrics.widthPixels * 0.9)
 
-        productDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
-        productDialog.show()
+        itemCategoryDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
+        itemCategoryDialog.show()
 
     }
 
-    fun productSetUp(itemsModel: ItemsModel) {
-        if (productDialog.isShowing){
-            productDialog.dismiss()
-            edtCategory.setText(itemsModel.name)
+    fun itemCategorySetUp(itemCategory: ItemCategoryModel) {
+        if (itemCategoryDialog.isShowing){
+            itemCategoryDialog.dismiss()
+            edtCategory.setText(itemCategory.name)
         }
     }
 }

@@ -8,29 +8,29 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.cbe.inventory.model.ItemCategoryModel
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.R
-import com.example.bakkeryApp.model.ItemsModel
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class Product_Adapter(
-    var ItemList: ArrayList<ItemsModel>,
+class ItemCategoryAdapter(
+    var itemCategoryModelList: ArrayList<ItemCategoryModel>,
     private val homeActivity: AddItemActivity
 
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    var FilterList = ArrayList<ItemsModel>()
+    var FilterList = ArrayList<ItemCategoryModel>()
 
     var mcontext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
-        FilterList = ItemList
+        FilterList = itemCategoryModelList
         mcontext= homeActivity
     }
 
@@ -49,12 +49,11 @@ class Product_Adapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
-        holder.itemView.select_country_text.text = FilterList[position].name+" - "+FilterList[position].itemCategory
+        holder.itemView.select_country_text.text = FilterList[position].name
 
         holder.itemView.select_country_text.setOnClickListener {
 
-            homeActivity.productSetUp(FilterList[position])
-            homeActivity.productSetUp(FilterList[position])
+            homeActivity.itemCategorySetUp(FilterList[position])
         }
     }
 
@@ -63,10 +62,10 @@ class Product_Adapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    FilterList = ItemList
+                    FilterList = itemCategoryModelList
                 } else {
-                    val resultList =  ArrayList<ItemsModel>()
-                    for (row in ItemList) {
+                    val resultList =  ArrayList<ItemCategoryModel>()
+                    for (row in itemCategoryModelList) {
                         if (row.name?.toLowerCase(Locale.ROOT)!!.contains(charSearch.toLowerCase(Locale.ROOT))) {
                             resultList.add(row)
                         }
@@ -80,7 +79,7 @@ class Product_Adapter(
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                FilterList = results?.values as  ArrayList<ItemsModel>
+                FilterList = results?.values as  ArrayList<ItemCategoryModel>
                 notifyDataSetChanged()
             }
 

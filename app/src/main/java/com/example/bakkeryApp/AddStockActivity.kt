@@ -66,7 +66,7 @@ class AddStockActivity : AppCompatActivity() {
     var Shoplist: ArrayList<ShopModel> = ArrayList()
     var finalShopList: ArrayList<ShopModel> = ArrayList()
 //    lateinit var stritemId: String
-    var itemId: Int = 0
+    var itemId: Long = 0
     var searchList: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {

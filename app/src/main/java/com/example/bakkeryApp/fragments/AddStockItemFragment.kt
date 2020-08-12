@@ -65,7 +65,7 @@ class AddStockItemFragment : Fragment(){
     var finalShopList: ArrayList<ShopModel> = ArrayList()
     //    lateinit var stritemId: String
 
-    var itemId: Int = 0
+    var itemId: Long = 0
     lateinit var edt_category: EditText
     lateinit var create_item: Button
     lateinit var lyt_add_item: LinearLayout

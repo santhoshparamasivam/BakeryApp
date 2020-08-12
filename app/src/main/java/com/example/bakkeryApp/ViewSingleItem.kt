@@ -4,8 +4,6 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
@@ -19,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.example.bakkeryApp.adapter.PriceHistoryAdapter
 import com.example.bakkeryApp.model.ItemHistoryModel
 import com.example.bakkeryApp.model.ItemsModel
-import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiManager.Companion.BASE_URL
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
@@ -108,7 +105,7 @@ class ViewSingleItem : AppCompatActivity() {
                     val encodedURL: String = URLEncoder.encode(itemsModel.imageFileName,"UTF-8").replace("+", "%20")
                     var uri= BASE_URL+"downloadfile/item/"+encodedURL
 
-                    Glide.with(mcontext as ViewSingleItem).load( uri).into(product_ImageView);
+                    Glide.with(mcontext as ViewSingleItem).load( uri).into(itemImageView);
 
                     edt_category.setText(itemsModel.itemCategory);
                     edt_name.setText(itemsModel.name)
