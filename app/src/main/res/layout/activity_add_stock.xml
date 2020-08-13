@@ -211,5 +211,41 @@
         android:background="@color/colorAccent"
         app:itemTextColor="@color/white"
         app:menu="@menu/navigation"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--      -->
+<!--        android:background="@color/colorAccent"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:id="@+id/add_stock_item"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:text="@string/add_stock_item" />-->
+
+<!--        <View-->
+<!--            android:layout_width="1dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:background="@color/white"-->
+<!--            />-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_weight="1"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="#FFFFFF"-->
+<!--            android:id="@+id/add_stock_location"-->
+<!--            android:padding="@dimen/dimen_10sp"-->
+<!--            android:text="@string/add_location_item"  />-->
+
+<!--    </LinearLayout>-->
 
 </RelativeLayout>

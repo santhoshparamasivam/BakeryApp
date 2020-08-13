@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.R
@@ -36,18 +37,20 @@ class ViewStockFragment : Fragment(){
     lateinit var progressDialog: ProgressDialog
     var stockList: ArrayList<StockModel> = ArrayList()
     lateinit var stockadapter: Stock_Adapter
+    lateinit var  swipeRefresh: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view :View= inflater.inflate(R.layout.fragment_view_stock,container,false)
         create_item=view.findViewById(R.id.create_item)
         view_item=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
+        swipeRefresh=view.findViewById(R.id.swipeRefresh)
         activity?.title  ="View Stock"
         progressDialog= ProgressDialog(activity)
         sessionManager= SessionManager(activity)
-//        create_item.setOnClickListener {
-//            val intent= Intent(activity, AddItemActivity::class.java)
-//            activity?.startActivity(intent)
-//        }
+        swipeRefresh.setOnRefreshListener {
+            ViewStockMethod()
+            swipeRefresh.isRefreshing = false
+        }
         create_item.setOnClickListener {
             val intent= Intent(activity, AddStockActivity::class.java)
             activity?.startActivity(intent)

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.R
 import com.example.bakkeryApp.ViewSingleItem
@@ -21,6 +22,7 @@ import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
+import kotlinx.android.synthetic.main.fragment_view_items.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Call
@@ -37,11 +39,13 @@ class ViewItemsFragment : Fragment() {
     lateinit var progressDialog: ProgressDialog
     var itemList: ArrayList<ItemsModel> = ArrayList()
     lateinit var Itemsadapter: Items_Adapter
+    lateinit var  swipeRefresh: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View= inflater.inflate(R.layout.fragment_view_items,container,false)
         create_item=view.findViewById(R.id.create_item)
         view_item=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
+        swipeRefresh=view.findViewById(R.id.swipeRefresh)
         sessionManager = SessionManager(activity)
         progressDialog = ProgressDialog(activity)
 
@@ -50,7 +54,10 @@ class ViewItemsFragment : Fragment() {
             val intent= Intent(activity,AddItemActivity::class.java)
             activity?.startActivity(intent)
         }
-
+        swipeRefresh.setOnRefreshListener {
+            ordersmethod()
+            swipeRefresh.isRefreshing = false
+        }
 
       return view
     }
