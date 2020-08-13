@@ -4,10 +4,12 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
@@ -23,7 +25,6 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cbe.inventory.model.ItemCategoryModel
@@ -34,8 +35,6 @@ import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import com.example.bakkeryApp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.activity_add_item.edt_item
-import kotlinx.android.synthetic.main.activity_add_item.edt_sku
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -199,22 +198,49 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun checkRunTimePermission() {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this@AddItemActivity,
-                    Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(this@AddItemActivity,
-                    arrayOf(Manifest.permission.CAMERA), 1)
-            } else {
-                    CheckStoragePermission()
-            }
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this@AddItemActivity,
+//                    Manifest.permission.CAMERA)) {
+//                ActivityCompat.requestPermissions(this@AddItemActivity,
+//                    arrayOf(Manifest.permission.CAMERA), 1)
+//            } else {
+//                    CheckStoragePermission()
+//            }
+//        val permission = ActivityCompat.checkSelfPermission(this,
+//            Manifest.permission.CAMERA)
+//        if (permission != PackageManager.PERMISSION_GRANTED) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                requestPermissions(String[] {
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//            }
+//        }else{
+//            CheckStoragePermission()
+//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.CAMERA
+                ),
+                1
+            )
+        }else{
+            CheckStoragePermission()
+        }
+
     }
     private fun CheckStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this@AddItemActivity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            ActivityCompat.requestPermissions(this@AddItemActivity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 2)
-        }else{
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                2
+            )        }
+        else{
             TakePhoto()
         }
+
+
     }
 
     private fun TakePhoto() {
@@ -286,27 +312,48 @@ class AddItemActivity : AppCompatActivity() {
                                             grantResults: IntArray) {
         when (requestCode) {
             1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED) {
-                          Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-                        CheckStoragePermission()
-
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] === PackageManager.PERMISSION_GRANTED
+                ) {
+                    CheckStoragePermission()
                 } else {
-                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                    var details="Please Allow Camera Permission For Capture the Image"
+                        permissionDeniedAlertBox(details)
                 }
                 return
             }   2 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "Permission Granted for Storage", Toast.LENGTH_SHORT).show()
                    TakePhoto()
                 } else {
-                    Toast.makeText(this, "Permission Denied for Storage", Toast.LENGTH_SHORT).show()
+                    var details="Please Allow Storage Permission For Store and Retrieve Data"
+
+                    permissionDeniedAlertBox(details)
                 }
                 return
             }
         }
     }
+
+    private fun permissionDeniedAlertBox(details: String) {
+        viewUtils.alert_view_dialog(this,
+            "",
+            details,
+            "Okay",
+            "Cancel",
+            true,
+            postive_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+                checkRunTimePermission()
+            },
+            negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+
+            },
+            s = "")
+
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
