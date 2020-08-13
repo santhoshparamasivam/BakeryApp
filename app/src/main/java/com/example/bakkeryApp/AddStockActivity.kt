@@ -214,7 +214,7 @@ class AddStockActivity : AppCompatActivity() {
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
             val adapter: ArrayAdapter<String> =
                 ArrayAdapter<String>(this, android.R.layout.select_dialog_item, searchList)
-            edtContact.threshold = 2;
+            edtContact.threshold = 1;
             edtContact.setAdapter(adapter);
 
             edtContact.tag = contact
@@ -243,10 +243,9 @@ class AddStockActivity : AppCompatActivity() {
                     count: Int
                 ) {
                     if (s.isNotEmpty()) {
-                        val multiContact: MultiStockAdd =
-                            edtContact.tag as MultiStockAdd
+                        val multiContact: MultiStockAdd = edtContact.tag as MultiStockAdd
                         MultiStockList.remove(multiContact)
-                        multiContact.location=edtContact.text.toString()
+                        multiContact.location = edtContact.text.toString()
                         MultiStockList.add(multiContact)
                     }
                 }

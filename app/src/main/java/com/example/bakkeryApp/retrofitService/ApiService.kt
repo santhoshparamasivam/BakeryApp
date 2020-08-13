@@ -42,7 +42,7 @@ interface ApiService {
     fun GetItems(): Call<ArrayList<ItemsModel>>
 
     @GET("/items/{id}")
-    fun getItem(@Path(value = "id", encoded = true) id: Int): Call<ItemsModel>
+    fun getItem(@Path(value = "id", encoded = true) id: Long): Call<ItemsModel>
 
   @Multipart
   @POST("/items")
@@ -59,7 +59,7 @@ interface ApiService {
                  @Part("sku") sku: RequestBody?): Call<ResponseBody>
 
     @GET("/items/hist/{id}")
-    fun getItemPriceHistory(@Path(value = "id", encoded = true) id: Int): Call<ArrayList<ItemHistoryModel>>
+    fun getItemPriceHistory(@Path(value = "id", encoded = true) id: Long): Call<ArrayList<ItemHistoryModel>>
 
     @GET("/stock")
     fun GetViewStock(): Call<ArrayList<StockModel>>

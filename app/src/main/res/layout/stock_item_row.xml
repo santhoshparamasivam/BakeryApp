@@ -44,8 +44,5 @@
                 android:textSize="@dimen/dimen_15sp" />
         </LinearLayout>
     </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/black" />
+
 </androidx.cardview.widget.CardView>

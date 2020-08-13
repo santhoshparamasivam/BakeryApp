@@ -21,11 +21,11 @@
 
     //Bottom Menu
     <string name="view_stock">View Stock</string>
-    <string name="add_item">Add Stock</string>
+    <string name="add_stock">Add Stock</string>
 
     //Side Menu
     <string name="stock_move">Stock &amp; Move</string>
-    <string name="add_stock">Stock</string>
+    <string name="stock">Stock</string>
     <string name="remove_stock">Remove Stock</string>
     <string name="move_stock">Move Stock</string>
     <string name="count_stock">Physical Count</string>
@@ -70,5 +70,6 @@
     <string name="create_stock_text">Create Stock</string>
     <string name="location">Location</string>
     <string name="quantity">Quantity</string>
+    <string name="add_item">Add Item</string>
 
 </resources>

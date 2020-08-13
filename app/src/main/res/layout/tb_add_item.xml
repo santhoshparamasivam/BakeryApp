@@ -51,7 +51,7 @@
                android:id="@+id/edtLocation"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
-               android:hint=""
+               android:hint="Type here..."
                android:layout_weight="1"
                android:textColorHint="@color/black"
                android:imeOptions="actionNext"

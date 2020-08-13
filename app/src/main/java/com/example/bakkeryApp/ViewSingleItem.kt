@@ -42,13 +42,13 @@ class ViewSingleItem : AppCompatActivity() {
     lateinit var search: EditText
     lateinit var adapter: PriceHistoryAdapter
     var itemHistoryList: ArrayList<ItemHistoryModel> = ArrayList()
-    var id:Int = 0
+    var id:Long = 0
     lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_item)
-        id = intent.getIntExtra("id", 0)
+        id = intent.getLongExtra("id", 0)
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         progressDialog = ProgressDialog(this)
@@ -178,7 +178,7 @@ class ViewSingleItem : AppCompatActivity() {
         }
     }
 
-    fun getPriceHistory(id: Int) {
+    fun getPriceHistory(id: Long) {
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
