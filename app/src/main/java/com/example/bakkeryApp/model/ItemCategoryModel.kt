@@ -1,4 +1,4 @@
-package com.cbe.inventory.model
+package com.example.bakkeryApp.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

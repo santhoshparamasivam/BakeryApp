@@ -29,7 +29,7 @@ class Orders_Adapter(
 
     init {
         FilterList = ItemList
-        mcontext= this!!.homeActivity!!
+        mcontext= this.homeActivity!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

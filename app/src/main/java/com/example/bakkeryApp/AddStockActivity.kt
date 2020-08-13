@@ -22,7 +22,6 @@ import com.example.bakkeryApp.adapter.CustomListAdapter
 import com.example.bakkeryApp.adapter.Store_Adapter
 import com.example.bakkeryApp.fragments.AddStockItemFragment
 import com.example.bakkeryApp.fragments.AddStockLocationFragment
-import com.example.bakkeryApp.fragments.HomeFragment
 import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.model.MultiStockAdd
 import com.example.bakkeryApp.model.ShopModel
@@ -36,7 +35,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_add_stock.*
-import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.tb_add_item.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -46,7 +44,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -98,11 +95,12 @@ class AddStockActivity : AppCompatActivity() {
 //        add_stock_location.setTextColor(null)
         nav_bottomView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.bottom_nav_Home -> {
+                R.id.addStockByItem -> {
                     LoadFragment(AddStockItemFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.bottom_nav_stock -> {
+
+                R.id.addStockByLocation -> {
                     LoadFragment(AddStockLocationFragment())
                     return@setOnNavigationItemSelectedListener true
                 }

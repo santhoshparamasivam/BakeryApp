@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#EC7628</color>
     <color name="colorAccent">#EC7628</color>
     <color name="background_color">#009688</color>
+    <color name="bottomNav">#03A9F4</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white_greyish">#EEEEEE</color>

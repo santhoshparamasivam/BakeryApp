@@ -49,10 +49,10 @@ class ViewSingleItem : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_item)
         id = intent.getLongExtra("id", 0)
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         progressDialog = ProgressDialog(this)
-        mcontext= this!!
+        mcontext= this
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -67,7 +67,7 @@ class ViewSingleItem : AppCompatActivity() {
         }
 
         priceHistory.setOnClickListener {
-            getPriceHistory(id);
+            getPriceHistory(id)
             //showItemHistDialog();
         }
 
@@ -99,15 +99,15 @@ class ViewSingleItem : AppCompatActivity() {
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-                    var itemsModel = ItemsModel();
-                    itemsModel = response.body();
+                    var itemsModel = ItemsModel()
+                    itemsModel = response.body()
 
                     val encodedURL: String = URLEncoder.encode(itemsModel.imageFileName,"UTF-8").replace("+", "%20")
                     var uri= BASE_URL+"downloadfile/item/"+encodedURL
 
-                    Glide.with(mcontext as ViewSingleItem).load( uri).into(itemImageView);
+                    Glide.with(mcontext as ViewSingleItem).load( uri).into(itemImageView)
 
-                    edt_category.setText(itemsModel.itemCategory);
+                    edt_category.setText(itemsModel.itemCategory)
                     edt_name.setText(itemsModel.name)
                     edt_hsnCode.setText(itemsModel.hsnCode)
                     edt_sku.setText(itemsModel.sku)
@@ -161,7 +161,7 @@ class ViewSingleItem : AppCompatActivity() {
 
         val metrics = DisplayMetrics()
 
-        this!!.windowManager.defaultDisplay.getMetrics(metrics)
+        this.windowManager.defaultDisplay.getMetrics(metrics)
         val height = (metrics.heightPixels * 0.5)
 
         val width = (metrics.widthPixels * 0.9)
@@ -200,9 +200,9 @@ class ViewSingleItem : AppCompatActivity() {
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
-                   itemHistoryList = response.body();
+                   itemHistoryList = response.body()
 
-                    showItemHistDialog();
+                    showItemHistDialog()
 
                 } else {
                 }

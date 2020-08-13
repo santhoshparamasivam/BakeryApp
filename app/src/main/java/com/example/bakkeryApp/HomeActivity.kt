@@ -1,6 +1,5 @@
 package com.example.bakkeryApp
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,7 +8,6 @@ import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +16,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.adapter.Store_Adapter
 import com.example.bakkeryApp.fragments.HomeFragment
 import com.example.bakkeryApp.fragments.ViewItemsFragment
 import com.example.bakkeryApp.fragments.ViewStockFragment
@@ -111,11 +107,11 @@ class HomeActivity : AppCompatActivity() {
         }
         nav_bottomView.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.bottom_nav_Home-> {
+                R.id.addStockByItem-> {
                     loadFragment(HomeFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.bottom_nav_stock-> {
+                R.id.addStockByLocation-> {
                     return@setOnNavigationItemSelectedListener true
                 }
 

@@ -1,6 +1,6 @@
 package com.example.bakkeryApp.retrofitService
 
-import com.cbe.inventory.model.ItemCategoryModel
+import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.model.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody

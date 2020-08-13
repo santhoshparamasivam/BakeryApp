@@ -189,8 +189,8 @@ class AddStockItemFragment : Fragment(){
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
             val adapter: ArrayAdapter<String>? =
                 activity?.let { ArrayAdapter<String>(it, android.R.layout.select_dialog_item, searchList) }
-            edtContact.threshold = 2;
-            edtContact.setAdapter(adapter);
+            edtContact.threshold = 2
+            edtContact.setAdapter(adapter)
 
             edtContact.tag = contact
             edtContact.setText(contact.location)
@@ -333,7 +333,7 @@ class AddStockItemFragment : Fragment(){
                         Shop_dialog.dismiss()
                     }
                     edtLocation.setText(finalShopList[position].name.toString())
-                    Log.e( "position",   finalShopList[position].name.toString()+"  ");
+                    Log.e( "position",   finalShopList[position].name.toString()+"  ")
                     val multiContact: MultiStockAdd =
                         edtLocation.tag as MultiStockAdd
                     MultiStockList.remove(multiContact)

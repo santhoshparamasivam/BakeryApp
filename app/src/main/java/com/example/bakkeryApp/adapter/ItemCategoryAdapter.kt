@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.cbe.inventory.model.ItemCategoryModel
+import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.R
 import kotlinx.android.synthetic.main.recyclerview_row.view.*

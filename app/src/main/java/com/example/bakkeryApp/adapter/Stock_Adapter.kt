@@ -35,7 +35,7 @@ class Stock_Adapter(
 
     init {
         filterstockList = stockList
-        mcontext= this!!.homeActivity!!
+        mcontext= this.homeActivity!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -64,15 +64,15 @@ class Stock_Adapter(
 //        }
         if (filterstockList[position].item==null && filterstockList[position].shop==null){
 //            holder.itemView.lay_container.visibility=View.GONE
-            holder.itemView.name_text.setText("Item Name :  No values")
+            holder.itemView.name_text.text = "Item Name :  No values"
         }
         if (filterstockList[position].item!=null)
-        holder.itemView.name_text.setText("Item Name :  "+filterstockList.get(position).item)
+            holder.itemView.name_text.text = "Item Name :  "+filterstockList.get(position).item
         else
             holder.itemView.name_text.visibility = View.GONE
 
         if (filterstockList[position].shop!=null)
-        holder.itemView.units_text.setText("Shop Name :  "+filterstockList.get(position).shop)
+            holder.itemView.units_text.text = "Shop Name :  "+filterstockList.get(position).shop
         else
             holder.itemView.units_text.visibility = View.GONE
 

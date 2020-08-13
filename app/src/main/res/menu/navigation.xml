@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_nav_Home"
+        android:id="@+id/addStockByItem"
         android:title="@string/add_stock_item"
-
+        android:src="@drawable/ic_items"
         />
     <item
-        android:id="@+id/bottom_nav_stock"
-        android:title="@string/add_location_item"/>
+        android:id="@+id/addStockByLocation"
+        android:title="@string/add_location_item"
+        android:src="@drawable/ic_location"/>
 <!--    <item-->
 <!--        android:id="@+id/nav_viewOrders"-->
 <!--        android:icon= "@drawable/password"-->

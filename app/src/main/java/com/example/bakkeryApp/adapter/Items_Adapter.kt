@@ -33,7 +33,7 @@ class Items_Adapter(
 
     init {
         FilterList = ItemList
-        mcontext= this!!.homeActivity!!
+        mcontext= this.homeActivity!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -53,11 +53,11 @@ class Items_Adapter(
         val encodedURL: String = URLEncoder.encode(FilterList.get(position).imageFileName, "UTF-8").replace("+", "%20")
         var uri= BASE_URL+"downloadfile/item/"+encodedURL
 
-        Glide.with(mcontext).load( uri).into(holder.itemView.imageView);
+        Glide.with(mcontext).load( uri).into(holder.itemView.imageView)
 
-        holder.itemView.name_text.setText("Item Name :  "+FilterList[position].name)
-        holder.itemView.units_text.setText("Units :  "+FilterList[position].unitOfMeasure)
-        holder.itemView.sale_text.setText("Sale Price :  "+FilterList[position].sellingPrice+" Rs")
+        holder.itemView.name_text.text = "Item Name :  "+FilterList[position].name
+        holder.itemView.units_text.text = "Units :  "+FilterList[position].unitOfMeasure
+        holder.itemView.sale_text.text = "Sale Price :  "+FilterList[position].sellingPrice+" Rs"
 
         holder.itemView.layout_container.setOnClickListener{
             val intent = Intent(mcontext, ViewSingleItem::class.java)

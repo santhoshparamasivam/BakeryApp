@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cbe.inventory.model.ItemCategoryModel
+import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.adapter.ItemCategoryAdapter
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
@@ -77,8 +77,8 @@ class AddItemActivity : AppCompatActivity() {
 
         val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
-         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+         toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         itemCategoryDialog = Dialog(this)
         supportActionBar?.title ="Add Item"
 
@@ -99,7 +99,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         itemImageView.setOnClickListener {
-            checkRunTimePermission();
+            checkRunTimePermission()
         }
 
         checkbox_cost_tax.setOnClickListener{
@@ -129,7 +129,7 @@ class AddItemActivity : AppCompatActivity() {
             }else if(edt_sku.text.toString().isEmpty()){
                 edt_sku.error="Please Enter SKU"
             }else if(edt_units.selectedItem == null){
-                val errorText = edt_units.getSelectedView() as TextView
+                val errorText = edt_units.selectedView as TextView
                 errorText.error = ""
                 errorText.setTextColor(Color.RED) //just to highlight that this is an error
 
@@ -154,7 +154,6 @@ class AddItemActivity : AppCompatActivity() {
 
         val file = File(getPath(outputFileUri,this))
         Log.e("name",file.name+"  ")
-    ;
         val requestFile: RequestBody =
             RequestBody.create(MediaType.parse("multipart/form-data"), file)
 
@@ -289,9 +288,9 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun TakePhotoMethod() {
-        var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date());
-       var imageFileName = "$timeStamp.jpg";
-       var mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/");
+        var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        var imageFileName = "$timeStamp.jpg"
+        var mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/")
         if (!mainDir.exists()) {
             mainDir.mkdirs()
 //        }else {
@@ -301,22 +300,22 @@ class AddItemActivity : AppCompatActivity() {
 //            }
         }
 
-        var image_output_File = File (mainDir, imageFileName);
-        var pictureImagePath = mainDir.absolutePath + "/" + imageFileName;
+        var image_output_File = File (mainDir, imageFileName)
+        var pictureImagePath = mainDir.absolutePath + "/" + imageFileName
         if (!image_output_File.exists()) {
 
-                image_output_File.createNewFile();
+                image_output_File.createNewFile()
 
         }
-        var file =  File(pictureImagePath);
+        var file =  File(pictureImagePath)
 
-        outputFileUri = Uri.fromFile(file);
+        outputFileUri = Uri.fromFile(file)
 
-        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
 
-        startActivityForResult(cameraIntent,REQUEST_CAMERA);
+        startActivityForResult(cameraIntent,REQUEST_CAMERA)
 
 
     }
@@ -464,7 +463,7 @@ class AddItemActivity : AppCompatActivity() {
 
         val metrics = DisplayMetrics()
 
-        this!!.windowManager.defaultDisplay.getMetrics(metrics)
+        this.windowManager.defaultDisplay.getMetrics(metrics)
         val height = (metrics.heightPixels * 0.5)
 
         val width = (metrics.widthPixels * 0.9)
