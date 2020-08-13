@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.text.Editable
@@ -133,8 +134,7 @@ class AddItemActivity : AppCompatActivity() {
                 errorText.setTextColor(Color.RED) //just to highlight that this is an error
 
                 errorText.text = "Select unit"
-            }
-
+            }else
 
             SubmitMethod()
         }
@@ -291,14 +291,14 @@ class AddItemActivity : AppCompatActivity() {
     private fun TakePhotoMethod() {
         var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date());
        var imageFileName = "$timeStamp.jpg";
-       var mainDir = File(  "/sdcard/Image/");
-        if (!mainDir.exists() && !mainDir.isDirectory()) {
-            mainDir.mkdirs();
-        }else {
-            mainDir = File( "/sdcard/Image/");
-            if (!mainDir.exists() && !mainDir.isDirectory()) {
-                mainDir.mkdirs();
-            }
+       var mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/");
+        if (!mainDir.exists()) {
+            mainDir.mkdirs()
+//        }else {
+//            mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/");
+//            if (!mainDir.exists()) {
+//                mainDir.mkdirs()
+//            }
         }
 
         var image_output_File = File (mainDir, imageFileName);
