@@ -43,15 +43,6 @@
         android:orientation="vertical"
         android:layout_below="@+id/toolbar"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/view_item"
-            android:layout_margin="20dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
 
         <ScrollView
             android:id="@+id/edt_item"

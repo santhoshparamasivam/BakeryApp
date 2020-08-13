@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,9 +19,7 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -81,11 +80,19 @@ class AddItemActivity : AppCompatActivity() {
         setSupportActionBar(toolbar);
         itemCategoryDialog = Dialog(this)
         supportActionBar?.title ="Add Items"
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-            toolbar.setNavigationOnClickListener {
-              finish()
-            }
+        toolbar.setNavigationOnClickListener {
+          finish()
+        }
+
+        val dropdown: Spinner = findViewById(R.id.edt_units)
+        val items = arrayOf("1/4 KG", "1/2 KG", "1 KG", "1/4 Litre", "1/2 Litre", "3/4 Litre", "1 Litre", "1 pack", "1 item", "half dozen", "dozen")
+        val adapter: ArrayAdapter<String> =
+        ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        dropdown.adapter = adapter
+
         edtCategory.setOnClickListener {
             getItemCategory()
         }
@@ -120,9 +127,15 @@ class AddItemActivity : AppCompatActivity() {
                 edt_item.error="Please Enter Item Name"
             }else if(edt_sku.text.toString().isEmpty()){
                 edt_sku.error="Please Enter SKU"
-            }else if(edt_units.text.toString().isEmpty()){
-                edt_units.error="Please Enter Units"
+            }else if(edt_units.selectedItem == null){
+                val errorText = edt_units.getSelectedView() as TextView
+                errorText.error = ""
+                errorText.setTextColor(Color.RED) //just to highlight that this is an error
+
+                errorText.text = "Select unit"
             }
+
+
             SubmitMethod()
         }
         }
@@ -152,7 +165,7 @@ class AddItemActivity : AppCompatActivity() {
         val item_category: RequestBody? = createPartFromString(edtCategory.text.toString())
         val item_Name: RequestBody? = createPartFromString(edt_item.text.toString())
         val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
-        val unit_measures: RequestBody? = createPartFromString(edt_units.text.toString())
+        val unit_measures: RequestBody? = createPartFromString(edt_units.selectedItem.toString())
         val cost_Price: RequestBody? = createPartFromString(edt_price.text.toString())
         val tax_included: RequestBody? = createPartFromString(taxIncluded.toString())
         val sell_Price: RequestBody? = createPartFromString(edt_sell_Price.text.toString())

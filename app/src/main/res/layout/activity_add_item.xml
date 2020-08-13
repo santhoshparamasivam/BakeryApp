@@ -19,15 +19,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/toolbar"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_item"
-            android:layout_margin="20dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,14 +51,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
+
                     <RadioGroup
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -109,14 +94,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -138,14 +115,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/item_name"
                         android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -175,14 +144,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -208,21 +169,12 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
-                    <EditText
+                    <Spinner
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Enter units "
                         android:layout_weight="1"
-                        android:inputType="text"
                         android:id="@+id/edt_units"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -237,14 +189,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/cost_of_price"
                         android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -274,14 +218,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
                     <CheckBox
                         android:layout_width="0dp"
@@ -302,14 +238,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/selling_price"
                         android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -339,14 +267,6 @@
                         android:textSize="16sp"
                         android:layout_weight="0.4"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
                     <CheckBox
                         android:layout_width="0dp"
@@ -367,14 +287,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/hsn_code"
                         android:layout_weight="0.4"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -404,14 +316,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -436,14 +340,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_weight="0.4"
-                        android:gravity="start" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" : "
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
                         android:gravity="start" />
 
                     <CheckBox

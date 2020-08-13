@@ -21,15 +21,7 @@
         android:layout_above="@+id/nav_bottomView"
         android:layout_below="@+id/toolbar"
         >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_stock_item"
-            android:layout_margin="20dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:gravity="center"
-            />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
