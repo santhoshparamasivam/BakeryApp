@@ -3,12 +3,12 @@
     <item
         android:id="@+id/addStockByItem"
         android:title="@string/add_stock_item"
-        android:src="@drawable/ic_items"
+        android:icon="@drawable/ic_items"
         />
     <item
         android:id="@+id/addStockByLocation"
         android:title="@string/add_location_item"
-        android:src="@drawable/ic_location"/>
+        android:icon="@drawable/ic_location"/>
 <!--    <item-->
 <!--        android:id="@+id/nav_viewOrders"-->
 <!--        android:icon= "@drawable/password"-->
