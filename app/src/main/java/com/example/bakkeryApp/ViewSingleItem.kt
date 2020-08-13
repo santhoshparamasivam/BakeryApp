@@ -53,17 +53,45 @@ class ViewSingleItem : AppCompatActivity() {
         setSupportActionBar(toolbar)
         progressDialog = ProgressDialog(this)
         mcontext= this
+        supportActionBar?.title ="View Items"
+        sessionManager= SessionManager(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        edt_category.isEnabled = false
+        edt_name.isEnabled  = false
+        edt_hsnCode.isEnabled = false
+        edt_sku.isEnabled  = false
+        edt_unitOfMeasure.isEnabled = false
+        edt_taxIncluded.isEnabled  = false
+        edt_taxPercentage.isEnabled  = false
+        edt_sellingPrice.isEnabled = false
+        edt_costPrice.isEnabled  = false
+        edt_taxIncluded.isEnabled  = false
+        edt_trackInventory.isEnabled=false
+        edt_radio_product.isEnabled=false
+        edt_radio_service.isEnabled=false
+
+
+        img_query.setOnClickListener {
+
+            edt_category.isEnabled = true
+            edt_name.isEnabled  = true
+            edt_hsnCode.isEnabled = true
+            edt_sku.isEnabled  = true
+            edt_unitOfMeasure.isEnabled = true
+            edt_taxIncluded.isEnabled  = true
+            edt_taxPercentage.isEnabled  = true
+            edt_sellingPrice.isEnabled = true
+            edt_costPrice.isEnabled  = true
+            edt_taxIncluded.isEnabled  = true
+            edt_trackInventory.isEnabled=true
+            edt_radio_product.isEnabled=true
+            edt_radio_service.isEnabled=true
+
+        }
         toolbar.setNavigationOnClickListener {
             finish()
-        }
-        supportActionBar?.title ="View Items"
-
-        sessionManager= SessionManager(this)
-
-        edit_query.setOnClickListener {
         }
 
         priceHistory.setOnClickListener {
@@ -108,15 +136,25 @@ class ViewSingleItem : AppCompatActivity() {
                     Glide.with(mcontext as ViewSingleItem).load( uri).into(itemImageView)
 
                     edt_category.setText(itemsModel.itemCategory)
+//                    edt_category.isFocusable = false
                     edt_name.setText(itemsModel.name)
+//                    edt_name.isFocusable = false
                     edt_hsnCode.setText(itemsModel.hsnCode)
+//                    edt_hsnCode.isFocusable = false
                     edt_sku.setText(itemsModel.sku)
+//                    edt_sku.isFocusable = false
                     edt_unitOfMeasure.setText(itemsModel.unitOfMeasure)
+//                    edt_unitOfMeasure.isFocusable = false
                     edt_taxIncluded.isChecked = itemsModel.taxIncluded!!
+//                    edt_taxIncluded.isSelected = false
                     edt_taxPercentage.setText(itemsModel.taxPercentage.toString())
+//                    edt_taxPercentage.isFocusable = false
                     edt_sellingPrice.setText(itemsModel.sellingPrice.toString())
+//                    edt_sellingPrice.isFocusable = false
                     edt_costPrice.setText(itemsModel.costPrice.toString())
+//                    edt_costPrice.isFocusable = false
                     edt_trackInventory.isChecked = itemsModel.trackInventory!!
+//                    edt_taxIncluded.isSelected = false
                     if(itemsModel.type=="PRODUCT") {
                         edt_radio_product.isChecked = true
                         edt_radio_service.isChecked = false
