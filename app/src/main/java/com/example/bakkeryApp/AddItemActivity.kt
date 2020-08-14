@@ -68,6 +68,7 @@ class AddItemActivity : AppCompatActivity() {
     lateinit var outputFileUri : Uri
     var taxIncluded : Boolean=false
     lateinit var type: String
+    lateinit var file:File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,7 +169,7 @@ class AddItemActivity : AppCompatActivity() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
 
-            val file = File(outputFileUri.toString())
+
             Log.e("name", file.name + "  ")
             val requestFile: RequestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file)
@@ -344,9 +345,10 @@ class AddItemActivity : AppCompatActivity() {
                 image_output_File.createNewFile()
 
         }
-        var file =  File(pictureImagePath)
+        file =  File(pictureImagePath)
 
         outputFileUri = Uri.fromFile(file)
+
 
         var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
@@ -413,6 +415,7 @@ class AddItemActivity : AppCompatActivity() {
             } else if (requestCode == SELECT_PICTURE) {
                 val selectedImageUri = data?.data
                 outputFileUri= selectedImageUri!!
+                file =  File(getPath(outputFileUri,this))
                 itemImageView.setImageURI(selectedImageUri)
             }
         }
