@@ -27,14 +27,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.adapter.ItemCategoryAdapter
+import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import com.example.bakkeryApp.utils.ViewUtils
 import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.activity_add_item.edt_item
+import kotlinx.android.synthetic.main.activity_add_item.edt_sku
+import kotlinx.android.synthetic.main.activity_view_single_item.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -89,7 +92,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         val dropdown: Spinner = findViewById(R.id.edt_units)
-        val items = arrayOf("Select unit","1/4 KG", "1/2 KG", "1 KG", "1/4 Litre", "1/2 Litre", "3/4 Litre", "1 Litre", "1 pack", "1 item", " 1/2 Dozen", "1 Dozen")
+        val items = arrayOf("1/4 KG", "1/2 KG", "1 KG", "1/4 Litre", "1/2 Litre", "3/4 Litre", "1 Litre", "1 pack", "1 item", " 1/2 Dozen", "1 Dozen")
         val adapter: ArrayAdapter<String> =
         ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
@@ -106,6 +109,7 @@ class AddItemActivity : AppCompatActivity() {
             taxIncluded=true
         }
 
+        type = ""
         radio_product.setOnClickListener{
             type="PRODUCT"
         }
@@ -122,23 +126,35 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         create_item.setOnClickListener {
-            if(edtCategory.text.toString().isEmpty()){
+            if(type.isEmpty()) {
+                val lastRadioBtn = findViewById(R.id.radio_product) as RadioButton
+                lastRadioBtn.error = "Select Type";
+            } else if(edtCategory.text.toString().isEmpty()){
                 edtCategory.error = "Please Select Category"
-            }else if(edt_item.text.toString().isEmpty()){
+            } else if(edt_item.text.toString().isEmpty()){
                 edt_item.error="Please Enter Item Name"
-            }else if(edt_sku.text.toString().isEmpty()){
+            } else if(edt_sku.text.toString().isEmpty()){
                 edt_sku.error="Please Enter SKU"
-            }else if(edt_units.selectedItem.toString() == "Select unit"){
+            } else if(edt_units.selectedItem == null){
                 val errorText = edt_units.selectedView as TextView
                 errorText.error = ""
-                errorText.setTextColor(Color.RED)
-                errorText.text = "Please Select unit"
-            }else if(outputFileUri==null){
-                    Toast.makeText(applicationContext,"Please Select image ",Toast.LENGTH_SHORT).show()
-            }else
-            SubmitMethod()
+                errorText.setTextColor(Color.RED) //just to highlight that this is an error
+                errorText.text = "Select unit"
+            }
+
+            /*else if(null == edt_costPrice){
+                edt_costPrice.error="Please enter cost price"
+            } else if(null ==  edt_sellingPrice){
+                edt_sellingPrice.error="Please enter selling price"
+            } else if(edt_sellingPrice.toString().isEmpty()){
+                edt_sellingPrice.error="Please enter selling price"
+            }*/
+
+            else {
+                SubmitMethod()
+            }
         }
-        }
+    }
 
     @NonNull
     private fun createPartFromString(descriptionString: String): RequestBody? {
@@ -212,28 +228,22 @@ class AddItemActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "SuccessFully Saved", Toast.LENGTH_LONG)
                             .show()
 
-                    } else if (response.code() == 400) {
-                        progressDialog.dismiss()
-                        Toast.makeText(
-                            applicationContext,
-                            "Please try again later",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    t.printStackTrace()
+                } else {
                     progressDialog.dismiss()
-                    Toast.makeText(
-                        applicationContext,
-                        "Connection failed,Please try again later",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG)
+                        .show()
                 }
-            })
-
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+                Toast.makeText(
+                    applicationContext,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
     private fun checkRunTimePermission() {
