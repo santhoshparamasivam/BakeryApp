@@ -57,6 +57,7 @@
     <string name="filter_items">Filter Items</string>
     <string name="view_item">View Item</string>
     <string name="view_price_history">Price History</string>
+    <string name="update_item">Update Item</string>
     <string name="view_by_location">By Location</string>
     <string name="view_by_item">By Item</string>
 

@@ -6,7 +6,9 @@ import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,8 +24,10 @@ import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import kotlinx.android.synthetic.main.activity_view_single_item.*
+import kotlinx.android.synthetic.main.price_history_recyclerview_row.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,21 +79,33 @@ class ViewSingleItem : AppCompatActivity() {
 
         img_query.setOnClickListener {
 
-            edt_category.isEnabled = true
-            edt_name.isEnabled  = true
-            edt_hsnCode.isEnabled = true
-            edt_sku.isEnabled  = true
-            edt_unitOfMeasure.isEnabled = true
-            edt_taxIncluded.isEnabled  = true
-            edt_taxPercentage.isEnabled  = true
+//            edt_category.isEnabled = true
+//            edt_name.isEnabled  = true
+//            edt_hsnCode.isEnabled = true
+//            edt_sku.isEnabled  = true
+//            edt_unitOfMeasure.isEnabled = true
+//            edt_taxIncluded.isEnabled  = true
+//            edt_taxPercentage.isEnabled  = true
             edt_sellingPrice.isEnabled = true
             edt_costPrice.isEnabled  = true
-            edt_taxIncluded.isEnabled  = true
-            edt_trackInventory.isEnabled=true
-            edt_radio_product.isEnabled=true
-            edt_radio_service.isEnabled=true
-
+            edt_costPrice.isFocusable=true
+            edt_costPrice.isCursorVisible=true
+//            edt_taxIncluded.isEnabled  = true
+//            edt_trackInventory.isEnabled=true
+//            edt_radio_product.isEnabled=true
+//            edt_radio_service.isEnabled=true
+            updateItem.visibility= View.VISIBLE
+            priceHistory.visibility=View.GONE
+            edt_costPrice.requestFocus();
+            if(edt_costPrice.requestFocus()) {
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            }
         }
+        updateItem.setOnClickListener {
+            updateItemMethod()
+        }
+
+
         toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -100,6 +116,55 @@ class ViewSingleItem : AppCompatActivity() {
         }
 
      LoadSingleItem()
+    }
+
+    private fun updateItemMethod() {
+        var item_Sku=edt_sku.text.toString()
+        var item_Hsn=edt_hsnCode.text.toString()
+        var cost_price=edt_costPrice.text.toString().toFloat()
+
+
+        val selling_price = edt_sellingPrice.text.toString().toFloat()
+
+
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $userToken")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+
+        requestInterface.updateItems(id,cost_price,selling_price).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                progressDialog.dismiss()
+                Log.e("response", response.code().toString() + "  rss")
+                if (response.code() == 200) {
+                    progressDialog.dismiss()
+                    Toast.makeText(applicationContext,"Product Updated Successfuly",Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(applicationContext,"Please try again later",Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+                Toast.makeText(applicationContext,"Connection Failed,Please try again later",Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun LoadSingleItem() {

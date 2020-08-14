@@ -452,6 +452,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:orientation="vertical"
                     android:layout_marginBottom="20dp">
 
                     <Button
@@ -460,6 +461,16 @@
                         android:layout_height="wrap_content"
                         android:text="@string/view_price_history"
                         android:layout_margin="5sp"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                    <Button
+                        android:id="@+id/updateItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/update_item"
+                        android:layout_margin="5sp"
+                        android:visibility="gone"
                         android:background="@color/colorAccent"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

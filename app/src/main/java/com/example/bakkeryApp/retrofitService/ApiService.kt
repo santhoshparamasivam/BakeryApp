@@ -72,4 +72,9 @@ interface ApiService {
   fun StockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
 
 
+    @PUT("/items")
+    fun updateItems(@Query("id") id:Long, @Query("costPrice")costprice:Float, @Query("sellingPrice")sellingPrice:Float): Call<ResponseBody>
+//   fun updateItems(@Query("id") id:Long,@Query("sku") sku:String, @Query("hsnCode") hsn_code:String, @Query("costPrice")costprice:Float, @Query("sellingPrice")sellingPrice:Float): Call<ResponseBody>
+
+
 }
