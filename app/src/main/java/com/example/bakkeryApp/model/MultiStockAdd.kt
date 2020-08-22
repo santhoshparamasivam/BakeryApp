@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class MultiStockAdd {
-    constructor(s: String, s1: String)
+    constructor(locate: String, size: String)
 
 
     @SerializedName("location")

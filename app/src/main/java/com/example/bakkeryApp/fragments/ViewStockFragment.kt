@@ -2,7 +2,6 @@ package com.example.bakkeryApp.fragments
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.R
-import com.example.bakkeryApp.adapter.Stock_Adapter
+import com.example.bakkeryApp.adapter.StockAdapter
 import com.example.bakkeryApp.model.StockModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
@@ -30,28 +28,28 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ViewStockFragment : Fragment(){
-    lateinit var  create_item: ImageView
-    lateinit var  view_item: ImageView
+    lateinit var  createItem: ImageView
+    lateinit var  viewItem: ImageView
     lateinit var  recyclerview: RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     var stockList: ArrayList<StockModel> = ArrayList()
-    lateinit var stockadapter: Stock_Adapter
+    lateinit var stockAdapter: StockAdapter
     lateinit var  swipeRefresh: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view :View= inflater.inflate(R.layout.fragment_view_stock,container,false)
-        create_item=view.findViewById(R.id.create_item)
-        view_item=view.findViewById(R.id.view_item)
+        createItem=view.findViewById(R.id.create_item)
+        viewItem=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
         swipeRefresh=view.findViewById(R.id.swipeRefresh)
         activity?.title  ="View Stock"
         progressDialog= ProgressDialog(activity)
         sessionManager= SessionManager(activity)
         swipeRefresh.setOnRefreshListener {
-            ViewStockMethod()
+            viewStockMethod()
             swipeRefresh.isRefreshing = false
         }
-        create_item.setOnClickListener {
+        createItem.setOnClickListener {
             val intent= Intent(activity, AddStockActivity::class.java)
             activity?.startActivity(intent)
         }
@@ -60,13 +58,13 @@ class ViewStockFragment : Fragment(){
 
     return view}
 
-    private fun ViewStockMethod() {
+    private fun viewStockMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -75,21 +73,19 @@ class ViewStockFragment : Fragment(){
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.GetViewStock().enqueue(object : Callback<ArrayList<StockModel>> {
+        requestInterface.getViewStock().enqueue(object : Callback<ArrayList<StockModel>> {
             override fun onResponse(
                 call: Call<ArrayList<StockModel>>,
                 response: Response<ArrayList<StockModel>>) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     stockList = response.body()
-                    setadaptermethod()
-                    Log.e("Itemlist", stockList.size.toString() + " error")
+                    setAdapterMethod()
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
-                        .show()
+//                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
+//                        .show()
                 }
             }
             override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
@@ -103,16 +99,16 @@ class ViewStockFragment : Fragment(){
             }
         })
     }
-    private fun setadaptermethod() {
+    private fun setAdapterMethod() {
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
-        stockadapter = Stock_Adapter(stockList, activity)
-        recyclerview.adapter =stockadapter
+        stockAdapter = StockAdapter(stockList, activity)
+        recyclerview.adapter =stockAdapter
     }
 
 
     override fun onResume() {
         super.onResume()
-        ViewStockMethod()
+        viewStockMethod()
     }
 }

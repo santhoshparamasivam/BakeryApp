@@ -14,7 +14,7 @@ class StockModel {
 
     @SerializedName("itemId")
     @Expose
-    var itemId: Any? = null
+    var itemId: Long? = null
 
     @SerializedName("shop")
     @Expose

@@ -17,15 +17,15 @@ class CustomListAdapter(
     private val context: Context,
     private val items: ArrayList<ItemsModel>
 ) : BaseAdapter(), Filterable {
-    private var Filteritems
+    private var filterListItems
             : ArrayList<ItemsModel> = items
 
     override fun getCount(): Int {
-        return Filteritems.size //returns total of items in the list
+        return filterListItems.size //returns total of items in the list
     }
 
     override fun getItem(position: Int): Any {
-        return Filteritems[position] //returns list item at the specified position
+        return filterListItems[position] //returns list item at the specified position
     }
 
     override fun getItemId(position: Int): Long {
@@ -45,7 +45,7 @@ class CustomListAdapter(
         }
         val textViewItemName =
             convertView?.findViewById<TextView>(R.id.select_country_text)
-        textViewItemName!!.text = Filteritems[position].name
+        textViewItemName!!.text = filterListItems[position].name
         return convertView!!
     }
 
@@ -54,7 +54,7 @@ class CustomListAdapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    Filteritems = items
+                    filterListItems = items
                 } else {
                     val resultList = ArrayList<ItemsModel>()
                     for (row in items) {
@@ -64,16 +64,16 @@ class CustomListAdapter(
                             resultList.add(row)
                         }
                     }
-                    Filteritems = resultList
+                    filterListItems = resultList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = Filteritems
+                filterResults.values = filterListItems
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                Filteritems = results?.values as ArrayList<ItemsModel>
+                filterListItems = results?.values as ArrayList<ItemsModel>
                 notifyDataSetChanged()
             }
         }

@@ -9,7 +9,6 @@ class SessionManager(context: FragmentActivity?) {
     private val mPreferences: SharedPreferences = context!!.getSharedPreferences("KEY", Context.MODE_PRIVATE)
 
 private val editor = mPreferences.edit()
-    var PRIVATE_MODE = 0
 
     /**
      * Set the value
@@ -36,22 +35,4 @@ private val editor = mPreferences.edit()
         editor.clear()
         editor.apply()
     }
-
-//    companion object {
-//        private const val Messagebody = "messagebody"
-//        private const val PREF_NAME = "FirebaseMessagae"
-//
-//    }
-    /**
-     * Initiate Session manager
-     *
-     * @param context current context
-     */
-//    init {
-//        pref = context.getSharedPreferences(
-//            PREF_NAME,
-//            PRIVATE_MODE
-//        )
-//        editor = pref.edit()
-//    }
 }

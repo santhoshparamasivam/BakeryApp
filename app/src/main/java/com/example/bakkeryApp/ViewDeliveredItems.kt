@@ -8,24 +8,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.model.OrdersModel
-import com.example.bakkeryApp.retrofitService.ApiManager
-import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.utils.RecyclerItemClickListener
-import com.example.bakkeryApp.adapter.Orders_Adapter
-import com.example.bakkeryApp.sessionManager.SessionKeys
+import com.example.bakkeryApp.adapter.OrdersAdapter
 import com.example.bakkeryApp.sessionManager.SessionManager
 import kotlinx.android.synthetic.main.activity_view_delivered_items.*
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ViewDeliveredItems : AppCompatActivity() {
 
@@ -33,7 +22,7 @@ class ViewDeliveredItems : AppCompatActivity() {
     lateinit var progressDialog: ProgressDialog
     lateinit var recyclerview: RecyclerView
     var orderslist: ArrayList<OrdersModel.Datum> = ArrayList()
-    lateinit var Ordersadapte:Orders_Adapter
+    lateinit var ordersAdapter:OrdersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,12 +106,12 @@ class ViewDeliveredItems : AppCompatActivity() {
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                Ordersadapte.filter.filter(charSequence.toString())
+                ordersAdapter.filter.filter(charSequence.toString())
             }
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        Ordersadapte = Orders_Adapter(orderslist, this)
-        recyclerview.adapter =Ordersadapte
+        ordersAdapter = OrdersAdapter(orderslist, this)
+        recyclerview.adapter =ordersAdapter
     }
 }

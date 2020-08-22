@@ -20,8 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
-    lateinit var user_token:String
-    lateinit var user_id:String
+    lateinit var userToken:String
+    lateinit var userId:String
     private val TIME_OUT = 3000L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         sessionManager = SessionManager(this)
 
-        user_token= sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        user_id= sessionManager.getStringKey(SessionKeys.USER_ID).toString()
-        if (user_id !="" && user_token !=""){
+        userToken= sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        userId= sessionManager.getStringKey(SessionKeys.USER_ID).toString()
+        if (userId !="" && userToken !=""){
             getUserToken()
-        }else if(user_token == ""){
+        }else if(userToken == ""){
             intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity() {
             .build().create(ApiService::class.java)
 
             val jsonObject= JsonObject()
-            jsonObject.addProperty("token",user_token)
+            jsonObject.addProperty("token",userToken)
 
-        requestInterface.GetToken(jsonObject).enqueue(object : Callback<LoginModel> {
+        requestInterface.getToken(jsonObject).enqueue(object : Callback<LoginModel> {
             override fun onResponse(call: Call<LoginModel>, response: Response<LoginModel>) {
                 Log.e("response",response.code().toString()+"    response")
                 if (response.code() == 200) {

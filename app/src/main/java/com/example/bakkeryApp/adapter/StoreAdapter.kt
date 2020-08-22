@@ -1,4 +1,5 @@
 package com.example.bakkeryApp.adapter
+
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,22 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.model.OrdersModel
+import com.example.bakkeryApp.HomeActivity
+import com.example.bakkeryApp.model.ShopModel
 import com.example.bakkeryApp.R
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-class Orders_Adapter(
-    var ItemList: ArrayList<OrdersModel.Datum>,
-    val homeActivity: FragmentActivity?
+class StoreAdapter(
+    var ItemList: ArrayList<ShopModel>,
+    val homeActivity: Context
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    var FilterList = ArrayList<OrdersModel.Datum>()
+    var FilterList = ArrayList<ShopModel>()
 
     var mcontext: Context
 
@@ -29,7 +29,7 @@ class Orders_Adapter(
 
     init {
         FilterList = ItemList
-        mcontext= this.homeActivity!!
+        mcontext=homeActivity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,11 +47,11 @@ class Orders_Adapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
-        holder.itemView.select_country_text.text = FilterList[position].shopId +"\n"+ FilterList[position].itemId
+//        holder.itemView.select_country_text.setTextColor(Color.BLACK)
+        holder.itemView.select_country_text.text = FilterList[position].name+" - "+FilterList[position].location
 
         holder.itemView.select_country_text.setOnClickListener {
 
-//            homeActivity.ProductSetUp(FilterList[position])
 
         }
     }
@@ -64,9 +64,9 @@ class Orders_Adapter(
                 if (charSearch.isEmpty()) {
                     FilterList = ItemList
                 } else {
-                    val resultList = ArrayList<OrdersModel.Datum>()
+                    val resultList =  ArrayList<ShopModel>()
                     for (row in ItemList) {
-                        if (row.shopId.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)) ||row.itemId.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                        if (row.name?.toLowerCase(Locale.ROOT)!!.contains(charSearch.toLowerCase(Locale.ROOT))) {
                             resultList.add(row)
                         }
                     }
@@ -79,11 +79,10 @@ class Orders_Adapter(
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                FilterList = results?.values as  ArrayList<OrdersModel.Datum>
+                FilterList = results?.values as  ArrayList<ShopModel>
                 notifyDataSetChanged()
             }
 
         }
     }
-
 }

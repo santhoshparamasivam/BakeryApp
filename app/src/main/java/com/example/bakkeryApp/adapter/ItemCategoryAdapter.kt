@@ -23,14 +23,14 @@ class ItemCategoryAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    var FilterList = ArrayList<ItemCategoryModel>()
+    var filterList = ArrayList<ItemCategoryModel>()
 
     var mcontext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
-        FilterList = itemCategoryModelList
+        filterList = itemCategoryModelList
         mcontext= homeActivity
     }
 
@@ -43,17 +43,17 @@ class ItemCategoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        return FilterList.size
+        return filterList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
-        holder.itemView.select_country_text.text = FilterList[position].name
+        holder.itemView.select_country_text.text = filterList[position].name
 
         holder.itemView.select_country_text.setOnClickListener {
 
-            homeActivity.itemCategorySetUp(FilterList[position])
+            homeActivity.itemCategorySetUp(filterList[position])
         }
     }
 
@@ -62,7 +62,7 @@ class ItemCategoryAdapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    FilterList = itemCategoryModelList
+                    filterList = itemCategoryModelList
                 } else {
                     val resultList =  ArrayList<ItemCategoryModel>()
                     for (row in itemCategoryModelList) {
@@ -70,16 +70,16 @@ class ItemCategoryAdapter(
                             resultList.add(row)
                         }
                     }
-                    FilterList = resultList
+                    filterList = resultList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = FilterList
+                filterResults.values = filterList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                FilterList = results?.values as  ArrayList<ItemCategoryModel>
+                filterList = results?.values as  ArrayList<ItemCategoryModel>
                 notifyDataSetChanged()
             }
 

@@ -16,12 +16,12 @@ interface ApiService {
 //  fun UserLogin(@Field("username")email:String,@Field("password")password:String ): Call<LoginModel>
 //  @FormUrlEncoded
   @POST("/api/auth/signin")
-  fun UserLogin(@Body jsonObject: JsonObject ): Call<LoginModel>
+  fun userLogin(@Body jsonObject: JsonObject ): Call<LoginModel>
 
 
 
   @GET("/shops")
-  fun GetShops(): Call<ArrayList<ShopModel>>
+  fun getShopsList(): Call<ArrayList<ShopModel>>
 
 //  @FormUrlEncoded
 //  @POST("/orders")
@@ -33,48 +33,49 @@ interface ApiService {
 //  fun GetToken(@Field("token")userToken:String): Call<LoginModel>
 
   @POST("/api/auth/getToken")
-  fun GetToken(@Body jsonObject: JsonObject): Call<LoginModel>
+  fun getToken(@Body jsonObject: JsonObject): Call<LoginModel>
 
     @GET("/item/categories")
     fun getItemCategories(): Call<ArrayList<ItemCategoryModel>>
 
     @GET("/items")
-    fun GetItems(): Call<ArrayList<ItemsModel>>
+    fun getAllItems(): Call<ArrayList<ItemsModel>>
 
     @GET("/items/{id}")
-    fun getItem(@Path(value = "id", encoded = true) id: Long): Call<ItemsModel>
+    fun getItemDetails(@Path(value = "id", encoded = true) id: Long): Call<ItemsModel>
 
   @Multipart
   @POST("/items")
-  fun SaveOrders(@Part image: MultipartBody.Part,
-                 @Part("type") type: RequestBody?,
-                 @Part("name") item_name: RequestBody?,
-                 @Part("itemCategory") itemCategory: RequestBody?,
-                 @Part("costPrice") costPrice: RequestBody?,
-                 @Part("sellingPrice")sellingPrice: RequestBody?,
-                 @Part("taxPercentage")taxPercentage: RequestBody?,
-                 @Part("unitOfMeasure")unitOfMeasure: RequestBody?,
-                 @Part("taxInclude") taxIncluded: RequestBody?,
-                 @Part("hsnCode") hsn_Code: RequestBody?,
-                 @Part("sku") sku: RequestBody?): Call<ResponseBody>
+  fun saveItems(@Part image: MultipartBody.Part,
+                @Part("type") type: RequestBody?,
+                @Part("name") item_name: RequestBody?,
+                @Part("itemCategory") itemCategory: RequestBody?,
+                @Part("costPrice") costPrice: RequestBody?,
+                @Part("sellingPrice")sellingPrice: RequestBody?,
+                @Part("taxPercentage")taxPercentage: RequestBody?,
+                @Part("unitOfMeasure")unitOfMeasure: RequestBody?,
+                @Part("taxInclude") taxIncluded: RequestBody?,
+                @Part("hsnCode") hsn_Code: RequestBody?,
+                @Part("sku") sku: RequestBody?): Call<ResponseBody>
 
     @GET("/items/hist/{id}")
     fun getItemPriceHistory(@Path(value = "id", encoded = true) id: Long): Call<ArrayList<ItemHistoryModel>>
 
     @GET("/stock")
-    fun GetViewStock(): Call<ArrayList<StockModel>>
+    fun getViewStock(): Call<ArrayList<StockModel>>
 
 
   @POST("/stock/byItem")
-  fun StockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
+  fun stockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
 
   @POST("/stock/byLocation")
-  fun StockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
+  fun stockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
 
 
     @PUT("/items")
     fun updateItems(@Query("id") id:Long, @Query("costPrice")costprice:Float, @Query("sellingPrice")sellingPrice:Float): Call<ResponseBody>
 //   fun updateItems(@Query("id") id:Long,@Query("sku") sku:String, @Query("hsnCode") hsn_code:String, @Query("costPrice")costprice:Float, @Query("sellingPrice")sellingPrice:Float): Call<ResponseBody>
 
-
+    @GET("/stock/{id}")
+    fun getStock(@Path(value = "id", encoded = true) id:Int): Call<ResponseBody>
 }

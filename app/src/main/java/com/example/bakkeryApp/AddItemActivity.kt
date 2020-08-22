@@ -12,7 +12,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.text.Editable
@@ -34,10 +33,9 @@ import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import com.example.bakkeryApp.utils.ViewUtils
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.activity_add_item.edt_item
-import kotlinx.android.synthetic.main.activity_add_item.edt_sku
-import kotlinx.android.synthetic.main.activity_view_single_item.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,8 +43,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
@@ -93,7 +89,19 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         val dropdown: Spinner = findViewById(R.id.edt_units)
-        val items = arrayOf("1/4 KG", "1/2 KG", "1 KG", "1/4 Litre", "1/2 Litre", "3/4 Litre", "1 Litre", "1 pack", "1 item", " 1/2 Dozen", "1 Dozen")
+        val items = arrayOf(
+            "1/4 KG",
+            "1/2 KG",
+            "1 KG",
+            "1/4 Litre",
+            "1/2 Litre",
+            "3/4 Litre",
+            "1 Litre",
+            "1 pack",
+            "1 item",
+            " 1/2 Dozen",
+            "1 Dozen"
+        )
         val adapter: ArrayAdapter<String> =
         ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
         dropdown.adapter = adapter
@@ -152,7 +160,7 @@ class AddItemActivity : AppCompatActivity() {
             }*/
 
             else {
-                SubmitMethod()
+                addItemMethod()
             }
         }
     }
@@ -165,7 +173,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
 
-    private fun SubmitMethod() {
+    private fun addItemMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
 
@@ -175,22 +183,22 @@ class AddItemActivity : AppCompatActivity() {
                 RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val body: MultipartBody.Part =
                 MultipartBody.Part.createFormData("files", file.name, requestFile)
-            val item_Type: RequestBody? = createPartFromString(type)
-            val item_category: RequestBody? = createPartFromString(edtCategory.text.toString())
-            val item_Name: RequestBody? = createPartFromString(edt_item.text.toString())
+            val itemType: RequestBody? = createPartFromString(type)
+            val itemCategory: RequestBody? = createPartFromString(edtCategory.text.toString())
+            val itemName: RequestBody? = createPartFromString(edt_item.text.toString())
             val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
-            val unit_measures: RequestBody? =
+            val unitMeasures: RequestBody? =
                 createPartFromString(edt_units.selectedItem.toString())
-            val cost_Price: RequestBody? = createPartFromString(edt_price.text.toString())
-            val tax_included: RequestBody? = createPartFromString(taxIncluded.toString())
-            val sell_Price: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
-            val tax_percentage: RequestBody? = createPartFromString(edt_tax.text.toString())
-            val hsn_Code: RequestBody? = createPartFromString(edt_hsn.text.toString())
-            var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
+            val costPrice: RequestBody? = createPartFromString(edt_price.text.toString())
+            val taxIncluded: RequestBody? = createPartFromString(taxIncluded.toString())
+            val sellPrice: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
+            val taxPercentage: RequestBody? = createPartFromString(edt_tax.text.toString())
+            val hsnCode: RequestBody? = createPartFromString(edt_hsn.text.toString())
+            var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
 
             val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $user_token")
+                    .addHeader("Authorization", "Bearer $userToken")
                     .build()
                 chain.proceed(newRequest)
             }.build()
@@ -199,17 +207,17 @@ class AddItemActivity : AppCompatActivity() {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ApiService::class.java)
-            requestInterface.SaveOrders(
+            requestInterface.saveItems(
                 body,
-                item_Type,
-                item_Name,
-                item_category,
-                cost_Price,
-                sell_Price,
-                tax_percentage,
-                unit_measures,
-                tax_included,
-                hsn_Code,
+                itemType,
+                itemName,
+                itemCategory,
+                costPrice,
+                sellPrice,
+                taxPercentage,
+                unitMeasures,
+                taxIncluded,
+                hsnCode,
                 sku
             ).enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
@@ -229,22 +237,27 @@ class AddItemActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "SuccessFully Saved", Toast.LENGTH_LONG)
                             .show()
 
-                } else {
-                    progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG)
-                        .show()
+                    } else {
+                        progressDialog.dismiss()
+                        Toast.makeText(
+                            applicationContext,
+                            "Please try again later",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
                 }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                t.printStackTrace()
-                progressDialog.dismiss()
-                Toast.makeText(
-                    applicationContext,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    t.printStackTrace()
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        applicationContext,
+                        "Connection failed,Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
     }
 
     private fun checkRunTimePermission() {
@@ -326,41 +339,62 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun TakePhotoMethod() {
-        var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        var imageFileName = "$timeStamp.jpg"
-        var mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/")
-        if (!mainDir.exists()) {
-            mainDir.mkdirs()
-//        }else {
-//            mainDir = File(Environment.getExternalStorageDirectory().toString()+"/BakeryImage/");
-//            if (!mainDir.exists()) {
-//                mainDir.mkdirs()
-//            }
-        }
-
-        var image_output_File = File (mainDir, imageFileName)
-        var pictureImagePath = mainDir.absolutePath + "/" + imageFileName
-        if (!image_output_File.exists()) {
-
-                image_output_File.createNewFile()
-
-        }
-        file =  File(pictureImagePath)
-
-        outputFileUri = Uri.fromFile(file)
-
-
-        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-
-        startActivityForResult(cameraIntent,REQUEST_CAMERA)
-
+//        var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+//        var imageFileName = "$timeStamp.jpg"
+//        var mainDir = File(Environment.getExternalStorageDirectory().toString() + "/BakeryImage/")
+//        if (!mainDir.exists()) {
+//            mainDir.mkdirs()
+//
+//        }
+//
+//        var image_output_File = File(mainDir, imageFileName)
+//        var pictureImagePath = mainDir.absolutePath + "/" + imageFileName
+//        if (!image_output_File.exists()) {
+//
+//                image_output_File.createNewFile()
+//
+//        }
+//        file =  File(pictureImagePath)
+//
+//        outputFileUri = Uri.fromFile(file)
+//
+//
+//        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//
+//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
+//
+//        startActivityForResult(cameraIntent, REQUEST_CAMERA)
+        CropImage.activity()
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .start(this);
 
     }
+//    fun compressFile(aFile: File?): File? {
+//        var compressedImage;
+//        try {
+//            val file = File(
+//                this@AddItemActivity.getCacheDir().getAbsolutePath().toString() + "/" + "Myfiles"
+//            )
+//            if (!file.exists()) {
+//                file.mkdirs()
+//            }
+//             compressedImage = Compression(applicationContext)
+//                .setMaxWidth(640)
+//                .setMaxHeight(480)
+//                .setQuality(75)
+//                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+//                .setDestinationDirectoryPath(file.absolutePath)
+//                .compressToFile(aFile)
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return compressedImage
+//    }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             1 -> {
                 if (grantResults.isNotEmpty()
@@ -368,16 +402,18 @@ class AddItemActivity : AppCompatActivity() {
                 ) {
                     CheckStoragePermission()
                 } else {
-                    var details="Please Allow Camera Permission For Capture the Image"
-                        permissionDeniedAlertBox(details)
+                    var details = "Please Allow Camera Permission For Capture the Image"
+                    permissionDeniedAlertBox(details)
                 }
                 return
-            }   2 -> {
+            }
+            2 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED) {
-                   TakePhoto()
+                    PackageManager.PERMISSION_GRANTED
+                ) {
+                    TakePhoto()
                 } else {
-                    var details="Please Allow Storage Permission For Store and Retrieve Data"
+                    var details = "Please Allow Storage Permission For Store and Retrieve Data"
 
                     permissionDeniedAlertBox(details)
                 }
@@ -387,7 +423,8 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun permissionDeniedAlertBox(details: String) {
-        viewUtils.alert_view_dialog(this,
+        viewUtils.alert_view_dialog(
+            this,
             "",
             details,
             "Okay",
@@ -401,7 +438,8 @@ class AddItemActivity : AppCompatActivity() {
                 dialog.dismiss()
 
             },
-            s = "")
+            s = ""
+        )
 
     }
 
@@ -409,14 +447,29 @@ class AddItemActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
-                itemImageView.setImageURI(outputFileUri)
+
+//                itemImageView.setImageURI(outputFileUri)
 
 
             } else if (requestCode == SELECT_PICTURE) {
                 val selectedImageUri = data?.data
                 outputFileUri= selectedImageUri!!
-                file =  File(getPath(outputFileUri,this))
-                itemImageView.setImageURI(selectedImageUri)
+                CropImage.activity(outputFileUri)
+                    .start(this);
+//                file =  File(getPath(outputFileUri, this))
+//                itemImageView.setImageURI(selectedImageUri)
+            }
+            if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode === RESULT_OK) {
+                   outputFileUri = result.uri
+                    itemImageView.setImageURI(outputFileUri)
+                    file =  File(outputFileUri.path)
+                    Log.e("file",file.name+"   ")
+
+                } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                }
             }
         }
     }
@@ -447,7 +500,8 @@ class AddItemActivity : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.getItemCategories().enqueue(object : Callback<ArrayList<ItemCategoryModel>> {
+        requestInterface.getItemCategories().enqueue(object :
+            Callback<ArrayList<ItemCategoryModel>> {
             override fun onResponse(
                 call: Call<ArrayList<ItemCategoryModel>>,
                 response: Response<ArrayList<ItemCategoryModel>>
@@ -462,7 +516,11 @@ class AddItemActivity : AppCompatActivity() {
                 } else {
 
                     progressDialog.dismiss()
-                    Toast.makeText(this@AddItemActivity, "Please try again later", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        this@AddItemActivity,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
             }
@@ -519,4 +577,6 @@ class AddItemActivity : AppCompatActivity() {
             edtCategory.setText(itemCategory.name)
         }
     }
+
+
 }

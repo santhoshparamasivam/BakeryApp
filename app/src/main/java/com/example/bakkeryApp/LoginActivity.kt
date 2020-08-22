@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
         jsonObject.addProperty("username",login_emailid.text.toString())
         jsonObject.addProperty("password",login_password.text.toString())
 
-       requestInterface.UserLogin(jsonObject).enqueue(object : Callback<LoginModel> {
+       requestInterface.userLogin(jsonObject).enqueue(object : Callback<LoginModel> {
            override fun onResponse(call: Call<LoginModel>, response: Response<LoginModel>) {
                progressDialog.dismiss()
                    if (response.code() == 200) {

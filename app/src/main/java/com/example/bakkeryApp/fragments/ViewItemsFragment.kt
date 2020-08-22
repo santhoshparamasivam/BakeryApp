@@ -3,7 +3,6 @@ package com.example.bakkeryApp.fragments
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.R
-import com.example.bakkeryApp.ViewSingleItem
-import com.example.bakkeryApp.adapter.Items_Adapter
+import com.example.bakkeryApp.adapter.ItemsAdapter
 import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
-import kotlinx.android.synthetic.main.fragment_view_items.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Call
@@ -32,43 +29,45 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ViewItemsFragment : Fragment() {
-    lateinit var  create_item:ImageView
-    lateinit var  view_item:ImageView
+    lateinit var  createItem:ImageView
+    lateinit var  viewItem:ImageView
     lateinit var  recyclerview:RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     var itemList: ArrayList<ItemsModel> = ArrayList()
-    lateinit var Itemsadapter: Items_Adapter
+    lateinit var itemsAdapter: ItemsAdapter
     lateinit var  swipeRefresh: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View= inflater.inflate(R.layout.fragment_view_items,container,false)
-        create_item=view.findViewById(R.id.create_item)
-        view_item=view.findViewById(R.id.view_item)
+        createItem=view.findViewById(R.id.create_item)
+        viewItem=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
         swipeRefresh=view.findViewById(R.id.swipeRefresh)
         sessionManager = SessionManager(activity)
         progressDialog = ProgressDialog(activity)
 
         activity?.title  ="View Item"
-        create_item.setOnClickListener {
+        createItem.setOnClickListener {
             val intent= Intent(activity,AddItemActivity::class.java)
             activity?.startActivity(intent)
         }
         swipeRefresh.setOnRefreshListener {
-            ordersmethod()
+            ordersMethod()
             swipeRefresh.isRefreshing = false
         }
+
+
 
       return view
     }
 
-    private fun ordersmethod() {
+    private fun ordersMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -77,23 +76,20 @@ class ViewItemsFragment : Fragment() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.GetItems().enqueue(object : Callback<ArrayList<ItemsModel>> {
+        requestInterface.getAllItems().enqueue(object : Callback<ArrayList<ItemsModel>> {
             override fun onResponse(
                 call: Call<ArrayList<ItemsModel>>,
                 response: Response<ArrayList<ItemsModel>>
             ) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
                     itemList = response.body()
-                    setadaptermethod()
-                    Log.e("Itemlist", itemList.size.toString() + " error")
+                    setAdapterMethod()
                 } else {
-
                     progressDialog.dismiss()
-                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
-                        .show()
+//                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
+//                        .show()
                 }
             }
 
@@ -109,15 +105,15 @@ class ViewItemsFragment : Fragment() {
         })
     }
 
-    private fun setadaptermethod() {
+    private fun setAdapterMethod() {
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
         recyclerview.setHasFixedSize(true)
-        Itemsadapter = Items_Adapter(itemList, activity)
-        recyclerview.adapter =Itemsadapter
+        itemsAdapter = ItemsAdapter(itemList, activity)
+        recyclerview.adapter =itemsAdapter
     }
 
     override fun onResume() {
         super.onResume()
-        ordersmethod()
+        ordersMethod()
     }
     }

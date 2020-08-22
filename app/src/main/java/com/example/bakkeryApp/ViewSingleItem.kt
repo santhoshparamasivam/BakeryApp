@@ -24,7 +24,6 @@ import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
 import kotlinx.android.synthetic.main.activity_view_single_item.*
-import kotlinx.android.synthetic.main.price_history_recyclerview_row.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -183,7 +182,7 @@ class ViewSingleItem : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
 
-        requestInterface.getItem(id).enqueue(object : Callback<ItemsModel> {
+        requestInterface.getItemDetails(id).enqueue(object : Callback<ItemsModel> {
             override fun onResponse(
                 call: Call<ItemsModel>,
                 response: Response<ItemsModel>
