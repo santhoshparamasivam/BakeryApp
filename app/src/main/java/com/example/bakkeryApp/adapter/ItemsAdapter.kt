@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,6 +15,8 @@ import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.retrofitService.ApiManager.Companion.BASE_URL
 import kotlinx.android.synthetic.main.itemsview_row.view.*
 import java.net.URLEncoder
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ItemsAdapter(
@@ -64,29 +67,29 @@ class ItemsAdapter(
     }
 
 
-//    override fun getFilter(): Filter {
+//    fun getFilter(): Filter {
 //        return object : Filter() {
 //            override fun performFiltering(constraint: CharSequence?): FilterResults {
 //                val charSearch = constraint.toString()
 //                if (charSearch.isEmpty()) {
-//                    FilterList = ItemList
+//                    finalList =  itemList
 //                } else {
 //                    val resultList = ArrayList<ItemsModel>()
-//                    for (row in ItemList) {
-//                        if (row.shopId.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)) ||row.itemId.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+//                    for (row in itemList) {
+//                        if (row.name.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)) ||row.itemCategory.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
 //                            resultList.add(row)
 //                        }
 //                    }
-//                    FilterList = resultList
+//                    finalList = resultList
 //                }
 //                val filterResults = FilterResults()
-//                filterResults.values = FilterList
+//                filterResults.values = finalList
 //                return filterResults
 //            }
 //
 //            @Suppress("UNCHECKED_CAST")
 //            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-//                FilterList = results?.values as  ArrayList<OrdersModel.Datum>
+//                finalList = results?.values as  ArrayList<ItemsModel>
 //                notifyDataSetChanged()
 //            }
 //

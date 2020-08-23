@@ -9,7 +9,6 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.model.ItemCategoryModel
-import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.R
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
 import java.util.*
@@ -18,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class ItemCategoryAdapter(
     var itemCategoryModelList: ArrayList<ItemCategoryModel>,
-    private val homeActivity: AddItemActivity
+    private val homeActivity: Context
 
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
@@ -51,10 +50,10 @@ class ItemCategoryAdapter(
 
         holder.itemView.select_country_text.text = filterList[position].name
 
-        holder.itemView.select_country_text.setOnClickListener {
-
-            homeActivity.itemCategorySetUp(filterList[position])
-        }
+//        holder.itemView.select_country_text.setOnClickListener {
+//
+//            homeActivity.itemCategorySetUp(filterList[position])
+//        }
     }
 
     override fun getFilter(): Filter {

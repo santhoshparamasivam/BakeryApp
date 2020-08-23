@@ -4,25 +4,31 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.bakkeryApp.adapter.ItemCategoryAdapter
 import com.example.bakkeryApp.adapter.PriceHistoryAdapter
+import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.model.ItemHistoryModel
 import com.example.bakkeryApp.model.ItemsModel
+import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiManager.Companion.BASE_URL
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
+import com.example.bakkeryApp.utils.RecyclerItemClickListener
 import kotlinx.android.synthetic.main.activity_view_single_item.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -47,10 +53,15 @@ class ViewSingleItem : AppCompatActivity() {
     var itemHistoryList: ArrayList<ItemHistoryModel> = ArrayList()
     var id:Long = 0
     lateinit var progressDialog: ProgressDialog
-
+    private lateinit var itemCategoryDialog: Dialog
+    lateinit var itemAdapter: ItemCategoryAdapter
+    lateinit var edtCategory: EditText
+    lateinit var itemImageView: ImageView
+    var itemCategoryModelList: ArrayList<ItemCategoryModel> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_item)
+        itemImageView=findViewById(R.id.itemImageView)
         id = intent.getLongExtra("id", 0)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -75,9 +86,9 @@ class ViewSingleItem : AppCompatActivity() {
         edt_radio_product.isEnabled=false
         edt_radio_service.isEnabled=false
 
-
         img_query.setOnClickListener {
-
+            edt_category.isEnabled = true
+            edt_category.isCursorVisible=false
             edt_name.isEnabled  = true
             edt_hsnCode.isEnabled = true
             edt_sku.isEnabled  = false
@@ -93,16 +104,18 @@ class ViewSingleItem : AppCompatActivity() {
 
             updateItem.visibility= View.VISIBLE
             priceHistory.visibility=View.GONE
-            edt_costPrice.requestFocus();
+            edt_costPrice.requestFocus()
             if(edt_costPrice.requestFocus()) {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
             }
         }
         updateItem.setOnClickListener {
             updateItemMethod()
         }
 
-
+        edt_category.setOnClickListener {
+            getItemCategory()
+        }
         toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -112,7 +125,117 @@ class ViewSingleItem : AppCompatActivity() {
             //showItemHistDialog();
         }
 
+
      LoadSingleItem()
+    }
+
+    private fun getItemCategory() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $user_token")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+        requestInterface.getItemCategories().enqueue(object :
+            Callback<ArrayList<ItemCategoryModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<ItemCategoryModel>>,
+                response: Response<ArrayList<ItemCategoryModel>>
+            ) {
+                progressDialog.dismiss()
+                Log.e("response", response.code().toString() + "  rss")
+                if (response.code() == 200) {
+
+                    itemCategoryModelList = response.body()
+                    Log.e("Itemlist", itemCategoryModelList.size.toString() + " error")
+                    showItemNameDialog()
+                } else {
+
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@ViewSingleItem,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<ItemCategoryModel>>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+                Toast.makeText(
+                    this@ViewSingleItem,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+    }
+
+    fun showItemNameDialog() {
+        var finalShopList = ArrayList<ItemCategoryModel>()
+        itemCategoryDialog = Dialog(this)
+        itemCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        itemCategoryDialog.setCancelable(true)
+        itemCategoryDialog.setContentView(R.layout.custom_layout)
+        recyclerview = itemCategoryDialog.findViewById(R.id.recyclerview)
+        search = itemCategoryDialog.findViewById(R.id.search)
+        recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
+        recyclerview.setHasFixedSize(true)
+        search.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+//                adapter.filter.filter(charSequence.toString())
+
+                finalShopList.clear()
+                for (item in itemCategoryModelList) {
+                    if (item.name?.toLowerCase()?.contains(charSequence.toString())!!) {
+                        finalShopList.add(item)
+                    }
+                }
+                itemAdapter = ItemCategoryAdapter(itemCategoryModelList, applicationContext)
+                recyclerview.adapter = itemAdapter
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {}
+        })
+        finalShopList.addAll(itemCategoryModelList)
+        recyclerview.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                this,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        if (itemCategoryDialog.isShowing) {
+                            itemCategoryDialog.dismiss()
+                        }
+                        edtCategory.setText(finalShopList[position].name)
+                    }
+                })
+        )
+        itemAdapter = ItemCategoryAdapter(itemCategoryModelList, applicationContext)
+        recyclerview.adapter = itemAdapter
+
+
+        val metrics = DisplayMetrics()
+
+        this.windowManager.defaultDisplay.getMetrics(metrics)
+        val height = (metrics.heightPixels * 0.5)
+
+        val width = (metrics.widthPixels * 0.9)
+
+        itemCategoryDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
+        itemCategoryDialog.show()
+
     }
 
     private fun updateItemMethod() {
@@ -139,7 +262,8 @@ class ViewSingleItem : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
 
-        requestInterface.updateItems(id,cost_price,selling_price).enqueue(object : Callback<ResponseBody> {
+        requestInterface.updateItems(id, cost_price, selling_price).enqueue(object :
+            Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -148,17 +272,27 @@ class ViewSingleItem : AppCompatActivity() {
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext,"Product Updated Successfuly",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Product Updated Successfuly",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     finish()
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext,"Please try again later",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(applicationContext,"Connection Failed,Please try again later",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Connection Failed,Please try again later",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -192,10 +326,14 @@ class ViewSingleItem : AppCompatActivity() {
                     var itemsModel = ItemsModel()
                     itemsModel = response.body()
 
-                    val encodedURL: String = URLEncoder.encode(itemsModel.imageFileName,"UTF-8").replace("+", "%20")
-                    var uri= BASE_URL+"downloadfile/item/"+encodedURL
+                    val encodedURL: String =
+                        URLEncoder.encode(itemsModel.imageFileName, "UTF-8").replace(
+                            "+",
+                            "%20"
+                        )
+                    var uri = BASE_URL + "downloadfile/item/" + encodedURL
 
-                    Glide.with(mcontext as ViewSingleItem).load( uri).into(itemImageView)
+                    Glide.with(mcontext as ViewSingleItem).load(uri).into(itemImageView)
 
                     edt_category.setText(itemsModel.itemCategory)
 //                    edt_category.isFocusable = false
@@ -217,23 +355,28 @@ class ViewSingleItem : AppCompatActivity() {
 //                    edt_costPrice.isFocusable = false
                     edt_trackInventory.isChecked = itemsModel.trackInventory!!
 //                    edt_taxIncluded.isSelected = false
-                    if(itemsModel.type=="PRODUCT") {
+                    if (itemsModel.type == "PRODUCT") {
                         edt_radio_product.isChecked = true
                         edt_radio_service.isChecked = false
-                    }
-                    else {
+                    } else {
                         edt_radio_service.isChecked = true
                         edt_radio_product.isChecked = false
                     }
                 } else {
                     progressDialog.dismiss()
-                 Toast.makeText(applicationContext,"Please try again later",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+
             override fun onFailure(call: Call<ItemsModel>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(applicationContext,"Connection Failed,Please try again later",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Connection Failed,Please try again later",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
@@ -292,7 +435,8 @@ class ViewSingleItem : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
 
-        requestInterface.getItemPriceHistory(id).enqueue(object : Callback<ArrayList<ItemHistoryModel>> {
+        requestInterface.getItemPriceHistory(id).enqueue(object :
+            Callback<ArrayList<ItemHistoryModel>> {
             override fun onResponse(
                 call: Call<ArrayList<ItemHistoryModel>>,
                 response: Response<ArrayList<ItemHistoryModel>>
@@ -300,16 +444,25 @@ class ViewSingleItem : AppCompatActivity() {
                 Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
-                   itemHistoryList = response.body()
+                    itemHistoryList = response.body()
 
                     showItemHistDialog()
 
                 } else {
+                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
+
             override fun onFailure(call: Call<ArrayList<ItemHistoryModel>>, t: Throwable) {
                 t.printStackTrace()
+                Toast.makeText(
+                    applicationContext,
+                    "Server Error,Please try again later",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
+
 }

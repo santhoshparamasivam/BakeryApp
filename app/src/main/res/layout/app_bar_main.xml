@@ -17,11 +17,50 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorAccent"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Search"
+                    android:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
+                    app:showAsAction="always|collapseActionView"
+                    android:layout_centerHorizontal="true" />
+
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:id="@+id/img_search"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:src="@android:drawable/ic_menu_search"-->
+
+<!--                    />-->
+
+            </RelativeLayout>
+
+
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main"/>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:elevation="6dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="15dp"
+        app:backgroundTint="@color/colorAccent"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:layout_marginRight="15dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

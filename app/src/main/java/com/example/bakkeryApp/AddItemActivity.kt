@@ -18,6 +18,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.*
 import androidx.annotation.NonNull
@@ -28,14 +29,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.adapter.ItemCategoryAdapter
 import com.example.bakkeryApp.model.ItemCategoryModel
+import com.example.bakkeryApp.model.MultiStockAdd
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
+import com.example.bakkeryApp.utils.RecyclerItemClickListener
 import com.example.bakkeryApp.utils.ViewUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.tb_add_item.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -538,6 +542,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun showItemNameDialog() {
+        var finalShopList = ArrayList<ItemCategoryModel>()
         itemCategoryDialog = Dialog(this)
         itemCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         itemCategoryDialog.setCancelable(true)
@@ -549,13 +554,35 @@ class AddItemActivity : AppCompatActivity() {
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                adapter.filter.filter(charSequence.toString())
+//                adapter.filter.filter(charSequence.toString())
+
+                finalShopList.clear()
+                for (item in itemCategoryModelList) {
+                    if (item.name?.toLowerCase()?.contains(charSequence.toString())!!) {
+                        finalShopList.add(item)
+                    }
+                }
+                adapter = ItemCategoryAdapter(itemCategoryModelList, applicationContext)
+                recyclerview.adapter = adapter
 
             }
 
             override fun afterTextChanged(editable: Editable) {}
         })
-        adapter = ItemCategoryAdapter(itemCategoryModelList, this)
+        finalShopList.addAll(itemCategoryModelList)
+        recyclerview.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                this,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        if (itemCategoryDialog.isShowing) {
+                            itemCategoryDialog.dismiss()
+                        }
+                        edtCategory.setText(finalShopList[position].name)
+                    }
+                })
+        )
+        adapter = ItemCategoryAdapter(itemCategoryModelList, applicationContext)
         recyclerview.adapter = adapter
 
 
