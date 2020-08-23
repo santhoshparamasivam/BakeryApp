@@ -46,7 +46,7 @@ class ViewItemsFragment : Fragment() {
         sessionManager = SessionManager(activity)
         progressDialog = ProgressDialog(activity)
 
-        activity?.title  ="View Item"
+        activity?.title  ="Items"
         createItem.setOnClickListener {
             val intent= Intent(activity,AddItemActivity::class.java)
             activity?.startActivity(intent)

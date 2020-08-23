@@ -78,21 +78,19 @@ class ViewSingleItem : AppCompatActivity() {
 
         img_query.setOnClickListener {
 
-//            edt_category.isEnabled = true
-//            edt_name.isEnabled  = true
-//            edt_hsnCode.isEnabled = true
-//            edt_sku.isEnabled  = true
-//            edt_unitOfMeasure.isEnabled = true
-//            edt_taxIncluded.isEnabled  = true
-//            edt_taxPercentage.isEnabled  = true
+            edt_name.isEnabled  = true
+            edt_hsnCode.isEnabled = true
+            edt_sku.isEnabled  = false
+            edt_unitOfMeasure.isEnabled = true
+            edt_taxIncluded.isEnabled  = true
+            edt_taxPercentage.isEnabled  = true
             edt_sellingPrice.isEnabled = true
             edt_costPrice.isEnabled  = true
-            edt_costPrice.isFocusable=true
-            edt_costPrice.isCursorVisible=true
-//            edt_taxIncluded.isEnabled  = true
-//            edt_trackInventory.isEnabled=true
-//            edt_radio_product.isEnabled=true
-//            edt_radio_service.isEnabled=true
+            edt_taxIncluded.isEnabled  = true
+            edt_trackInventory.isEnabled=true
+            edt_radio_product.isEnabled=false
+            edt_radio_service.isEnabled=false
+
             updateItem.visibility= View.VISIBLE
             priceHistory.visibility=View.GONE
             edt_costPrice.requestFocus();
