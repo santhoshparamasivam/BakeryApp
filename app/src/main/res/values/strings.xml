@@ -73,4 +73,9 @@
     <string name="quantity">Quantity</string>
     <string name="add_item">Add Item</string>
 
+    //View Stock
+
+    <string name="view_stock_details">View Stock Details</string>
+
+
 </resources>

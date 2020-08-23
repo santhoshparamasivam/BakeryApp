@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.example.bakkeryApp.model.MultiStockAdd
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
@@ -34,7 +35,7 @@ class ViewStockDetails : AppCompatActivity() {
     lateinit var shopName: String
     lateinit var list: List<String>
     var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
-
+    lateinit var toolbar: Toolbar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_stock_details)
@@ -42,11 +43,16 @@ class ViewStockDetails : AppCompatActivity() {
         itemId= intent?.getIntExtra("ItemId", 0)!!
         progressDialog = ProgressDialog(this)
         sessionManager= SessionManager(this)
-            ViewDetailsMethod()
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+            viewDetailsMethod()
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
     }
 
-    private fun ViewDetailsMethod() {
+    private fun viewDetailsMethod() {
 
         progressDialog.setMessage("Loading...")
         progressDialog.show()
@@ -63,7 +69,7 @@ class ViewStockDetails : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
        var call=requestInterface.getStock(itemId)
-        Log.e("requestInterface", call.request().url().toString() + " ")
+
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -85,8 +91,11 @@ class ViewStockDetails : AppCompatActivity() {
                                     val item = stock.getJSONObject(i)
                                     var itemName=item.getString("itemName")
                                     var quantity=item.getString("quantity")
-                                    var stockadd =MultiStockAdd(itemName,quantity)
-                                    multiStockList.add(stockadd)
+//                                    var stockadd =MultiStockAdd(itemName,quantity)
+                                    var stockAdd=MultiStockAdd();
+                                    stockAdd.location=itemName
+                                    stockAdd.quantity=quantity
+                                    multiStockList.add(stockAdd)
                                 }
                             }
                             multiItemAdded("item")
@@ -101,8 +110,10 @@ class ViewStockDetails : AppCompatActivity() {
                                     val item = stock.getJSONObject(i)
                                     var itemName=item.getString("shopName")
                                     var quantity=item.getString("quantity")
-                                    var stockadd =MultiStockAdd(itemName,quantity)
-                                    multiStockList.add(stockadd)
+                                    var stockAdd=MultiStockAdd();
+                                    stockAdd.location=itemName
+                                    stockAdd.quantity=quantity
+                                    multiStockList.add(stockAdd)
                                 }
 
                             }
@@ -134,7 +145,7 @@ class ViewStockDetails : AppCompatActivity() {
     }
 
     private fun multiItemAdded(type: String) {
-        if (multiStockList == null) return
+//        if (multiStockList == null) return
         val inflater = LayoutInflater.from(this)
         tblContact.removeAllViews()
         for (contact in multiStockList) {
