@@ -63,9 +63,9 @@ class ViewItemsFragment : Fragment() {
 
         (activity as HomeActivity?)?.fab!!.visibility = View.VISIBLE
 
-        (activity as HomeActivity?)?.searchView!!.setOnClickListener {
-            (activity as HomeActivity?)?.searchView!!.onActionViewExpanded()
-        }
+//        (activity as HomeActivity?)?.searchView!!.setOnClickListener {
+//            (activity as HomeActivity?)?.searchView!!.onActionViewExpanded()
+//        }
 
         (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.setOnClickListener {

@@ -45,9 +45,9 @@
     <string name="item_category">Category</string>
     <string name="item_name">Name</string>
     <string name="item_sku">SKU</string>
-    <string name="item_units">Unit of Measure</string>
+    <string name="item_units">Unit</string>
     <string name="cost_of_price">Cost Price</string>
-    <string name="include_tax">Include Tax</string>
+    <string name="include_tax">Incl Tax</string>
     <string name="selling_price">Sale Price</string>
     <string name="hsn_code">HSN Code</string>
     <string name="tax">Tax %</string>
