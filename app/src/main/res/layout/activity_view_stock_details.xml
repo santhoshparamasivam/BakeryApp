@@ -57,6 +57,7 @@
                         android:textColor="@color/black"
                         android:layout_weight="0.4"
                         android:textSize="16sp"
+                        android:id="@+id/txt_item"
                         android:gravity="start" />
                     <!--                    <TextView-->
                     <!--                        android:layout_width="wrap_content"-->
