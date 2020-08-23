@@ -165,11 +165,11 @@ class ViewStockDetails : AppCompatActivity() {
             edtContact.tag = contact
             btnDelete.visibility=View.GONE
             edtContact.setText(contact.location)
-//            edtContact.isClickable=false
             edtContact.isEnabled=false
             edtType.isEnabled=false
             edtType.setText(contact.quantity)
             tblContact.addView(row)
+
         }
     }
 
