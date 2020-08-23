@@ -21,8 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var userToken:String
-    lateinit var userId:String
-    private val TIME_OUT = 3000L
+    private lateinit var userId:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,28 +50,21 @@ class MainActivity : AppCompatActivity() {
 
         requestInterface.getToken(jsonObject).enqueue(object : Callback<LoginModel> {
             override fun onResponse(call: Call<LoginModel>, response: Response<LoginModel>) {
-                Log.e("response",response.code().toString()+"    response")
                 if (response.code() == 200) {
-                        Log.e("response",response.body().toString()+"    response")
                     sessionManager.setSessionValue(SessionKeys.USER_TOKEN,response.body().accessToken)
                     sessionManager.setSessionValue(SessionKeys.AUTH_TOKEN,response.body().tokenType+" "+response.body().accessToken)
                     intent = Intent(applicationContext, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
                 }else{
-
-                    Log.e("response",response.message()+"")
-                    Log.e("response",response.errorBody().string()+"")
                     Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<LoginModel>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(applicationContext, "loggin failed,Please try again later", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Request Failed, Please try again later", Toast.LENGTH_LONG).show()
             }
         })
-        }
-
-
+    }
 }

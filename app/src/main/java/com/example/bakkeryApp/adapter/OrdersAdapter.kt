@@ -17,26 +17,26 @@ import kotlin.collections.ArrayList
 
 class OrdersAdapter(
     var itemList: ArrayList<OrdersModel.Datum>,
-    val homeActivity: FragmentActivity?
+    private val homeActivity: FragmentActivity?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     var finalList = ArrayList<OrdersModel.Datum>()
 
-    var mcontext: Context
+    var mContext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
         finalList = itemList
-        mcontext= this.homeActivity!!
+        mContext= this.homeActivity!!
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val countryListView =
             LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_row, parent, false)
         val sch = CountryHolder(countryListView)
-        mcontext = parent.context
+        mContext = parent.context
         return sch
     }
 

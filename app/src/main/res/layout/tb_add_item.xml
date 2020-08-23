@@ -39,7 +39,7 @@
                 android:layout_weight="0.4"
                 android:textSize="@dimen/dimen_15sp"
                 android:hint="@string/location"
-                android:id="@+id/txt_location"
+                android:id="@+id/txt_field_name"
                 android:textColorHint="@color/black"
                 android:textColor="@color/black" />
 
@@ -48,7 +48,7 @@
 <!--            <EditText-->
 <!--               />-->
            <AutoCompleteTextView
-               android:id="@+id/edtLocation"
+               android:id="@+id/edtFieldValue"
                android:layout_width="0dp"
                android:layout_height="wrap_content"
                android:hint="Type here..."
@@ -83,7 +83,7 @@
           android:layout_weight="1"
           android:textColorHint="@color/black"
           android:imeOptions="actionNext"
-          android:inputType="text"
+          android:inputType="number"
           android:textColor="@color/black" />
         </LinearLayout>
 

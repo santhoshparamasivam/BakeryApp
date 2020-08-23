@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -45,7 +44,7 @@ import kotlin.math.roundToInt
 class ViewSingleItem : AppCompatActivity() {
     lateinit var toolbar: Toolbar
     lateinit var sessionManager: SessionManager
-    lateinit var mcontext: Context
+    lateinit var mContext: Context
     private lateinit var priceHistDialog: Dialog
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
@@ -66,7 +65,7 @@ class ViewSingleItem : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         progressDialog = ProgressDialog(this)
-        mcontext= this
+        mContext= this
         supportActionBar?.title ="View Items"
         sessionManager= SessionManager(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -126,16 +125,16 @@ class ViewSingleItem : AppCompatActivity() {
         }
 
 
-     LoadSingleItem()
+     loadSingleItem()
     }
 
     private fun getItemCategory() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -155,7 +154,6 @@ class ViewSingleItem : AppCompatActivity() {
                 if (response.code() == 200) {
 
                     itemCategoryModelList = response.body()
-                    Log.e("Itemlist", itemCategoryModelList.size.toString() + " error")
                     showItemNameDialog()
                 } else {
 
@@ -239,13 +237,11 @@ class ViewSingleItem : AppCompatActivity() {
     }
 
     private fun updateItemMethod() {
-        var item_Sku=edt_sku.text.toString()
-        var item_Hsn=edt_hsnCode.text.toString()
-        var cost_price=edt_costPrice.text.toString().toFloat()
+        var itemSku=edt_sku.text.toString()
+        var itemHsn=edt_hsnCode.text.toString()
+        var costPrice=edt_costPrice.text.toString().toFloat()
 
-
-        val selling_price = edt_sellingPrice.text.toString().toFloat()
-
+        val sellingPrice = edt_sellingPrice.text.toString().toFloat()
 
         progressDialog.setMessage("Loading...")
         progressDialog.show()
@@ -262,19 +258,18 @@ class ViewSingleItem : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
 
-        requestInterface.updateItems(id, cost_price, selling_price).enqueue(object :
+        requestInterface.updateItems(id, costPrice, sellingPrice).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     Toast.makeText(
                         applicationContext,
-                        "Product Updated Successfuly",
+                        "Product updated successfully.",
                         Toast.LENGTH_SHORT
                     ).show()
                     finish()
@@ -298,7 +293,7 @@ class ViewSingleItem : AppCompatActivity() {
 
     }
 
-    private fun LoadSingleItem() {
+    private fun loadSingleItem() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
@@ -333,7 +328,7 @@ class ViewSingleItem : AppCompatActivity() {
                         )
                     var uri = BASE_URL + "downloadfile/item/" + encodedURL
 
-                    Glide.with(mcontext as ViewSingleItem).load(uri).into(itemImageView)
+                    Glide.with(mContext as ViewSingleItem).load(uri).into(itemImageView)
 
                     edt_category.setText(itemsModel.itemCategory)
 //                    edt_category.isFocusable = false
@@ -421,7 +416,7 @@ class ViewSingleItem : AppCompatActivity() {
         }
     }
 
-    fun getPriceHistory(id: Long) {
+    private fun getPriceHistory(id: Long) {
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()

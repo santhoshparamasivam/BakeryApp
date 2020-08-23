@@ -44,7 +44,7 @@ import kotlin.math.roundToInt
 
 class AddStockLocationFragment : Fragment(){
     var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
-    lateinit var  viewUtils: ViewUtils
+    private lateinit var  viewUtils: ViewUtils
     lateinit var toolbar: Toolbar
     var itemList: ArrayList<ItemsModel> = ArrayList()
     lateinit var sessionManager: SessionManager
@@ -59,12 +59,10 @@ class AddStockLocationFragment : Fragment(){
     lateinit var recyclerview: RecyclerView
     var shopList: ArrayList<ShopModel> = ArrayList()
     var finalShopList: ArrayList<ShopModel> = ArrayList()
-    //    lateinit var stritemId: String
-
     var shopId: Int = 0
     lateinit var edtCategory: EditText
-    lateinit var createItem: Button
-    lateinit var lytAddItem: LinearLayout
+    private lateinit var createItem: Button
+    private lateinit var lytAddItem: LinearLayout
     lateinit var tblContact: TableLayout
     var searchList: ArrayList<String> = ArrayList()
 
@@ -177,12 +175,12 @@ class AddStockLocationFragment : Fragment(){
             val btnDelete =
                 row.findViewById<View>(R.id.btnDelete) as ImageView
             val edtContact =
-                row.findViewById<View>(R.id.edtLocation) as AutoCompleteTextView
+                row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
-            val txt_location = row.findViewById<View>(R.id.txt_location) as TextView
-            txt_location.text = "Item"
+            val txtLocation = row.findViewById<View>(R.id.txt_field_name) as TextView
+            txtLocation.text = "Item"
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter<String>(it, android.R.layout.select_dialog_item, searchList) }
+                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
             edtContact.threshold = 1
             edtContact.setAdapter(adapter)
 
@@ -235,7 +233,7 @@ class AddStockLocationFragment : Fragment(){
                     before: Int,
                     count: Int
                 ) {
-                    if (s.length != 0) {
+                    if (s.isNotEmpty()) {
                         val multiContact: MultiStockAdd =
                             edtContact.tag as MultiStockAdd
                         multiStockList.remove(multiContact)
@@ -373,57 +371,4 @@ class AddStockLocationFragment : Fragment(){
             }
         })
     }
-    private fun ShowItemDialog() {
-        productDialog = activity?.let { Dialog(it) }!!
-        productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        productDialog.setCancelable(true)
-        productDialog.setContentView(R.layout.alert_product)
-        listView = productDialog.findViewById(R.id.list_item)
-        search = productDialog.findViewById(R.id.search)
-        search.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-//                myListAdapter.filter?.filter(charSequence.toString())
-                newList.clear()
-                for (item in itemList) {
-                    if (item.name?.toLowerCase()?.contains(charSequence.toString())!!) {
-                        newList.add(item)
-                    }
-                }
-                myListAdapter = activity?.let { CustomListAdapter(it,newList) }!!
-                listView.adapter = myListAdapter
-            }
-
-            override fun afterTextChanged(editable: Editable) {}
-        })
-
-//        if(newList==null && newList.size==0) {
-        newList.addAll(itemList)
-//               myListAdapter = CustomListAdapter(this, Itemlist)
-//               listView.adapter = myListAdapter
-//        }  else {
-        myListAdapter = activity?.let { CustomListAdapter(it, newList) }!!
-        listView.adapter = myListAdapter
-//        }
-
-        listView.setOnItemClickListener { adapterView, view, position: Int, id: Long ->
-            if (productDialog.isShowing){
-                productDialog.dismiss()
-                edtCategory.setText(newList[position].name)
-//                itemId= newList[position].id!!
-            }
-        }
-        val metrics = DisplayMetrics()
-
-        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-        val height = (metrics.heightPixels * 0.5)
-
-        val width = (metrics.widthPixels * 0.9)
-
-        productDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
-        productDialog.show()
-
-    }
-
-
 }

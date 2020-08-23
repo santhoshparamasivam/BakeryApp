@@ -120,7 +120,7 @@
 
                     <EditText
                         android:id="@+id/edt_category"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Select Category "
                         android:layout_weight="1"
@@ -226,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:hint=" Enter Price "
                         android:layout_weight="1"
-                        android:inputType="text"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -273,7 +273,7 @@
                         android:layout_height="wrap_content"
                         android:hint=" Enter Price "
                         android:layout_weight="1"
-                        android:inputType="text"
+                        android:inputType="numberDecimal"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -336,7 +336,7 @@
                     <TextView
                         android:layout_width="130dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/trackinventory"
+                        android:text="@string/trackInventory"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -351,7 +351,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/bottomview"
+                    android:id="@+id/bottomView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"

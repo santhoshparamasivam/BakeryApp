@@ -30,12 +30,12 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
           sessionManager = SessionManager(this)
         loginBtn.setOnClickListener {
-            if (login_emailid.text.isEmpty()){
-                login_emailid.error = "Please Enter Email Id"
+            if (loginEmailId.text.isEmpty()){
+                loginEmailId.error = "Please Enter Email Id"
             }else if(login_password.text.isEmpty()){
                 login_password.error = "Please Enter Password"
             }else
-                  LoginMethod()
+                  loginMethod()
 
         }
 
@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
        }
     }
 
-    private fun LoginMethod() {
+    private fun loginMethod() {
         val progressDialog = ProgressDialog(this@LoginActivity)
         progressDialog.setMessage("Loading...")
         progressDialog.show()
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
         val jsonObject=JsonObject()
-        jsonObject.addProperty("username",login_emailid.text.toString())
+        jsonObject.addProperty("username",loginEmailId.text.toString())
         jsonObject.addProperty("password",login_password.text.toString())
 
        requestInterface.userLogin(jsonObject).enqueue(object : Callback<LoginModel> {
@@ -101,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
            override fun onFailure(call: Call<LoginModel>, t: Throwable) {
                progressDialog.dismiss()
                 t.printStackTrace()
-               Toast.makeText(applicationContext, "loggin failed,Please try again later",Toast.LENGTH_LONG).show()
+               Toast.makeText(applicationContext, "Log in failed, Please try again later",Toast.LENGTH_LONG).show()
            }
         })
     }

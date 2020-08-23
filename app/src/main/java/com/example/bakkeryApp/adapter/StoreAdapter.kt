@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.HomeActivity
 import com.example.bakkeryApp.model.ShopModel
 import com.example.bakkeryApp.R
 import kotlinx.android.synthetic.main.recyclerview_row.view.*
@@ -17,38 +16,38 @@ import kotlin.collections.ArrayList
 
 class StoreAdapter(
     var ItemList: ArrayList<ShopModel>,
-    val homeActivity: Context
+    private val homeActivity: Context
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    var FilterList = ArrayList<ShopModel>()
+    var filterList = ArrayList<ShopModel>()
 
-    var mcontext: Context
+    var mContext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
-        FilterList = ItemList
-        mcontext=homeActivity
+        filterList = ItemList
+        mContext=homeActivity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val countryListView =
             LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_row, parent, false)
         val sch = CountryHolder(countryListView)
-        mcontext = parent.context
+        mContext = parent.context
         return sch
     }
 
     override fun getItemCount(): Int {
-        return FilterList.size
+        return filterList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.select_country_container.setBackgroundColor(Color.TRANSPARENT)
 
 //        holder.itemView.select_country_text.setTextColor(Color.BLACK)
-        holder.itemView.select_country_text.text = FilterList[position].name+" - "+FilterList[position].location
+        holder.itemView.select_country_text.text = filterList[position].name+" - "+filterList[position].location
 
         holder.itemView.select_country_text.setOnClickListener {
 
@@ -62,7 +61,7 @@ class StoreAdapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
                 if (charSearch.isEmpty()) {
-                    FilterList = ItemList
+                    filterList = ItemList
                 } else {
                     val resultList =  ArrayList<ShopModel>()
                     for (row in ItemList) {
@@ -70,16 +69,16 @@ class StoreAdapter(
                             resultList.add(row)
                         }
                     }
-                    FilterList = resultList
+                    filterList = resultList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = FilterList
+                filterResults.values = filterList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                FilterList = results?.values as  ArrayList<ShopModel>
+                filterList = results?.values as  ArrayList<ShopModel>
                 notifyDataSetChanged()
             }
 

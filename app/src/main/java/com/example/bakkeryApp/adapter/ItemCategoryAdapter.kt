@@ -24,20 +24,20 @@ class ItemCategoryAdapter(
 
     var filterList = ArrayList<ItemCategoryModel>()
 
-    var mcontext: Context
+    var mContext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
         filterList = itemCategoryModelList
-        mcontext= homeActivity
+        mContext= homeActivity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val countryListView =
             LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_row, parent, false)
         val sch = CountryHolder(countryListView)
-        mcontext = parent.context
+        mContext = parent.context
         return sch
     }
 

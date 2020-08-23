@@ -19,6 +19,7 @@
             android:background="@color/colorAccent"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
             <RelativeLayout
+                android:id="@+id/appBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <SearchView
@@ -31,15 +32,15 @@
                     app:showAsAction="always|collapseActionView"
                     android:layout_centerHorizontal="true" />
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_margin="10dp"-->
-<!--                    android:id="@+id/img_search"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:src="@android:drawable/ic_menu_search"-->
 
-<!--                    />-->
+                <!--<ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:id="@+id/img_search"
+                    android:layout_alignParentRight="true"
+                    android:src="@android:drawable/ic_menu_search"
+                    />-->
 
             </RelativeLayout>
 
@@ -50,17 +51,18 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        app:elevation="6dp"
-        android:layout_marginBottom="50dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="20dp"
         app:backgroundTint="@color/colorAccent"
+        app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@android:drawable/ic_menu_add"
-        android:layout_marginRight="15dp" />
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

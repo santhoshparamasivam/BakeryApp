@@ -2,53 +2,53 @@ package com.example.bakkeryApp
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.bakkeryApp.model.MultiStockAdd
+import com.example.bakkeryApp.model.payload.StockByItemDtlResponse
+import com.example.bakkeryApp.model.payload.StockByItemResponse
+import com.example.bakkeryApp.model.payload.StockByLocDtlResponse
+import com.example.bakkeryApp.model.payload.StockByLocationResponse
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_view_stock_details.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
-import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 
 
 class ViewStockDetails : AppCompatActivity() {
     var itemId:Int = 0
+    var stockBy:String = ""
     lateinit var progressDialog: ProgressDialog
     lateinit var sessionManager: SessionManager
     var shopId: Int = 0
-    lateinit var shopName: String
-    lateinit var list: List<String>
-    var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
     lateinit var toolbar: Toolbar
-    lateinit var txt_item:TextView
-    lateinit var edt_category:EditText
+    lateinit var txtItem:TextView
+    lateinit var edtCategory:EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_stock_details)
         var intent=intent
         itemId= intent?.getIntExtra("ItemId", 0)!!
+        stockBy= intent?.getStringExtra("stockBy")!!
         progressDialog = ProgressDialog(this)
         sessionManager= SessionManager(this)
         toolbar = findViewById(R.id.toolbar)
-        txt_item=findViewById(R.id.txt_item)
-        edt_category=findViewById(R.id.edt_category)
+        txtItem=findViewById(R.id.txt_item)
+        edtCategory=findViewById(R.id.edt_category)
         setSupportActionBar(toolbar)
             viewDetailsMethod()
         toolbar.setNavigationOnClickListener {
@@ -83,52 +83,27 @@ class ViewStockDetails : AppCompatActivity() {
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     try {
-                        val jsonObject = JSONObject(response.body().string())
-                        if (!jsonObject.isNull("shopId")) {
-                            txt_item.text="Location"
-                            var shopId = jsonObject.getString("shopId")
-                            if (!jsonObject.isNull("shopName")) {
-                                var shopName = jsonObject.getString("shopName")
-                                edt_category.setText(shopName)
-                            }
-                            if (!jsonObject.isNull("stock")) {
-                                var stock=jsonObject.getJSONArray("stock")
-                                for (i in 0 until stock.length()) {
-                                    val item = stock.getJSONObject(i)
-                                    var itemName=item.getString("itemName")
-                                    var quantity=item.getString("quantity")
-                                    var stockAdd=MultiStockAdd();
-                                    stockAdd.location=itemName
-                                    stockAdd.quantity=quantity
-                                    multiStockList.add(stockAdd)
-                                }
-                            }
-                            multiItemAdded("Item")
-                        }else if(!jsonObject.isNull("itemId")){
-                            var shopId = jsonObject.getString("itemId")
-                            if (!jsonObject.isNull("itemName")) {
-                                var shopName = jsonObject.getString("itemName")
-                                edt_category.setText(shopName)
-                            }
-                            txt_item.text="Item"
-                            if (!jsonObject.isNull("stock")) {
-                                var stock=jsonObject.getJSONArray("stock")
-                                for (i in 0 until stock.length()) {
-                                    val item = stock.getJSONObject(i)
-                                    var itemName=item.getString("shopName")
-                                    var quantity=item.getString("quantity")
-                                    var stockAdd=MultiStockAdd()
-                                    stockAdd.location=itemName
-                                    stockAdd.quantity=quantity
-                                    multiStockList.add(stockAdd)
-                                }
-                            }
-                            multiItemAdded("Location")
+
+                        if (stockBy == "ByLocation") {
+
+                            val gson = Gson()
+                            var stockByLocationResponse = gson.fromJson(response.body().string(), StockByLocationResponse::class.java)
+
+                            txtItem.text = "Location"
+                            edtCategory.setText(stockByLocationResponse.shopName)
+                            stockByLocation(stockByLocationResponse.stock)
+
+                        }else if(stockBy == "ByItem"){
+
+                            val gson = Gson()
+                            var stockByItemResponse = gson.fromJson(response.body().string(), StockByItemResponse::class.java)
+
+                            txtItem.text = "Item"
+                            edtCategory.setText(stockByItemResponse.itemName)
+                            stockByItem(stockByItemResponse.stock)
                         }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+                    } catch (e: Exception ) {
+
                     }
                 } else {
                     progressDialog.dismiss()
@@ -149,28 +124,44 @@ class ViewStockDetails : AppCompatActivity() {
         })
     }
 
-    private fun multiItemAdded(type: String) {
+    private fun stockByItem(stockByItemDtlResponseList: List<StockByItemDtlResponse>?) {
         val inflater = LayoutInflater.from(this)
         tblContact.removeAllViews()
-        for (contact in multiStockList) {
-            val row =
-                inflater.inflate(R.layout.tb_add_item, null) as TableRow
-            val btnDelete =
-                row.findViewById<View>(R.id.btnDelete) as ImageView
-            val edtContact =
-                row.findViewById<View>(R.id.edtLocation) as AutoCompleteTextView
-            val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
-            val txt_location = row.findViewById<View>(R.id.txt_location) as TextView
-            txt_location.text = type
-            edtContact.tag = contact
-            btnDelete.visibility=View.GONE
-            edtContact.setText(contact.location)
-            edtContact.isEnabled=false
-            edtType.isEnabled=false
-            edtType.setText(contact.quantity)
-            tblContact.addView(row)
 
+        stockByItemDtlResponseList?.forEachIndexed { index, element ->
+            setValues(index,"Location", element.shopName, element.quantity)
         }
     }
 
+    private fun stockByLocation(stockByLocDtlResponseList: List<StockByLocDtlResponse>?) {
+        val inflater = LayoutInflater.from(this)
+        tblContact.removeAllViews()
+
+        stockByLocDtlResponseList?.forEachIndexed { index, element ->
+            setValues(index,"Item", element.itemName, element.quantity)
+        }
+    }
+
+    private fun setValues(tag: Int, label: String, value: String?, quantity: Int?) {
+
+        val inflater = LayoutInflater.from(this)
+
+        val row = inflater.inflate(R.layout.tb_add_item, null) as TableRow
+        val btnDelete = row.findViewById<View>(R.id.btnDelete) as ImageView
+        val edtFieldValue = row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
+        val edtQuantity = row.findViewById<View>(R.id.edtQuantity) as EditText
+        val txtLocation = row.findViewById<View>(R.id.txt_field_name) as TextView
+
+        txtLocation.text = label
+
+        btnDelete.visibility = View.GONE
+        edtFieldValue.tag = tag
+        edtFieldValue.setText(value)
+        edtQuantity.setText(quantity.toString())
+
+        edtFieldValue.isEnabled=false
+        edtQuantity.isEnabled=false
+
+        tblContact.addView(row)
+    }
 }

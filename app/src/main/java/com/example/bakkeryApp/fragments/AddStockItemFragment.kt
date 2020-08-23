@@ -15,7 +15,6 @@ import android.view.Window
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.R
 import com.example.bakkeryApp.adapter.CustomListAdapter
@@ -27,12 +26,10 @@ import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
-import com.example.bakkeryApp.utils.RecyclerItemClickListener
 import com.example.bakkeryApp.utils.ViewUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_add_stock.*
-import kotlinx.android.synthetic.main.tb_add_item.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -46,7 +43,7 @@ import kotlin.math.roundToInt
 
 class AddStockItemFragment : Fragment(){
     var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
-    lateinit var  viewUtils: ViewUtils
+    private lateinit var  viewUtils: ViewUtils
     lateinit var toolbar: Toolbar
     var itemList: ArrayList<ItemsModel> = ArrayList()
     lateinit var sessionManager: SessionManager
@@ -63,8 +60,8 @@ class AddStockItemFragment : Fragment(){
     var finalShopList: ArrayList<ShopModel> = ArrayList()
     var itemId: Long = 0
     lateinit var edtCategory: EditText
-    lateinit var createItem: Button
-    lateinit var lytAddItem: LinearLayout
+    private lateinit var createItem: Button
+    private lateinit var lytAddItem: LinearLayout
     lateinit var tblContact: TableLayout
     var searchList: ArrayList<String> = ArrayList()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -94,24 +91,21 @@ class AddStockItemFragment : Fragment(){
         getShopName()
         multiItemAdded()
 
-   return view }
+        return view
+    }
+
     private fun addStockToServer() {
 
         var objects= JsonObject()
         var jsonArray= JsonArray()
 
         for (row in shopList) {
-            Log.e("row.name", "${row.name} ")
-            Log.e("row.location", "${row.location} ")
             for(item in multiStockList) {
-
-                Log.e("item.location", "${item.location}  ")
                 if (row.name.equals(item.location)) {
                     var jsonObject=JsonObject()
                     jsonObject.addProperty("shopId",Integer.parseInt(row.id!!))
                     jsonObject.addProperty("quantity",Integer.parseInt(item.quantity!!))
                     jsonArray.add(jsonObject)
-                    Log.e("jsonArray", "$jsonArray  ")
                 }
             }
         }
@@ -122,10 +116,10 @@ class AddStockItemFragment : Fragment(){
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -179,10 +173,10 @@ class AddStockItemFragment : Fragment(){
             val btnDelete =
                 row.findViewById<View>(R.id.btnDelete) as ImageView
             val edtContact =
-                row.findViewById<View>(R.id.edtLocation) as AutoCompleteTextView
+                row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter<String>(it, android.R.layout.select_dialog_item, searchList) }
+                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
             edtContact.threshold = 2
             edtContact.setAdapter(adapter)
 
@@ -235,7 +229,7 @@ class AddStockItemFragment : Fragment(){
                     before: Int,
                     count: Int
                 ) {
-                    if (s.length != 0) {
+                    if (s.isNotEmpty()) {
                         val multiContact: MultiStockAdd =
                             edtContact.tag as MultiStockAdd
                         multiStockList.remove(multiContact)
@@ -286,66 +280,16 @@ class AddStockItemFragment : Fragment(){
             }
         })
     }
-    private fun ShowShopName() {
-        finalShopList.clear()
-        shopDialog = this.activity?.let { Dialog(it) }!!
-        shopDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        shopDialog.setCancelable(true)
-        shopDialog.setContentView(R.layout.custom_layout)
-        recyclerview = shopDialog.findViewById(R.id.recyclerview)
-        search = shopDialog.findViewById(R.id.search)
-        recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
-        recyclerview.setHasFixedSize(true)
-        search.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                finalShopList.clear()
-                for (item in shopList) {
-                    if (item.name?.toLowerCase()?.contains(charSequence.toString())!!) {
-                        finalShopList.add(item)
-                    }
-                }
-                storeAdapter = activity?.let { StoreAdapter(finalShopList, it) }!!
-                recyclerview.adapter = storeAdapter
-            }
-            override fun afterTextChanged(editable: Editable) {}
-        })
-        finalShopList.addAll(shopList)
-        storeAdapter = activity?.let { StoreAdapter(finalShopList, it) }!!
-        recyclerview.adapter = storeAdapter
-        recyclerview.addOnItemTouchListener(
-            RecyclerItemClickListener(activity!!, object : RecyclerItemClickListener.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    if (shopDialog.isShowing){
-                        shopDialog.dismiss()
-                    }
-                    edtLocation.setText(finalShopList[position].name.toString())
-                    Log.e( "position",   finalShopList[position].name.toString()+"  ")
-                    val multiContact: MultiStockAdd =
-                        edtLocation.tag as MultiStockAdd
-                    multiStockList.remove(multiContact)
-                    multiContact.location=edtLocation.text.toString()
-                    multiStockList.add(multiContact)
-                    edtLocation.invalidate()
-                }
-            })
-        )
-        val metrics = DisplayMetrics()
-        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-        val height = (metrics.heightPixels * 0.5)  //set height to 90% of total
-        val width = (metrics.widthPixels * 0.9) //set width to 90% of total
-        shopDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
-        shopDialog.show()
-    }
+
     private fun getProductName() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         itemList.clear()
         newList.clear()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -362,7 +306,7 @@ class AddStockItemFragment : Fragment(){
                 progressDialog.dismiss()
                 if (response.code() == 200) {
                     itemList = response.body()
-                    ShowItemDialog()
+                    showItemDialog()
                 }
                 else {
                     progressDialog.dismiss()
@@ -381,7 +325,7 @@ class AddStockItemFragment : Fragment(){
             }
         })
     }
-    private fun ShowItemDialog() {
+    private fun showItemDialog() {
         productDialog = activity?.let { Dialog(it) }!!
         productDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         productDialog.setCancelable(true)
@@ -391,7 +335,6 @@ class AddStockItemFragment : Fragment(){
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-//                myListAdapter.filter?.filter(charSequence.toString())
                 newList.clear()
                 for (item in itemList) {
                     if (item.name?.toLowerCase()?.contains(charSequence.toString())!!) {
@@ -405,14 +348,9 @@ class AddStockItemFragment : Fragment(){
             override fun afterTextChanged(editable: Editable) {}
         })
 
-//        if(newList==null && newList.size==0) {
         newList.addAll(itemList)
-//               myListAdapter = CustomListAdapter(this, Itemlist)
-//               listView.adapter = myListAdapter
-//        }  else {
         myListAdapter = activity?.let { CustomListAdapter(it, newList) }!!
         listView.adapter = myListAdapter
-//        }
 
         listView.setOnItemClickListener { adapterView, view, position: Int, id: Long ->
             if (productDialog.isShowing){
@@ -430,8 +368,5 @@ class AddStockItemFragment : Fragment(){
 
         productDialog.window!!.setLayout(width.roundToInt(), height.roundToInt())
         productDialog.show()
-
     }
-
-
 }

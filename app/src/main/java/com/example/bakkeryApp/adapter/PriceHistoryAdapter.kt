@@ -1,7 +1,6 @@
 package com.example.bakkeryApp.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,6 @@ import com.example.bakkeryApp.R
 import com.example.bakkeryApp.ViewSingleItem
 import com.example.bakkeryApp.model.ItemHistoryModel
 import kotlinx.android.synthetic.main.price_history_recyclerview_row.view.*
-import kotlinx.android.synthetic.main.recyclerview_row.view.*
-import kotlinx.android.synthetic.main.recyclerview_row.view.select_country_container
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,20 +24,20 @@ class PriceHistoryAdapter(
 
     var filterList = ArrayList<ItemHistoryModel>()
 
-    var mcontext: Context
+    var mContext: Context
 
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
         filterList = itemHistList
-        mcontext= homeActivity
+        mContext= homeActivity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val countryListView =
             LayoutInflater.from(parent.context).inflate(R.layout.price_history_recyclerview_row, parent, false)
         val sch = CountryHolder(countryListView)
-        mcontext = parent.context
+        mContext = parent.context
         return sch
     }
 

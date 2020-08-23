@@ -5,21 +5,19 @@ import android.app.Activity
 import android.content.DialogInterface
 import android.content.DialogInterface.OnShowListener
 import androidx.appcompat.app.AlertDialog
-import com.example.bakkeryApp.model.MultiStockAdd
-import java.util.*
 
 
 class ViewUtils {
 
-    var alert: AlertDialog? = null
-    fun  alert_view_dialog(
+    private var alert: AlertDialog? = null
+    fun  alertViewDialog(
         mContext: Activity?,
         title: String?,
         message: String?,
         success_txt: String?,
         failure_txt: String?,
         cancelable_val: Boolean?,
-        postive_dialogInterface: DialogInterface.OnClickListener?,
+        positiveDialogInterface: DialogInterface.OnClickListener?,
         negative_dialogInterface: DialogInterface.OnClickListener?,
         s: String?
     ): AlertDialog? {
@@ -27,7 +25,7 @@ class ViewUtils {
             val dialog = AlertDialog.Builder(mContext)
             dialog.setCancelable(cancelable_val!!)
             dialog.setMessage(message)
-            dialog.setPositiveButton(success_txt, postive_dialogInterface)
+            dialog.setPositiveButton(success_txt, positiveDialogInterface)
             if (negative_dialogInterface != null) {
                 dialog.setNegativeButton(failure_txt, negative_dialogInterface)
             }

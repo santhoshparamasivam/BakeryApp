@@ -25,7 +25,7 @@
 
 
         <EditText
-            android:id="@+id/login_emailid"
+            android:id="@+id/loginEmailId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -48,7 +48,7 @@
 
         <EditText
             android:id="@+id/login_password"
-            android:hint="@string/passowrd"
+            android:hint="@string/password"
             android:drawableLeft="@drawable/password"
             android:drawablePadding="8dp"
             android:inputType="textPassword"
@@ -74,7 +74,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/loginbutton_selector"
+            android:background="@drawable/login_button_selector"
             android:padding="3dp"
             android:text="@string/login"
             android:textColor="#009688"

@@ -36,14 +36,14 @@ import kotlin.collections.ArrayList
 
 
 class ViewItemsFragment : Fragment() {
-    lateinit var  createItem:ImageView
-    lateinit var  viewItem:ImageView
+    private lateinit var  createItem:ImageView
+    private lateinit var  viewItem:ImageView
     lateinit var  recyclerview:RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     var itemList: ArrayList<ItemsModel> = ArrayList()
-    lateinit var itemsAdapter: ItemsAdapter
-    lateinit var  swipeRefresh: SwipeRefreshLayout
+    private lateinit var itemsAdapter: ItemsAdapter
+    private lateinit var  swipeRefresh: SwipeRefreshLayout
     @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,9 +65,9 @@ class ViewItemsFragment : Fragment() {
 
         (activity as HomeActivity?)?.searchView!!.setOnClickListener {
             (activity as HomeActivity?)?.searchView!!.onActionViewExpanded()
-//            searchMethod()
         }
 
+        (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.setOnClickListener {
             val intent= Intent(activity, AddItemActivity::class.java)
             activity?.startActivity(intent)

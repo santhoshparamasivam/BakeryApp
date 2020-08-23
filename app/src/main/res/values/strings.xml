@@ -3,7 +3,7 @@
 
 
     <string name="email">Email Id</string>
-    <string name="passowrd">Password</string>
+    <string name="password">Password</string>
     <string name="login">LOGIN</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -39,11 +39,11 @@
 
     //Add Item
     <string name="create_item">Create Item</string>
-    <string name="item_type">Item Type</string>
+    <string name="item_type">Type</string>
     <string name="item_product">Product</string>
     <string name="item_service">Service</string>
-    <string name="item_category">Item Category</string>
-    <string name="item_name">Item Name</string>
+    <string name="item_category">Category</string>
+    <string name="item_name">Name</string>
     <string name="item_sku">SKU</string>
     <string name="item_units">Unit of Measure</string>
     <string name="cost_of_price">Cost Price</string>
@@ -51,7 +51,7 @@
     <string name="selling_price">Sale Price</string>
     <string name="hsn_code">HSN Code</string>
     <string name="tax">Tax %</string>
-    <string name="trackinventory">Track Inventory</string>
+    <string name="trackInventory">Track Inventory</string>
 
     <string name="item">Item</string>
     <string name="filter_items">Filter Items</string>

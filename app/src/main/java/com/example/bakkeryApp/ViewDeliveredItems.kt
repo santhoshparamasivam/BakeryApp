@@ -21,7 +21,7 @@ class ViewDeliveredItems : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     lateinit var recyclerview: RecyclerView
-    var orderslist: ArrayList<OrdersModel.Datum> = ArrayList()
+    var ordersList: ArrayList<OrdersModel.Datum> = ArrayList()
     lateinit var ordersAdapter:OrdersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,88 +30,16 @@ class ViewDeliveredItems : AppCompatActivity() {
         recyclerview=findViewById(R.id.recyclerview)
         sessionManager = SessionManager(this)
         progressDialog = ProgressDialog(this)
-//        ordersmethod()
-
 
         recyclerview.addOnItemTouchListener(
             RecyclerItemClickListener(this, object : RecyclerItemClickListener.OnItemClickListener {
                 override fun onItemClick(view: View, position: Int) {
-                    Log.e( "orderd list", orderslist[position].itemId+" "+orderslist[position].shopId)
                     val intent=Intent(applicationContext,ViewSingleItem::class.java)
-                    intent.putExtra("itemId",orderslist[position].itemId)
-                    intent.putExtra("shopId",orderslist[position].shopId)
+                    intent.putExtra("itemId",ordersList[position].itemId)
+                    intent.putExtra("shopId",ordersList[position].shopId)
                     startActivity(intent)
-
                 }
             })
         )
-    }
-
-//    private fun ordersmethod() {
-//        progressDialog.setMessage("Loading...")
-//        progressDialog.show()
-//        val user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-//        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-//            val newRequest: Request = chain.request().newBuilder()
-//                .addHeader("Authorization", "Bearer $user_token")
-//                .build()
-//            chain.proceed(newRequest)
-//        }.build()
-//        val requestInterface = Retrofit.Builder()
-//            .baseUrl(ApiManager.BASE_URL)
-//            .client(client)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build().create(ApiService::class.java)
-//        requestInterface.GetOrders().enqueue(object : Callback<OrdersModel> {
-//            override fun onResponse(
-//                call: Call<OrdersModel>,
-//                response: Response<OrdersModel>
-//            ) {
-//                progressDialog.dismiss()
-//                Log.e("response", response.code().toString() + " error")
-//                if (response.code() == 200) {
-//                    progressDialog.dismiss()
-//                    for (item in response.body().data!!) {
-//
-////                        val list = arrayListOf(response.body().data!!.toTypedArray())
-//                        orderslist.addAll(listOf(item))
-//                        }
-////                    orderslist = response.body().data!!
-//                    Log.e("orderslist", orderslist.size.toString() + " error")
-//                    setadaptermethod()
-//                } else {
-//                    progressDialog.dismiss()
-//                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_LONG)
-//                        .show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<OrdersModel>, t: Throwable) {
-//                t.printStackTrace()
-//                progressDialog.dismiss()
-//                Toast.makeText(
-//                    applicationContext,
-//                    "Connection failed,Please try again later",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//            }
-//        })
-//    }
-
-    private fun setadaptermethod() {
-
-        recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)
-
-        recyclerview.setHasFixedSize(true)
-        search.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                ordersAdapter.filter.filter(charSequence.toString())
-            }
-
-            override fun afterTextChanged(editable: Editable) {}
-        })
-        ordersAdapter = OrdersAdapter(orderslist, this)
-        recyclerview.adapter =ordersAdapter
     }
 }

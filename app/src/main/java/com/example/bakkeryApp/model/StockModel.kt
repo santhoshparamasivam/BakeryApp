@@ -8,6 +8,10 @@ class StockModel {
     @Expose
     var id: Int? = null
 
+    @SerializedName("name")
+    @Expose
+    var name: String? = null
+
     @SerializedName("shopId")
     @Expose
     var shopId: Int? = null

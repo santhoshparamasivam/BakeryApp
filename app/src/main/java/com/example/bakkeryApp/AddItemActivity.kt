@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.adapter.ItemCategoryAdapter
 import com.example.bakkeryApp.model.ItemCategoryModel
-import com.example.bakkeryApp.model.MultiStockAdd
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
@@ -39,7 +38,6 @@ import com.example.bakkeryApp.utils.ViewUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.tb_add_item.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,22 +51,22 @@ import kotlin.math.roundToInt
 class AddItemActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
-    lateinit var viewUtils: ViewUtils
+    private lateinit var viewUtils: ViewUtils
     private lateinit var itemCategoryDialog: Dialog
     lateinit var recyclerview: RecyclerView
     lateinit var search: EditText
     lateinit var adapter: ItemCategoryAdapter
     lateinit var edtCategory: EditText
-    lateinit var itemImageView: ImageView
+    private lateinit var itemImageView: ImageView
     var itemCategoryModelList: ArrayList<ItemCategoryModel> = ArrayList()
     private val SELECT_PICTURE = 10
     private val REQUEST_CAMERA = 11
     lateinit var toolbar: Toolbar
     private var isPermitted:Boolean = false
-    lateinit var outputFileUri : Uri
-    var taxIncluded : Boolean=false
+    private lateinit var outputFileUri : Uri
+    private var taxIncluded : Boolean=false
     lateinit var type: String
-    lateinit var file:File
+    private lateinit var file:File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,32 +137,29 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         create_item.setOnClickListener {
-            if(type.isEmpty()) {
-                val lastRadioBtn = findViewById(R.id.radio_product) as RadioButton
-                lastRadioBtn.error = "Select Type";
-            } else if(edtCategory.text.toString().isEmpty()){
-                edtCategory.error = "Please Select Category"
-            } else if(edt_item.text.toString().isEmpty()){
-                edt_item.error="Please Enter Item Name"
-            } else if(edt_sku.text.toString().isEmpty()){
-                edt_sku.error="Please Enter SKU"
-            } else if(edt_units.selectedItem == null){
-                val errorText = edt_units.selectedView as TextView
-                errorText.error = ""
-                errorText.setTextColor(Color.RED) //just to highlight that this is an error
-                errorText.text = "Select unit"
-            }
-
-            /*else if(null == edt_costPrice){
-                edt_costPrice.error="Please enter cost price"
-            } else if(null ==  edt_sellingPrice){
-                edt_sellingPrice.error="Please enter selling price"
-            } else if(edt_sellingPrice.toString().isEmpty()){
-                edt_sellingPrice.error="Please enter selling price"
-            }*/
-
-            else {
-                addItemMethod()
+            when {
+                type.isEmpty() -> {
+                    val lastRadioBtn = findViewById<RadioButton>(R.id.radio_product)
+                    lastRadioBtn.error = "Select Type"
+                }
+                edtCategory.text.toString().isEmpty() -> {
+                    edtCategory.error = "Please Select Category"
+                }
+                edt_item.text.toString().isEmpty() -> {
+                    edt_item.error="Please Enter Item Name"
+                }
+                edt_sku.text.toString().isEmpty() -> {
+                    edt_sku.error="Please Enter SKU"
+                }
+                edt_units.selectedItem == null -> {
+                    val errorText = edt_units.selectedView as TextView
+                    errorText.error = ""
+                    errorText.setTextColor(Color.RED) //just to highlight that this is an error
+                    errorText.text = "Select unit"
+                }
+                else -> {
+                    addItemMethod()
+                }
             }
         }
     }
@@ -290,11 +285,11 @@ class AddItemActivity : AppCompatActivity() {
                 1
             )
         }else{
-            CheckStoragePermission()
+            checkStoragePermission()
         }
 
     }
-    private fun CheckStoragePermission() {
+    private fun checkStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
                 arrayOf(
@@ -304,13 +299,13 @@ class AddItemActivity : AppCompatActivity() {
                 2
             )        }
         else{
-            TakePhoto()
+            takePhoto()
         }
 
 
     }
 
-    private fun TakePhoto() {
+    private fun takePhoto() {
         val items = arrayOf<CharSequence>(
             "Take Photo", "Choose from Library",
             "Cancel"
@@ -321,7 +316,7 @@ class AddItemActivity : AppCompatActivity() {
         builder.setItems(items) { dialog, item ->
             when {
                 items[item] == "Take Photo" -> {
-                    TakePhotoMethod()
+                    takePhotoMethod()
                 }
                 items[item] == "Choose from Library" -> {
                     val intent = Intent(
@@ -342,58 +337,12 @@ class AddItemActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun TakePhotoMethod() {
-//        var timeStamp =  SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-//        var imageFileName = "$timeStamp.jpg"
-//        var mainDir = File(Environment.getExternalStorageDirectory().toString() + "/BakeryImage/")
-//        if (!mainDir.exists()) {
-//            mainDir.mkdirs()
-//
-//        }
-//
-//        var image_output_File = File(mainDir, imageFileName)
-//        var pictureImagePath = mainDir.absolutePath + "/" + imageFileName
-//        if (!image_output_File.exists()) {
-//
-//                image_output_File.createNewFile()
-//
-//        }
-//        file =  File(pictureImagePath)
-//
-//        outputFileUri = Uri.fromFile(file)
-//
-//
-//        var cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//
-//        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
-//
-//        startActivityForResult(cameraIntent, REQUEST_CAMERA)
+    private fun takePhotoMethod() {
         CropImage.activity()
             .setGuidelines(CropImageView.Guidelines.ON)
-            .start(this);
+            .start(this)
 
     }
-//    fun compressFile(aFile: File?): File? {
-//        var compressedImage;
-//        try {
-//            val file = File(
-//                this@AddItemActivity.getCacheDir().getAbsolutePath().toString() + "/" + "Myfiles"
-//            )
-//            if (!file.exists()) {
-//                file.mkdirs()
-//            }
-//             compressedImage = Compression(applicationContext)
-//                .setMaxWidth(640)
-//                .setMaxHeight(480)
-//                .setQuality(75)
-//                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-//                .setDestinationDirectoryPath(file.absolutePath)
-//                .compressToFile(aFile)
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//        return compressedImage
-//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>,
@@ -404,7 +353,7 @@ class AddItemActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] === PackageManager.PERMISSION_GRANTED
                 ) {
-                    CheckStoragePermission()
+                    checkStoragePermission()
                 } else {
                     var details = "Please Allow Camera Permission For Capture the Image"
                     permissionDeniedAlertBox(details)
@@ -415,7 +364,7 @@ class AddItemActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty() && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED
                 ) {
-                    TakePhoto()
+                    takePhoto()
                 } else {
                     var details = "Please Allow Storage Permission For Store and Retrieve Data"
 
@@ -427,14 +376,14 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun permissionDeniedAlertBox(details: String) {
-        viewUtils.alert_view_dialog(
+        viewUtils.alertViewDialog(
             this,
             "",
             details,
             "Okay",
             "Cancel",
             true,
-            postive_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+            positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
                 checkRunTimePermission()
             },
@@ -452,16 +401,11 @@ class AddItemActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
 
-//                itemImageView.setImageURI(outputFileUri)
-
-
             } else if (requestCode == SELECT_PICTURE) {
                 val selectedImageUri = data?.data
                 outputFileUri= selectedImageUri!!
                 CropImage.activity(outputFileUri)
-                    .start(this);
-//                file =  File(getPath(outputFileUri, this))
-//                itemImageView.setImageURI(selectedImageUri)
+                    .start(this)
             }
             if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
@@ -470,7 +414,6 @@ class AddItemActivity : AppCompatActivity() {
                     itemImageView.setImageURI(outputFileUri)
                     file =  File(outputFileUri.path)
                     Log.e("file",file.name+"   ")
-
                 } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     val error = result.error
                 }
@@ -483,19 +426,19 @@ class AddItemActivity : AppCompatActivity() {
             arrayOf(MediaStore.MediaColumns.DATA)
         val cursor: Cursor = activity
             .managedQuery(uri, projection, null, null, null)
-        val column_index: Int = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+        val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
         cursor.moveToFirst()
-        return cursor.getString(column_index)
+        return cursor.getString(columnIndex)
     }
 
 
     private fun getItemCategory() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var user_token = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $user_token")
+                .addHeader("Authorization", "Bearer $userToken")
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -511,11 +454,8 @@ class AddItemActivity : AppCompatActivity() {
                 response: Response<ArrayList<ItemCategoryModel>>
             ) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
-
                     itemCategoryModelList = response.body()
-                    Log.e("Itemlist", itemCategoryModelList.size.toString() + " error")
                     showItemNameDialog()
                 } else {
 
@@ -554,7 +494,6 @@ class AddItemActivity : AppCompatActivity() {
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-//                adapter.filter.filter(charSequence.toString())
 
                 finalShopList.clear()
                 for (item in itemCategoryModelList) {
@@ -604,6 +543,4 @@ class AddItemActivity : AppCompatActivity() {
             edtCategory.setText(itemCategory.name)
         }
     }
-
-
 }

@@ -13,12 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.bakkeryApp.AddItemActivity
 import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.HomeActivity
 import com.example.bakkeryApp.R
 import com.example.bakkeryApp.adapter.StockAdapter
-import com.example.bakkeryApp.model.ItemsModel
 import com.example.bakkeryApp.model.StockModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
@@ -35,14 +33,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ViewStockFragment : Fragment(){
-    lateinit var  createItem: ImageView
-    lateinit var  viewItem: ImageView
+    private lateinit var  createItem: ImageView
+    private lateinit var  viewItem: ImageView
     lateinit var  recyclerview: RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
     var stockList: ArrayList<StockModel> = ArrayList()
-    lateinit var stockAdapter: StockAdapter
-    lateinit var  swipeRefresh: SwipeRefreshLayout
+    private lateinit var stockAdapter: StockAdapter
+    private lateinit var  swipeRefresh: SwipeRefreshLayout
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view :View= inflater.inflate(R.layout.fragment_view_stock,container,false)
@@ -72,16 +70,20 @@ class ViewStockFragment : Fragment(){
             activity?.startActivity(intent)
 
         }
+
+        (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.searchView!!.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-                val finalstockList = ArrayList<StockModel>()
+                val finalStockList = ArrayList<StockModel>()
                 for (item in stockList) {
-                    if (item.shop.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT)) ||item.item.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))) {
-                        finalstockList.add(item)
-                        }
+                    if (item.shop.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))
+                        || item.item.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))
+                        || item.name.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))) {
+                        finalStockList.add(item)
+                    }
                 }
-                setAdapterMethod(finalstockList)
+                setAdapterMethod(finalStockList)
                 return false
             }
 
@@ -91,7 +93,8 @@ class ViewStockFragment : Fragment(){
         })
 
 
-    return view}
+        return view
+    }
 
     private fun viewStockMethod() {
         progressDialog.setMessage("Loading...")
@@ -119,8 +122,6 @@ class ViewStockFragment : Fragment(){
                     setAdapterMethod(stockList)
                 } else {
                     progressDialog.dismiss()
-//                    Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
-//                        .show()
                 }
             }
             override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {

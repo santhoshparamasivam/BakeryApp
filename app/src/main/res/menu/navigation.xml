@@ -9,12 +9,4 @@
         android:id="@+id/addStockByLocation"
         android:title="@string/add_location_item"
         android:icon="@drawable/ic_location"/>
-<!--    <item-->
-<!--        android:id="@+id/nav_viewOrders"-->
-<!--        android:icon= "@drawable/password"-->
-<!--        android:title="By Count"/>-->
-<!--    <item-->
-<!--        android:id="@+id/nav_viewOrderslocation"-->
-<!--        android:icon= "@drawable/password"-->
-<!--        android:title="By Location"/>-->
 </menu>
