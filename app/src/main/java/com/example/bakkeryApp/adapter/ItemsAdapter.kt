@@ -52,7 +52,7 @@ class ItemsAdapter(
 
         Glide.with(mcontext).load( uri).into(holder.itemView.imageView)
 
-        holder.itemView.name_text.text = "Item Name :  "+finalList[position].name
+        holder.itemView.name_text.text = "Item :  "+finalList[position].name
         holder.itemView.units_text.text = "Units :  "+finalList[position].unitOfMeasure
         holder.itemView.sale_text.text = "Sale Price :  "+finalList[position].sellingPrice+" Rs"
 

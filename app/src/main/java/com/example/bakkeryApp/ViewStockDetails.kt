@@ -103,7 +103,7 @@ class ViewStockDetails : AppCompatActivity() {
                                     multiStockList.add(stockAdd)
                                 }
                             }
-                            multiItemAdded("item")
+                            multiItemAdded("Item")
                         }else if(!jsonObject.isNull("itemId")){
                             var shopId = jsonObject.getString("itemId")
                             if (!jsonObject.isNull("itemName")) {
@@ -123,7 +123,7 @@ class ViewStockDetails : AppCompatActivity() {
                                     multiStockList.add(stockAdd)
                                 }
                             }
-                            multiItemAdded("location")
+                            multiItemAdded("Location")
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
