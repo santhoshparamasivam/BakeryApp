@@ -92,17 +92,13 @@ class AddItemActivity : AppCompatActivity() {
 
         val dropdown: Spinner = findViewById(R.id.edt_units)
         val items = arrayOf(
-            "1/4 KG",
-            "1/2 KG",
-            "1 KG",
-            "1/4 Litre",
-            "1/2 Litre",
-            "3/4 Litre",
-            "1 Litre",
-            "1 pack",
-            "1 item",
-            " 1/2 Dozen",
-            "1 Dozen"
+            "KG",
+            "Gram",
+            "Litre",
+            "Ml",
+            "Box",
+            "Dozen",
+            "Each/Piece"
         )
         val adapter: ArrayAdapter<String> =
         ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
