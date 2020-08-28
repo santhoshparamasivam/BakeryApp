@@ -67,10 +67,23 @@ interface ApiService {
     @PUT("/items")
     fun updateItems(
         @Query("id") id: Long,
-        @Query("costPrice") costprice: Float,
+        @Query("costPrice") costPrice: Float,
         @Query("sellingPrice") sellingPrice: Float
     ): Call<ResponseBody>
 
     @GET("/stock/{id}")
     fun getStock(@Path(value = "id", encoded = true) id: Int): Call<ResponseBody>
+
+    @GET("/stock/void/{id}")
+    fun voidStock(@Path(value = "id", encoded = true) id: Int): Call<ResponseBody>
+
+    @POST("/stock/delete/byLocation")
+    fun voidStockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
+
+    @POST("/stock/delete/byItem")
+    fun voidStockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
+
+    @GET("/items/void/{id}")
+    fun voidItemDetails(@Path(value = "id", encoded = true) id: Long): Call<ResponseBody>
+
 }

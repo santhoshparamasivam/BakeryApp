@@ -372,22 +372,21 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun permissionDeniedAlertBox(details: String) {
-        viewUtils.alertViewDialog(
+
+
+        viewUtils.bakeryAlert(
             this,
-            "",
             details,
             "Okay",
-            "Cancel",
-            true,
-            positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
+            DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
                 checkRunTimePermission()
-            },
-            negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+            },"Cancel",
+
+           DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
 
-            },
-            s = ""
+            },true
         )
 
     }

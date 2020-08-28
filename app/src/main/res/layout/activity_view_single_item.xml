@@ -56,11 +56,12 @@
                 android:layout_margin="10dp">
 
                 <ImageView
-                    android:id="@+id/itemImageView"
                     android:layout_width="100dp"
                     android:layout_gravity="center"
                     android:layout_height="100dp"
-                    app:srcCompat="@mipmap/ic_launcher_round" />
+                    app:srcCompat="@drawable/profile_icon"
+                    android:id="@+id/itemImageView"
+                    android:contentDescription="Item image" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,22 +69,24 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/item_type"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
 
                     <RadioGroup
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:orientation="horizontal">
 
                         <RadioButton
                             android:id="@+id/edt_radio_product"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="5dp"
@@ -93,7 +96,7 @@
 
                         <RadioButton
                             android:id="@+id/edt_radio_service"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="5dp"
@@ -110,9 +113,10 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/item_category"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -137,9 +141,10 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/item_name"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -162,9 +167,10 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/item_sku"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -187,9 +193,10 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/item_units"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -206,77 +213,169 @@
                         android:textSize="16sp" />
                 </LinearLayout>
 
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="130dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/cost_of_price"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:gravity="start" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/edt_costPrice"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint=" Enter Price "-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:inputType="numberDecimal"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="130dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/include_tax"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:gravity="start" />-->
+
+<!--                    <CheckBox-->
+<!--                        android:id="@+id/edt_taxIncluded"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="130dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/selling_price"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:gravity="start" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/edt_sellingPrice"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint=" Enter Price "-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:inputType="numberDecimal"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="16sp" />-->
+<!--                </LinearLayout>-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
-
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/cost_of_price"
+                        android:layout_weight="0.7"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
 
                     <EditText
-                        android:id="@+id/edt_costPrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Enter Price "
                         android:layout_weight="1"
+                        android:id="@+id/edt_price"
                         android:inputType="numberDecimal"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
+                        android:textSize="16sp"
+                        />
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/include_tax"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
 
                     <CheckBox
-                        android:id="@+id/edt_taxIncluded"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="0.3"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/checkbox_cost_tax"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
-
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/selling_price"
+                        android:layout_weight="0.7"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
 
                     <EditText
-                        android:id="@+id/edt_sellingPrice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Enter Price "
                         android:layout_weight="1"
                         android:inputType="numberDecimal"
+                        android:id="@+id/edt_sell_Price"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/include_tax"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_weight="0.4"
+                        android:gravity="start" />
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.3"
+                        android:layout_margin="5dp"
+                        android:id="@+id/checkbox_sell_tax"
+                        />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -284,9 +383,10 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/hsn_code"
+                        android:layout_weight="0.4"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:textSize="16sp"
@@ -309,11 +409,12 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/tax"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
+                        android:layout_weight="0.4"
                         android:textSize="16sp"
                         android:gravity="start" />
 
@@ -334,18 +435,20 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
-                        android:layout_width="130dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/trackInventory"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
+                        android:layout_weight="0.4"
                         android:textSize="16sp"
                         android:gravity="start" />
 
                     <CheckBox
                         android:id="@+id/edt_trackInventory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -374,6 +477,15 @@
                         android:text="@string/update_item"
                         android:layout_margin="5sp"
                         android:visibility="gone"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                    <Button
+                        android:id="@+id/voidItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/void_item"
+                        android:layout_margin="5sp"
                         android:background="@color/colorAccent"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

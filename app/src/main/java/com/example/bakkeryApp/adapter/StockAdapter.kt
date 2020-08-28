@@ -63,16 +63,16 @@ class StockAdapter(
             holder.itemView.stockName.text = "Stock Name: ";
 
 
-        holder.itemView.setOnClickListener{
-            val intent= Intent(mContext, ViewStockDetails::class.java)
-            intent.putExtra("ItemId",filterStockList[position].id);
-
-            if (filterStockList[position].item!=null)
-                intent.putExtra("stockBy", "ByItem");
-            if (filterStockList[position].shop!=null)
-                intent.putExtra("stockBy", "ByLocation");
-
-            mContext.startActivity(intent)
-        }
+//        holder.itemView.setOnClickListener{
+//            val intent= Intent(mContext, ViewStockDetails::class.java)
+//            intent.putExtra("ItemId",filterStockList[position].id);
+//
+//            if (filterStockList[position].item!=null)
+//                intent.putExtra("stockBy", "ByItem");
+//            if (filterStockList[position].shop!=null)
+//                intent.putExtra("stockBy", "ByLocation");
+//
+//            mContext.startActivity(intent)
+//        }
     }
 }

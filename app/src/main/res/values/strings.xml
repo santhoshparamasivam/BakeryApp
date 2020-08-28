@@ -76,6 +76,10 @@
     //View Stock
 
     <string name="view_stock_details">View Stock Details</string>
-
+    <string name="void_stock">Void Stock</string>
+    <string name="search_view">search here</string>
+    <string name="void_item">Void Item</string>
+    <string name="alert_no">No</string>
+    <string name="alert_yes">Yes</string>
 
 </resources>

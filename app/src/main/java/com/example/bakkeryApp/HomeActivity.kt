@@ -6,8 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import android.view.Menu
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.SearchView
@@ -71,7 +69,13 @@ class HomeActivity : AppCompatActivity() {
 
         add_stock_menu.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
-            loadFragment(ViewStockFragment())
+            val bundle = Bundle()
+            bundle.putString("type", "adStock")
+            val fragment=ViewStockFragment()
+            fragment.arguments = bundle;
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.commit()
         }
         Dashboard.setOnClickListener {
             searchView.visibility=View.GONE
@@ -80,36 +84,62 @@ class HomeActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             loadFragment(HomeFragment())
         }
+        remove_stock_menu.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            val bundle = Bundle()
+            bundle.putString("type", "removeStock")
+            val fragment=ViewStockFragment()
+            fragment.arguments = bundle;
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.commit()
 
+        }
         item_menu.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
             loadFragment(ViewItemsFragment())
         }
 
-        remove_stock_menu.setOnClickListener {
-
-        }
+//        remove_stock_menu.setOnClickListener {
+//
+//        }
 
         logout_menu.setOnClickListener {
-            viewUtils.alertViewDialog(this,
-                    "",
-                    "Are you sure you want to Logout?",
-                    "Yes",
-                    "No",
-                    true,
-                    positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
-                        sessionManager.clearSession()
-                        Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
-                        intent = Intent(applicationContext, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    },
-                    negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
+//            viewUtils.alertViewDialog(
+//                this,
+//                "Are you sure you want to Logout?",
+//                "Yes",
+//                "No",
+//                true,
+//                positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
+//                    dialog.dismiss()
+//                    sessionManager.clearSession()
+//                    Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
+//                    intent = Intent(applicationContext, LoginActivity::class.java)
+//                    startActivity(intent)
+//                    finish()
+//                },
+//                negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
+//                    dialog.dismiss()
+//
+//                }
+            viewUtils.bakeryAlert(
+                this,
+                "Are you sure you want to Logout?",
+                "Yes",
+             DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
+                 sessionManager.clearSession()
+                    Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
+                    intent = Intent(applicationContext, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                },"No",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
 
-                    },
-                    s = "")
+                },true
+            )
         }
 
 
@@ -124,11 +154,11 @@ class HomeActivity : AppCompatActivity() {
         }
         nav_bottomView.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.addStockByItem-> {
+                R.id.addStockByItem -> {
                     loadFragment(HomeFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.addStockByLocation-> {
+                R.id.addStockByLocation -> {
                     return@setOnNavigationItemSelectedListener true
                 }
 

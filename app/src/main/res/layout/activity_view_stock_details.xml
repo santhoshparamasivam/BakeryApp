@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_above="@+id/btn_void"
         >
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -158,4 +159,13 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/void_stock"
+        android:id="@+id/btn_void"
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>

@@ -16,12 +16,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bakkeryApp.AddStockActivity
 import com.example.bakkeryApp.HomeActivity
 import com.example.bakkeryApp.R
+import com.example.bakkeryApp.ViewStockDetails
 import com.example.bakkeryApp.adapter.StockAdapter
 import com.example.bakkeryApp.model.StockModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
 import com.example.bakkeryApp.sessionManager.SessionManager
+import com.example.bakkeryApp.utils.RecyclerItemClickListener
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Call
@@ -41,32 +43,38 @@ class ViewStockFragment : Fragment(){
     var stockList: ArrayList<StockModel> = ArrayList()
     private lateinit var stockAdapter: StockAdapter
     private lateinit var  swipeRefresh: SwipeRefreshLayout
+    private lateinit var  type: String
     @SuppressLint("RestrictedApi")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view :View= inflater.inflate(R.layout.fragment_view_stock,container,false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        var view :View= inflater.inflate(R.layout.fragment_view_stock, container, false)
+         type = arguments!!.getString("type")!!
+        
         createItem=view.findViewById(R.id.create_item)
         viewItem=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
         swipeRefresh=view.findViewById(R.id.swipeRefresh)
-        activity?.title  ="View Stock"
+        if(type=="removeStock") {
+            activity?.title = "Remove Stock"
+        }else if(type=="adStock")
+            activity?.title = "View Stock"
+
+
         progressDialog= ProgressDialog(activity)
         sessionManager= SessionManager(activity)
         swipeRefresh.setOnRefreshListener {
             viewStockMethod()
             swipeRefresh.isRefreshing = false
         }
-        createItem.setOnClickListener {
-
-        }
         (activity as HomeActivity?)?.fab!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.searchView!!.visibility = View.VISIBLE
-//        (activity as HomeActivity?)?.searchView!!.setOnClickListener {
-//            (activity as HomeActivity?)?.searchView!!.onActionViewExpanded()
-////            searchMethod()
-//        }
 
         (activity as HomeActivity?)?.fab!!.setOnClickListener {
             val intent= Intent(activity, AddStockActivity::class.java)
+            intent.putExtra("type",type)
             activity?.startActivity(intent)
 
         }
@@ -77,9 +85,22 @@ class ViewStockFragment : Fragment(){
             override fun onQueryTextChange(newText: String): Boolean {
                 val finalStockList = ArrayList<StockModel>()
                 for (item in stockList) {
-                    if (item.shop.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))
-                        || item.item.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))
-                        || item.name.toString().toLowerCase(Locale.ROOT).contains(newText.toLowerCase(Locale.ROOT))) {
+                    if (item.shop.toString().toLowerCase(Locale.ROOT).contains(
+                            newText.toLowerCase(
+                                Locale.ROOT
+                            )
+                        )
+                        || item.item.toString().toLowerCase(Locale.ROOT).contains(
+                            newText.toLowerCase(
+                                Locale.ROOT
+                            )
+                        )
+                        || item.name.toString().toLowerCase(Locale.ROOT).contains(
+                            newText.toLowerCase(
+                                Locale.ROOT
+                            )
+                        )
+                    ) {
                         finalStockList.add(item)
                     }
                 }
@@ -92,7 +113,22 @@ class ViewStockFragment : Fragment(){
             }
         })
 
+        recyclerview.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                context!!,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        val intent = Intent(context, ViewStockDetails::class.java)
+                        intent.putExtra("ItemId", stockList[position].id);
+                        if (stockList[position].item != null)
+                            intent.putExtra("stockBy", "ByItem");
+                        if (stockList[position].shop != null)
+                            intent.putExtra("stockBy", "ByLocation");
 
+                        context!!.startActivity(intent)
+                    }
+                })
+        )
         return view
     }
 
@@ -114,7 +150,8 @@ class ViewStockFragment : Fragment(){
         requestInterface.getViewStock().enqueue(object : Callback<ArrayList<StockModel>> {
             override fun onResponse(
                 call: Call<ArrayList<StockModel>>,
-                response: Response<ArrayList<StockModel>>) {
+                response: Response<ArrayList<StockModel>>
+            ) {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
                     progressDialog.dismiss()
@@ -124,6 +161,7 @@ class ViewStockFragment : Fragment(){
                     progressDialog.dismiss()
                 }
             }
+
             override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()

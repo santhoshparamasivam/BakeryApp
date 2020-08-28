@@ -168,13 +168,24 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/bottomView"
+                    android:orientation="vertical"
                     >
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/create_stock_text"
                         android:layout_margin="5sp"
-                        android:id="@+id/create_item"
+                        android:id="@+id/create_stock"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        />
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/remove_stock"
+                        android:layout_margin="5sp"
+                        android:id="@+id/removeStock"
                         android:background="@color/colorAccent"
                         android:textColor="@color/white"
                         android:textSize="16sp"

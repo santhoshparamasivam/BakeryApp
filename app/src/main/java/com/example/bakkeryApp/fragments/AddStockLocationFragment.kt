@@ -61,20 +61,32 @@ class AddStockLocationFragment : Fragment(){
     var finalShopList: ArrayList<ShopModel> = ArrayList()
     var shopId: Int = 0
     lateinit var edtCategory: EditText
-    private lateinit var createItem: Button
+    private lateinit var createStock: Button
+    private lateinit var removeStock: Button
     private lateinit var lytAddItem: LinearLayout
     lateinit var tblContact: TableLayout
     var searchList: ArrayList<String> = ArrayList()
-
+    private lateinit var  type: String
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view:View= inflater.inflate(R.layout.fragment_addstock_location,container,false)
+        type = arguments!!.getString("type")!!
         viewUtils=ViewUtils()
         sessionManager = SessionManager(activity)
         progressDialog = ProgressDialog(activity)
         edtCategory=view.findViewById(R.id.edt_category)
-        createItem=view.findViewById(R.id.create_item)
+        createStock=view.findViewById(R.id.create_stock)
+        removeStock=view.findViewById(R.id.removeStock)
         lytAddItem=view.findViewById(R.id.lyt_add_item)
         tblContact=view.findViewById(R.id. tblContact)
+
+
+        if(type=="removeStock") {
+            createStock.visibility=View.GONE
+            removeStock.visibility=View.VISIBLE
+        }else if(type=="adStock") {
+            createStock.visibility = View.VISIBLE
+            removeStock.visibility = View.GONE
+        }
 
         lytAddItem.setOnClickListener {
             multiStockList.add(MultiStockAdd("1", "1"))
@@ -86,7 +98,15 @@ class AddStockLocationFragment : Fragment(){
             getShopName()
 
         }
-        createItem.setOnClickListener {
+        removeStock.setOnClickListener {
+            if (edtCategory.text.toString().isEmpty()) {
+                edtCategory.error = "Please Enter Category.."
+            } else {
+                removeStockMethod()
+
+            }
+        }
+        createStock.setOnClickListener {
             if (edtCategory.text.toString().isEmpty()) {
                 edtCategory.error = "Please Enter Category.."
             } else {
@@ -98,6 +118,74 @@ class AddStockLocationFragment : Fragment(){
         multiItemAdded()
 
         return view }
+
+    private fun removeStockMethod() {
+        var objects = JsonObject()
+        var jsonArray = JsonArray()
+
+        for (row in itemList) {
+            for (item in multiStockList) {
+                if (row.name.equals(item.location)) {
+                    var jsonObject = JsonObject()
+                    jsonObject.addProperty("itemId", row.id)
+                    jsonObject.addProperty("quantity", Integer.parseInt(item.quantity!!))
+                    jsonArray.add(jsonObject)
+                }
+            }
+        }
+        objects.addProperty("shopId", shopId)
+        objects.add("stock", jsonArray)
+        val progressDialog = ProgressDialog(activity)
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $userToken")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+
+        requestInterface.voidStockByLocation(objects).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                progressDialog.dismiss()
+                Log.e("response", response.code().toString() + " ")
+                if (response.code() == 200) {
+                    Toast.makeText(
+                        activity,
+                        "Stock Added SuccessFully",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    tblContact.removeAllViews()
+                    edtCategory.text=null
+                    edt_item.text=null
+                    edt_sell_Price.text=null
+                } else {
+                    progressDialog.dismiss()
+                    Log.e("response", response.message() + "")
+                    Toast.makeText(
+                        activity,
+                        "Please Check Store name and try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                progressDialog.dismiss()
+                t.printStackTrace()
+                Toast.makeText(activity, "Please try again later",Toast.LENGTH_LONG).show()
+            }
+        })
+
+
+    }
+
     private fun addStockToServer() {
 
         var objects = JsonObject()

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bakkeryApp.fragments.AddStockItemFragment
 import com.example.bakkeryApp.fragments.AddStockLocationFragment
+import com.example.bakkeryApp.fragments.ViewStockFragment
 import com.example.bakkeryApp.model.ShopModel
 import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiService
@@ -39,18 +40,25 @@ class AddStockActivity : AppCompatActivity() {
     lateinit var navBottomView: BottomNavigationView
     var itemId: Long = 0
     var searchList: ArrayList<String> = ArrayList()
-
+    var type=""
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_stock)
         viewUtils = ViewUtils()
+        var intent=intent
+        type=intent.getStringExtra("type")!!
         sessionManager = SessionManager(this)
         progressDialog = ProgressDialog(this)
         toolbar = findViewById(R.id.toolbar)
         navBottomView=findViewById(R.id.nav_bottomView)
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Add Stock"
+        if(type=="removeStock") {
+            supportActionBar?.title = "Remove Stock"
+        }else if(type=="adStock")
+            supportActionBar?.title = "Add Stock"
+
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             finish()
@@ -78,6 +86,9 @@ class AddStockActivity : AppCompatActivity() {
         }
 
         private fun loadFragment(fragment: Fragment) {
+            val bundle = Bundle()
+            bundle.putString("type", type)
+            fragment.arguments = bundle
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.container, fragment)
             transaction.commit()
