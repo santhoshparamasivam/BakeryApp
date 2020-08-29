@@ -65,6 +65,8 @@ class AddItemActivity : AppCompatActivity() {
     private var isPermitted:Boolean = false
     private lateinit var outputFileUri : Uri
     private var taxIncluded : Boolean=false
+    private var saleTaxIncluded : Boolean=false
+    private var costTaxIncluded : Boolean=false
     lateinit var type: String
     private lateinit var file:File
 
@@ -113,7 +115,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         checkbox_cost_tax.setOnClickListener{
-            taxIncluded=true
+            costTaxIncluded=true
         }
 
         type = ""
@@ -125,7 +127,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         checkbox_sell_tax.setOnClickListener{
-            taxIncluded=true
+            saleTaxIncluded=true
         }
 
         checkbox_tax.setOnClickListener{
@@ -186,6 +188,8 @@ class AddItemActivity : AppCompatActivity() {
                 createPartFromString(edt_units.selectedItem.toString())
             val costPrice: RequestBody? = createPartFromString(edt_price.text.toString())
             val taxIncluded: RequestBody? = createPartFromString(taxIncluded.toString())
+            val saleTaxIncluded: RequestBody? = createPartFromString(saleTaxIncluded.toString())
+            val costTaxIncluded: RequestBody? = createPartFromString(costTaxIncluded.toString())
             val sellPrice: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
             val taxPercentage: RequestBody? = createPartFromString(edt_tax.text.toString())
             val hsnCode: RequestBody? = createPartFromString(edt_hsn.text.toString())
@@ -212,6 +216,8 @@ class AddItemActivity : AppCompatActivity() {
                 taxPercentage,
                 unitMeasures,
                 taxIncluded,
+                saleTaxIncluded,
+                costTaxIncluded,
                 hsnCode,
                 sku
             ).enqueue(object : Callback<ResponseBody> {

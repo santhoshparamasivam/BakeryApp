@@ -41,6 +41,8 @@ interface ApiService {
         @Part("taxPercentage") taxPercentage: RequestBody?,
         @Part("unitOfMeasure") unitOfMeasure: RequestBody?,
         @Part("taxInclude") taxIncluded: RequestBody?,
+        @Part("saleTaxIncluded") saleTaxIncluded: RequestBody?,
+        @Part("costTaxIncluded")costTaxIncluded: RequestBody?,
         @Part("hsnCode") hsn_Code: RequestBody?,
         @Part("sku") sku: RequestBody?
     ): Call<ResponseBody>
