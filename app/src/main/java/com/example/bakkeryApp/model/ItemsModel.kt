@@ -61,9 +61,13 @@ class ItemsModel {
     @Expose
     var taxPercentage: Float? = null
 
-    @SerializedName("taxIncluded")
+    @SerializedName("saleTaxIncluded")
     @Expose
-    var taxIncluded: Boolean? = null
+    var saleTaxIncluded: Boolean? = null
+
+    @SerializedName("costTaxIncluded")
+    @Expose
+    var costTaxIncluded: Boolean? = null
 
     @SerializedName("imageFileName")
     @Expose

@@ -40,7 +40,7 @@ interface ApiService {
         @Part("sellingPrice") sellingPrice: RequestBody?,
         @Part("taxPercentage") taxPercentage: RequestBody?,
         @Part("unitOfMeasure") unitOfMeasure: RequestBody?,
-        @Part("taxInclude") taxIncluded: RequestBody?,
+        @Part("trackInventory") taxIncluded: RequestBody?,
         @Part("saleTaxIncluded") saleTaxIncluded: RequestBody?,
         @Part("costTaxIncluded")costTaxIncluded: RequestBody?,
         @Part("hsnCode") hsn_Code: RequestBody?,
@@ -66,11 +66,30 @@ interface ApiService {
     fun stockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
 
 
+//    @PUT("/items")
+//    fun updateItems(
+//        @Query("id") id: Long,
+//        @Query("costPrice") costPrice: Float,
+//        @Query("sellingPrice") sellingPrice: Float
+//    ): Call<ResponseBody>
+
+    @Multipart
     @PUT("/items")
     fun updateItems(
-        @Query("id") id: Long,
-        @Query("costPrice") costPrice: Float,
-        @Query("sellingPrice") sellingPrice: Float
+       @Part image: MultipartBody.Part,
+       @Part("id") id: RequestBody?,
+       @Part("type") type: RequestBody?,
+       @Part("name") item_name: RequestBody?,
+       @Part("itemCategory") itemCategory: RequestBody?,
+       @Part("costPrice") costPrice: RequestBody?,
+       @Part("sellingPrice") sellingPrice: RequestBody?,
+       @Part("taxPercentage") taxPercentage: RequestBody?,
+       @Part("unitOfMeasure") unitOfMeasure: RequestBody?,
+       @Part("trackInventory") taxIncluded: RequestBody?,
+       @Part("saleTaxIncluded") saleTaxIncluded: RequestBody?,
+       @Part("costTaxIncluded")costTaxIncluded: RequestBody?,
+       @Part("hsnCode") hsn_Code: RequestBody?,
+       @Part("sku") sku: RequestBody?
     ): Call<ResponseBody>
 
     @GET("/stock/{id}")

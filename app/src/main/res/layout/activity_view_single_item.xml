@@ -202,15 +202,15 @@
                         android:textSize="16sp"
                         android:gravity="start" />
 
-                    <EditText
-                        android:id="@+id/edt_unitOfMeasure"
+                    <Spinner
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=" Enter units "
                         android:layout_weight="1"
-                        android:inputType="text"
+                        android:id="@+id/edt_units"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        />
                 </LinearLayout>
 
 <!--                <LinearLayout-->

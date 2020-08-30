@@ -1,6 +1,7 @@
 package com.example.bakkeryApp
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -17,9 +18,8 @@ import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -31,6 +31,7 @@ import com.example.bakkeryApp.adapter.PriceHistoryAdapter
 import com.example.bakkeryApp.model.ItemCategoryModel
 import com.example.bakkeryApp.model.ItemHistoryModel
 import com.example.bakkeryApp.model.ItemsModel
+import com.example.bakkeryApp.retrofitService.ApiManager
 import com.example.bakkeryApp.retrofitService.ApiManager.Companion.BASE_URL
 import com.example.bakkeryApp.retrofitService.ApiService
 import com.example.bakkeryApp.sessionManager.SessionKeys
@@ -39,21 +40,26 @@ import com.example.bakkeryApp.utils.RecyclerItemClickListener
 import com.example.bakkeryApp.utils.ViewUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_view_single_item.*
+import kotlinx.android.synthetic.main.activity_view_single_item.checkbox_cost_tax
 import kotlinx.android.synthetic.main.activity_view_single_item.checkbox_sell_tax
 import kotlinx.android.synthetic.main.activity_view_single_item.edt_category
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_item
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_price
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_sell_Price
 import kotlinx.android.synthetic.main.activity_view_single_item.edt_sku
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.ResponseBody
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Part
 import java.io.File
 import java.net.URLEncoder
 import kotlin.math.roundToInt
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_units as edt_units1
 
 
 class ViewSingleItem : AppCompatActivity() {
@@ -78,6 +84,8 @@ class ViewSingleItem : AppCompatActivity() {
     private val REQUEST_CAMERA = 11
     lateinit var type: String
     private lateinit var file:File
+    private var saleTaxIncluded : Boolean=false
+    private var costTaxIncluded : Boolean=false
     var itemCategoryModelList: ArrayList<ItemCategoryModel> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +106,6 @@ class ViewSingleItem : AppCompatActivity() {
         edt_name.isEnabled  = false
         edt_hsnCode.isEnabled = false
         edt_sku.isEnabled  = false
-        edt_unitOfMeasure.isEnabled = false
         checkbox_cost_tax.isEnabled  = false
         edt_taxPercentage.isEnabled  = false
         edt_price.isEnabled = false
@@ -114,7 +121,6 @@ class ViewSingleItem : AppCompatActivity() {
             edt_name.isEnabled  = true
             edt_hsnCode.isEnabled = true
             edt_sku.isEnabled  = false
-            edt_unitOfMeasure.isEnabled = true
             checkbox_cost_tax.isEnabled  = true
             edt_taxPercentage.isEnabled  = true
             edt_price.isEnabled = true
@@ -128,7 +134,9 @@ class ViewSingleItem : AppCompatActivity() {
             priceHistory.visibility=View.GONE
             edt_category.requestFocus()
             if(edt_category.requestFocus()) {
-                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.CUPCAKE) {
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+                }
             }
         }
         updateItem.setOnClickListener {
@@ -141,37 +149,36 @@ class ViewSingleItem : AppCompatActivity() {
         toolbar.setNavigationOnClickListener {
             finish()
         }
-        checkbox_sell_tax.setOnClickListener{
-            taxIncluded=true
-        }
         priceHistory.setOnClickListener {
             getPriceHistory(id)
-            //showItemHistDialog();
+        }
+        checkbox_sell_tax.setOnClickListener{
+            saleTaxIncluded=true
+        }
+
+        edt_trackInventory.setOnClickListener{
+            taxIncluded=true
         }
 
         itemImageView.setOnClickListener {
             checkRunTimePermission()
         }
 
-        checkbox_cost_tax.setOnClickListener{
-            taxIncluded=true
-        }
+        val dropdown: Spinner = findViewById(R.id.edt_units)
+        val items = arrayOf(
+            "KG",
+            "Gram",
+            "Litre",
+            "Ml",
+            "Box",
+            "Dozen",
+            "Each/Piece"
+        )
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
+        dropdown.adapter = adapter
 
         voidItem.setOnClickListener {
-//            viewUtils.alertViewDialog(this,
-//                "Are you sure you want to Delete?",
-//                "Yes",
-//                "No",
-//                true,
-//                positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                    dialog.dismiss()
-//                    deleteItemMethod()
-//                },
-//                negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                    dialog.dismiss()
-//
-//                }
-//            )
             viewUtils.bakeryAlert(
                 this,
                 "Are you sure you want to Delete?",
@@ -288,22 +295,6 @@ class ViewSingleItem : AppCompatActivity() {
     }
 
     private fun permissionDeniedAlertBox(details: String) {
-//        viewUtils.alertViewDialog(
-//            this,
-//            details,
-//            "Okay",
-//            "Cancel",
-//            true,
-//            positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                dialog.dismiss()
-//                checkRunTimePermission()
-//            },
-//            negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                dialog.dismiss()
-//
-//            }
-//
-//        )
         viewUtils.bakeryAlert(
             this,
             details,
@@ -335,9 +326,9 @@ class ViewSingleItem : AppCompatActivity() {
                     outputFileUri = result.uri
                     itemImageView.setImageURI(outputFileUri)
                     file =  File(outputFileUri.path)
-                    Log.e("file",file.name+"   ")
                 } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    val error = result.error
+                    viewUtils.showToast(this@ViewSingleItem,"Please Select and try again later",Toast.LENGTH_SHORT)
+
                 }
             }
         }
@@ -367,23 +358,17 @@ class ViewSingleItem : AppCompatActivity() {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Item is successfully deleted", Toast.LENGTH_SHORT)
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Item is successfully deleted",Toast.LENGTH_SHORT)
                     finish()
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(
-                    applicationContext,
-                    "Connection Failed,Please try again later",
-                    Toast.LENGTH_SHORT
-                ).show()
+                viewUtils.showToast(this@ViewSingleItem,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
             }
         })
     }
@@ -410,33 +395,24 @@ class ViewSingleItem : AppCompatActivity() {
                 response: Response<ArrayList<ItemCategoryModel>>
             ) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
-
                     itemCategoryModelList = response.body()
                     showItemNameDialog()
                 } else {
 
                     progressDialog.dismiss()
-                    Toast.makeText(
-                        this@ViewSingleItem,
-                        "Please try again later",
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<ItemCategoryModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(
-                    this@ViewSingleItem,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
+                viewUtils.showToast(this@ViewSingleItem,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
+
             }
         })
+
     }
 
     fun showItemNameDialog() {
@@ -493,17 +469,35 @@ class ViewSingleItem : AppCompatActivity() {
         itemCategoryDialog.show()
 
     }
-
+    @NonNull
+    private fun createPartFromString(descriptionString: String): RequestBody? {
+        return RequestBody.create(
+            MediaType.parse("multipart/form-data"), descriptionString
+        )
+    }
     private fun updateItemMethod() {
-        var itemSku=edt_sku.text.toString()
-        var itemHsn=edt_hsnCode.text.toString()
-        var costPrice=edt_price.text.toString().toFloat()
-
-        val sellingPrice = edt_sell_Price.text.toString().toFloat()
-
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+
+        val requestFile: RequestBody =
+            RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body: MultipartBody.Part =
+            MultipartBody.Part.createFormData("files", file.name, requestFile)
+        val itemType: RequestBody? = createPartFromString(type)
+        val itemCategory: RequestBody? = createPartFromString(edt_category.text.toString())
+        val itemName: RequestBody? = createPartFromString(edt_name.text.toString())
+        val sku: RequestBody? = createPartFromString(edt_sku.text.toString())
+        val unitMeasures: RequestBody? =
+            createPartFromString(edt_units.selectedItem.toString())
+        val costPrice: RequestBody? = createPartFromString(edt_price.text.toString())
+        val taxIncluded: RequestBody? = createPartFromString(taxIncluded.toString())
+        val saleTaxIncluded: RequestBody? = createPartFromString(saleTaxIncluded.toString())
+        val costTaxIncluded: RequestBody? = createPartFromString(costTaxIncluded.toString())
+        val sellPrice: RequestBody? = createPartFromString(edt_sell_Price.text.toString())
+        val taxPercentage: RequestBody? = createPartFromString(edt_taxPercentage.text.toString())
+        val hsnCode: RequestBody? = createPartFromString(edt_hsnCode.text.toString())
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
+        val Id: RequestBody? = createPartFromString(id.toString())
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $userToken")
@@ -511,12 +505,26 @@ class ViewSingleItem : AppCompatActivity() {
             chain.proceed(newRequest)
         }.build()
         val requestInterface = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(ApiManager.BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.updateItems(id, costPrice, sellingPrice).enqueue(object :
-            Callback<ResponseBody> {
+        requestInterface.updateItems(
+            body,Id,
+            itemType,
+            itemName,
+            itemCategory,
+            costPrice,
+            sellPrice,
+            taxPercentage,
+            unitMeasures,
+            taxIncluded,
+            saleTaxIncluded,
+            costTaxIncluded,
+            hsnCode,
+            sku
+        ).enqueue(object : Callback<ResponseBody> {
+            @SuppressLint("NewApi")
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -524,29 +532,20 @@ class ViewSingleItem : AppCompatActivity() {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-                    Toast.makeText(
-                        applicationContext,
-                        "Product updated successfully.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+                    viewUtils.showToast(this@ViewSingleItem,"SuccessFully Saved",Toast.LENGTH_SHORT)
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
+
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(
-                    applicationContext,
-                    "Connection Failed,Please try again later",
-                    Toast.LENGTH_SHORT
-                ).show()
+                viewUtils.showToast(this@ViewSingleItem,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
             }
         })
-
     }
 
     private fun loadSingleItem() {
@@ -571,7 +570,6 @@ class ViewSingleItem : AppCompatActivity() {
                 response: Response<ItemsModel>
             ) {
                 progressDialog.dismiss()
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     var itemsModel = ItemsModel()
@@ -590,8 +588,8 @@ class ViewSingleItem : AppCompatActivity() {
                     edt_name.setText(itemsModel.name)
                     edt_hsnCode.setText(itemsModel.hsnCode)
                     edt_sku.setText(itemsModel.sku)
-                    edt_unitOfMeasure.setText(itemsModel.unitOfMeasure)
-                    checkbox_cost_tax.isChecked = itemsModel.taxIncluded!!
+                    checkbox_cost_tax.isChecked = itemsModel.costTaxIncluded!!
+                    checkbox_sell_tax.isChecked = itemsModel.saleTaxIncluded!!
                     edt_taxPercentage.setText(itemsModel.taxPercentage.toString())
                     edt_sell_Price.setText(itemsModel.sellingPrice.toString())
                     edt_price.setText(itemsModel.costPrice.toString())
@@ -603,21 +601,21 @@ class ViewSingleItem : AppCompatActivity() {
                         edt_radio_service.isChecked = true
                         edt_radio_product.isChecked = false
                     }
+                    type = itemsModel.type!!
+                    costTaxIncluded = itemsModel.costTaxIncluded!!
+                    saleTaxIncluded = itemsModel.saleTaxIncluded!!
+                    taxIncluded= itemsModel.trackInventory!!
                 } else {
                     progressDialog.dismiss()
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
                 }
             }
 
             override fun onFailure(call: Call<ItemsModel>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(
-                    applicationContext,
-                    "Connection Failed,Please try again later",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+                viewUtils.showToast(this@ViewSingleItem,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
             }
         })
 
@@ -670,7 +668,6 @@ class ViewSingleItem : AppCompatActivity() {
                 call: Call<ArrayList<ItemHistoryModel>>,
                 response: Response<ArrayList<ItemHistoryModel>>
             ) {
-                Log.e("response", response.code().toString() + "  rss")
                 if (response.code() == 200) {
 
                     itemHistoryList = response.body()
@@ -678,18 +675,15 @@ class ViewSingleItem : AppCompatActivity() {
                     showItemHistDialog()
 
                 } else {
-                    Toast.makeText(applicationContext, "Please try again later", Toast.LENGTH_SHORT)
-                        .show()
+                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
+
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<ItemHistoryModel>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(
-                    applicationContext,
-                    "Server Error,Please try again later",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+                viewUtils.showToast(this@ViewSingleItem,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
             }
         })
     }

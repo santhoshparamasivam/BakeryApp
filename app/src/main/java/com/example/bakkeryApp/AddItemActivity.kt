@@ -1,6 +1,7 @@
 package com.example.bakkeryApp
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -174,8 +175,6 @@ class AddItemActivity : AppCompatActivity() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
 
-
-            Log.e("name", file.name + "  ")
             val requestFile: RequestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val body: MultipartBody.Part =
@@ -221,10 +220,12 @@ class AddItemActivity : AppCompatActivity() {
                 hsnCode,
                 sku
             ).enqueue(object : Callback<ResponseBody> {
+                @SuppressLint("NewApi")
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
+                    Log.e("response code",response.code().toString()+" "+response.message())
                     progressDialog.dismiss()
                     if (response.code() == 200) {
                         progressDialog.dismiss()
@@ -235,50 +236,29 @@ class AddItemActivity : AppCompatActivity() {
                         edt_sell_Price.text = null
                         edt_tax.text = null
                         edt_hsn.text = null
-                        Toast.makeText(applicationContext, "SuccessFully Saved", Toast.LENGTH_LONG)
-                            .show()
+                        itemImageView.background=null
+                        checkbox_cost_tax.isChecked=false
+                        checkbox_sell_tax.isChecked=false
+                        viewUtils.showToast(this@AddItemActivity,"SuccessFully Saved",Toast.LENGTH_SHORT)
 
                     } else {
                         progressDialog.dismiss()
-                        Toast.makeText(
-                            applicationContext,
-                            "Please try again later",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
+
+                        viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     t.printStackTrace()
                     progressDialog.dismiss()
-                    Toast.makeText(
-                        applicationContext,
-                        "Connection failed,Please try again later",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    viewUtils.showToast(this@AddItemActivity,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
+
                 }
             })
     }
 
     private fun checkRunTimePermission() {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this@AddItemActivity,
-//                    Manifest.permission.CAMERA)) {
-//                ActivityCompat.requestPermissions(this@AddItemActivity,
-//                    arrayOf(Manifest.permission.CAMERA), 1)
-//            } else {
-//                    CheckStoragePermission()
-//            }
-//        val permission = ActivityCompat.checkSelfPermission(this,
-//            Manifest.permission.CAMERA)
-//        if (permission != PackageManager.PERMISSION_GRANTED) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                requestPermissions(String[] {
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//            }
-//        }else{
-//            CheckStoragePermission()
-//        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
                 arrayOf(
@@ -461,23 +441,15 @@ class AddItemActivity : AppCompatActivity() {
                 } else {
 
                     progressDialog.dismiss()
-                    Toast.makeText(
-                        this@AddItemActivity,
-                        "Please try again later",
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                    viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<ItemCategoryModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                Toast.makeText(
-                    this@AddItemActivity,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
+                viewUtils.showToast(this@AddItemActivity,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
+
             }
         })
     }
