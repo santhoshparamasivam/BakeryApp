@@ -70,10 +70,10 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="0.4"
-          android:textSize="@dimen/dimen_15sp"
           android:hint="@string/quantity"
+          android:textColor="@color/black"
           android:textColorHint="@color/black"
-          android:textColor="@color/black" />
+          android:textSize="@dimen/dimen_15sp" />
 
 
       <EditText
@@ -85,8 +85,45 @@
           android:imeOptions="actionNext"
           android:inputType="number"
           android:textColor="@color/black" />
+
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/availQtyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:padding="5dp"
+                android:hint="Avl. Qty"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/dimen_15sp" />
+
+
+            <EditText
+                android:id="@+id/edtAvailableQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:clickable="false"
+                android:editable="false"
+                android:padding="5dp"
+                android:enabled="false"
+                android:cursorVisible="false"
+                android:textColorHint="@color/black"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -94,10 +131,10 @@
     <ImageView
         android:id="@+id/btnDelete"
         android:layout_width="0dp"
-        android:layout_weight="0.2"
+        android:layout_weight="0.15"
         android:layout_gravity="center_vertical"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:src="@drawable/ic_minus" />
     </LinearLayout>
 </TableRow>
