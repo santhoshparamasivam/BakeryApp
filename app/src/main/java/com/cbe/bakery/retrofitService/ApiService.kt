@@ -1,7 +1,6 @@
 package com.cbe.bakery.retrofitService
 
 import com.cbe.bakery.model.*
-import com.cbe.bakery.model.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -109,5 +108,27 @@ interface ApiService {
 
     @GET("/items/void/{id}")
     fun voidItemDetails(@Path(value = "id", encoded = true) id: Long): Call<ResponseBody>
+
+
+    @GET("/users/getPIN/{userId}")
+    fun getPin(@Path(value = "userId", encoded = true) id: String): Call<PinVerificationModel>
+
+    @POST("/move/byItem")
+    fun moveStockByItem(@Body jsonObject: JsonObject): Call<ResponseBody>
+
+    @POST("/move/byLocation")
+    fun moveStockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
+
+
+    @GET("/move")
+    fun getAllMoveStockList():Call<ArrayList<MoveStockModel>>
+
+    @GET("/move/{id}")
+    fun getMove(@Path(value = "id", encoded = true) id: Int): Call<ResponseBody>
+
+    @GET("/move/void/{id}")
+    fun voidStockDetails(@Path(value = "id", encoded = true) id: Int): Call<ResponseBody>
+
+
 
 }

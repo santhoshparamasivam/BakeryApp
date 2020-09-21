@@ -19,7 +19,6 @@
                 android:layout_margin="10dp"
                 >
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -27,67 +26,75 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/location"
+                        android:text="@string/from_location"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.4"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:gravity="start" />
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint=" "
+                        android:layout_weight="1"
+                        android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:id="@+id/edt_location"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        />
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint=" "
+                        android:visibility="gone"
+                        android:inputType="text"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:id="@+id/edt_from_id"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tolocation"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:layout_weight="0.4"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text=" : "-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="16sp"-->
-                    <!--                        android:gravity="start" />-->
-
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:hint=""
                         android:editable="false"
                         android:focusable="false"
+                        android:clickable="false"
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:clickable="false"
-                        android:id="@+id/edt_location"
+                        android:id="@+id/edt_tolocation"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/item_units"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.4"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start" />
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text=" : "-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="16sp"-->
-                    <!--                        android:gravity="start" />-->
-
                     <EditText
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint=" "
-                        android:layout_weight="1"
+                        android:visibility="gone"
                         android:inputType="text"
                         android:editable="false"
+                        android:focusable="false"
                         android:clickable="false"
-                        android:id="@+id/edt_item"
+                        android:id="@+id/edt_to_id"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />
@@ -96,38 +103,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="10dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/selling_price"
-                        android:layout_weight="0.4"
+                        android:text="@string/reason"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
+                        android:layout_weight="0.4"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text=" : "-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="16sp"-->
-                    <!--                        android:gravity="start" />-->
-
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint=" "
+                        android:hint=""
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:id="@+id/edt_sell_Price"
+                        android:id="@+id/edt_reason"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />
                 </LinearLayout>
-
 
                 <TableLayout
                     android:id="@+id/tblContact"
@@ -150,7 +146,6 @@
                         android:layout_gravity="center"
                         android:layout_margin="5dp"
                         />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -168,28 +163,18 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="20dp"
                     android:id="@+id/bottomView"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/create_stock_text"
+                        android:text="@string/move_stock"
                         android:layout_margin="5sp"
-                        android:id="@+id/create_stock"
+                        android:id="@+id/move_stock"
                         android:background="@color/colorAccent"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         />
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/remove_stock"
-                        android:layout_margin="5sp"
-                        android:id="@+id/removeStock"
-                        android:background="@color/colorAccent"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        />
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

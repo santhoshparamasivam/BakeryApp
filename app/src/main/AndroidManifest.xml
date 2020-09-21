@@ -17,39 +17,38 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ViewMoveStockDetails"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name="com.cbe.bakery.ViewStockDetails"
+            android:name=".MoveStockActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity
+            android:name=".ViewStockDetails"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cbe.bakery.AddStockActivity"
+            android:name=".AddStockActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.cbe.bakery.AddItemActivity"
+            android:name=".AddItemActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name="com.cbe.bakery.ViewSingleItem"
+            android:name=".ViewSingleItem"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.cbe.bakery.ViewDeliveredItems"
+            android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cbe.bakery.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-        </activity>
-        <activity
-            android:name="com.cbe.bakery.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-        </activity>
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -58,6 +57,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

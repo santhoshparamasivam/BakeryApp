@@ -1,4 +1,4 @@
-package com.example.bakkeryApp
+package com.cbe.bakery
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -28,14 +28,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bakkeryApp.adapter.ItemCategoryAdapter
-import com.example.bakkeryApp.model.ItemCategoryModel
-import com.example.bakkeryApp.retrofitService.ApiManager
-import com.example.bakkeryApp.retrofitService.ApiService
-import com.example.bakkeryApp.sessionManager.SessionKeys
-import com.example.bakkeryApp.sessionManager.SessionManager
-import com.example.bakkeryApp.utils.RecyclerItemClickListener
-import com.example.bakkeryApp.utils.ViewUtils
+import com.cbe.bakery.adapter.ItemCategoryAdapter
+import com.cbe.bakery.model.ItemCategoryModel
+import com.cbe.bakery.retrofitService.ApiManager
+import com.cbe.bakery.retrofitService.ApiService
+import com.cbe.bakery.sessionManager.SessionKeys
+import com.cbe.bakery.sessionManager.SessionManager
+import com.cbe.bakery.utils.RecyclerItemClickListener
+import com.cbe.bakery.utils.ViewUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_add_item.*
@@ -70,6 +70,7 @@ class AddItemActivity : AppCompatActivity() {
     private var costTaxIncluded : Boolean=false
     lateinit var type: String
     private lateinit var file:File
+    lateinit var simple:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +80,7 @@ class AddItemActivity : AppCompatActivity() {
         viewUtils = ViewUtils()
         edtCategory=findViewById(R.id.edt_category)
         itemImageView=findViewById(R.id.itemImageView)
-
+        simple="noFile"
         val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
          toolbar = findViewById(R.id.toolbar)
@@ -155,8 +156,9 @@ class AddItemActivity : AppCompatActivity() {
                     errorText.error = ""
                     errorText.setTextColor(Color.RED) //just to highlight that this is an error
                     errorText.text = "Select unit"
-                }
-                else -> {
+                }itemImageView.drawable == null ->{
+                Toast.makeText(this,"Please select image and try again",Toast.LENGTH_SHORT).show()
+            }else -> {
                     addItemMethod()
                 }
             }
@@ -174,7 +176,7 @@ class AddItemActivity : AppCompatActivity() {
     private fun addItemMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-
+        progressDialog.setCancelable(false)
             val requestFile: RequestBody =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file)
             val body: MultipartBody.Part =
@@ -239,20 +241,32 @@ class AddItemActivity : AppCompatActivity() {
                         itemImageView.background=null
                         checkbox_cost_tax.isChecked=false
                         checkbox_sell_tax.isChecked=false
-                        viewUtils.showToast(this@AddItemActivity,"SuccessFully Saved",Toast.LENGTH_SHORT)
-
+//                        viewUtils.showToast(this@AddItemActivity,"SuccessFully Saved",Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@AddItemActivity,
+                            "SuccessFully Saved",
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         progressDialog.dismiss()
-
-                        viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            this@AddItemActivity,
+                            "Please try again later",
+                            Toast.LENGTH_LONG
+                        ).show()
+//                        viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     t.printStackTrace()
                     progressDialog.dismiss()
-                    viewUtils.showToast(this@AddItemActivity,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
-
+//                    viewUtils.showToast(this@AddItemActivity,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@AddItemActivity,
+                        "Connection failed,Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             })
     }
@@ -387,6 +401,7 @@ class AddItemActivity : AppCompatActivity() {
                 outputFileUri= selectedImageUri!!
                 CropImage.activity(outputFileUri)
                     .start(this)
+                simple="file"
             }
             if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
@@ -395,6 +410,7 @@ class AddItemActivity : AppCompatActivity() {
                     itemImageView.setImageURI(outputFileUri)
                     file =  File(outputFileUri.path)
                     Log.e("file",file.name+"   ")
+                    simple="file"
                 } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     val error = result.error
                 }
@@ -416,6 +432,7 @@ class AddItemActivity : AppCompatActivity() {
     private fun getItemCategory() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
@@ -441,15 +458,24 @@ class AddItemActivity : AppCompatActivity() {
                 } else {
 
                     progressDialog.dismiss()
-                    viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
+//                    viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@AddItemActivity,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<ItemCategoryModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-                viewUtils.showToast(this@AddItemActivity,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
-
+//                viewUtils.showToast(this@AddItemActivity,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    this@AddItemActivity,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }

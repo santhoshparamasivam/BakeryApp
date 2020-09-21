@@ -9,7 +9,8 @@ class ApiManager {
     companion object {
 
 //        const val BASE_URL = "http://18.222.152.24:8080/"
-        const val BASE_URL = "http://arasubakery.pagekite.me/"
+//        const val BASE_URL = "http://arasubakery.pagekite.me/"
+        const val BASE_URL = "https://ce37d0308287.ngrok.io"
     }
 
     init {

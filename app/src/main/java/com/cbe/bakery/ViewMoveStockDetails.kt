@@ -2,7 +2,6 @@ package com.cbe.bakery
 
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -15,17 +14,14 @@ import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.cbe.bakery.model.payload.StockByItemDtlResponse
-import com.cbe.bakery.model.payload.StockByItemResponse
-import com.cbe.bakery.model.payload.StockByLocDtlResponse
-import com.cbe.bakery.model.payload.StockByLocationResponse
+import com.cbe.bakery.model.MoveByItemModel
+import com.cbe.bakery.model.MoveByLocationModel
+import com.cbe.bakery.model.PinVerificationModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
 import com.cbe.bakery.utils.ViewUtils
-import com.cbe.bakery.R
-import com.cbe.bakery.model.PinVerificationModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_view_stock_details.*
 import okhttp3.OkHttpClient
@@ -37,35 +33,44 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ViewStockDetails : AppCompatActivity() {
+class ViewMoveStockDetails : AppCompatActivity() {
     var itemId:Int = 0
     var stockBy:String = ""
-    lateinit var progressDialog: ProgressDialog
-    lateinit var sessionManager: SessionManager
-    var shopId: Int = 0
-    lateinit var toolbar: Toolbar
     lateinit var txtItem:TextView
     lateinit var edtCategory:EditText
+    lateinit var toolbar: Toolbar
     private lateinit var viewUtils: ViewUtils
+    lateinit var progressDialog: ProgressDialog
+    lateinit var sessionManager: SessionManager
+    lateinit var txt_toLocation: TextView
+    lateinit var edt_tolocation: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_stock_details)
+        setContentView(R.layout.activity_view_move_stock_details)
         val intent=intent
         itemId= intent?.getIntExtra("ItemId", 0)!!
-        stockBy= intent.getStringExtra("stockBy")!!
+        stockBy= intent.getStringExtra("moveBy")!!
+        Log.e("item id", "$itemId   ")
+        Log.e("moveBy", "$stockBy   ")
         progressDialog = ProgressDialog(this)
         sessionManager= SessionManager(this)
+        viewUtils = ViewUtils()
         toolbar = findViewById(R.id.toolbar)
         viewUtils = ViewUtils()
         txtItem=findViewById(R.id.txt_item)
         edtCategory=findViewById(R.id.edt_category)
+        txt_toLocation=findViewById(R.id.txt_toLocation)
+        edt_tolocation=findViewById(R.id.edt_tolocation)
         setSupportActionBar(toolbar)
-            viewDetailsMethod()
         toolbar.setNavigationOnClickListener {
             finish()
         }
+        loadDataFromServer()
+
         btn_void.setOnClickListener {
             verificationMethod()
+
 
         }
     }
@@ -99,7 +104,7 @@ class ViewStockDetails : AppCompatActivity() {
                 } else {
                     progressDialog.dismiss()
                     Toast.makeText(
-                        this@ViewStockDetails,
+                        this@ViewMoveStockDetails,
                         "Please try again late",
                         Toast.LENGTH_LONG
                     ).show()
@@ -110,7 +115,7 @@ class ViewStockDetails : AppCompatActivity() {
                 t.printStackTrace()
                 progressDialog.dismiss()
                 Toast.makeText(
-                    this@ViewStockDetails,
+                    this@ViewMoveStockDetails,
                     "Connection Failed,Please try again late",
                     Toast.LENGTH_LONG
                 ).show()
@@ -192,7 +197,7 @@ class ViewStockDetails : AppCompatActivity() {
 //            verificationMethod()
             if (pin.equals(enterPin)) {
                 alertDialog.dismiss()
-                voidStockMethod()
+                deleteItemMethod()
             }else{
                 Toast.makeText(applicationContext, "Please Enter Valid Pin...",Toast.LENGTH_SHORT).show()
             }
@@ -203,7 +208,7 @@ class ViewStockDetails : AppCompatActivity() {
         }
         alertDialog.show()
     }
-    private fun voidStockMethod() {
+    private fun deleteItemMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         progressDialog.setCancelable(false)
@@ -219,50 +224,50 @@ class ViewStockDetails : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        val call=requestInterface.voidStock(itemId)
+        val call=requestInterface.voidStockDetails(itemId)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
-                response: Response<ResponseBody>) {
+                response: Response<ResponseBody>
+            ) {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
                     progressDialog.dismiss()
-//                    viewUtils.showToast(this@ViewStockDetails,"Stock is successfully updated",Toast.LENGTH_SHORT)
                     Toast.makeText(
-                        this@ViewStockDetails,
-                        "Stock is successfully updated",
+                        this@ViewMoveStockDetails,
+                        "Move Stock is successfull.",
                         Toast.LENGTH_LONG
                     ).show()
                     finish()
                 } else {
                     progressDialog.dismiss()
-//                    viewUtils.showToast(this@ViewStockDetails,"Please try again later",Toast.LENGTH_SHORT)
+//                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
                     Toast.makeText(
-                        this@ViewStockDetails,
+                        this@ViewMoveStockDetails,
                         "Please try again later",
                         Toast.LENGTH_LONG
                     ).show()
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
+//                viewUtils.showToast(this@ViewSingleItem,"Connection Failed,Please try again later",Toast.LENGTH_SHORT)
                 Toast.makeText(
-                    this@ViewStockDetails,
-                    "Connection failed,please try again later",
+                    this@ViewMoveStockDetails,
+                    "Connection Failed,Please try again late",
                     Toast.LENGTH_LONG
                 ).show()
-//                viewUtils.showToast(this@ViewStockDetails,"Connection failed,please try again later",Toast.LENGTH_SHORT)
-
             }
         })
     }
-    private fun viewDetailsMethod() {
+
+    private fun loadDataFromServer() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         progressDialog.setCancelable(false)
         val userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        Log.e("token",userToken+" ")
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $userToken")
@@ -274,7 +279,8 @@ class ViewStockDetails : AppCompatActivity() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-       val call=requestInterface.getStock(itemId)
+        val call=requestInterface.getMove(itemId)
+        Log.e("request",call.request().url().toString()+" ")
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -284,28 +290,30 @@ class ViewStockDetails : AppCompatActivity() {
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     try {
-                        if (stockBy == "ByLocation") {
+                        if(stockBy == "ByLocation") {
                             val gson = Gson()
-                            val stockByLocationResponse = gson.fromJson(response.body().string(), StockByLocationResponse::class.java)
+                            val moveByLocationModel = gson.fromJson(response.body().string(), MoveByLocationModel::class.java)
+                            txtItem.text = "From Location"
+                            txt_toLocation.text="To Location"
+                            edtCategory.setText(moveByLocationModel.fromShopName)
+                            edt_tolocation.setText(moveByLocationModel.toShopName)
+                            stockByLocation(moveByLocationModel)
+                        }else if(stockBy == "ByItem"){
+                            val gson = Gson()
+                            val moveByItemModel = gson.fromJson(response.body().string(), MoveByItemModel::class.java)
                             txtItem.text = "Location"
-                            edtCategory.setText(stockByLocationResponse.shopName)
-                            stockByLocation(stockByLocationResponse.stock)
-                        } else if(stockBy == "ByItem"){
-                            val gson = Gson()
-                            val stockByItemResponse = gson.fromJson(response.body().string(), StockByItemResponse::class.java)
-                            txtItem.text = "Item"
-                            edtCategory.setText(stockByItemResponse.itemName)
-                            stockByItem(stockByItemResponse.stock)
+                            txt_toLocation.text="Item"
+                            edtCategory.setText(moveByItemModel.fromShopName)
+                            edt_tolocation.setText(moveByItemModel.itemName)
+                            stockByItem(moveByItemModel.stock)
                         }
                     } catch (e: Exception ) {
                         e.stackTrace
                     }
                 } else {
                     progressDialog.dismiss()
-
-//                    viewUtils.showToast(this@ViewStockDetails,"Please try again later",Toast.LENGTH_SHORT)
                     Toast.makeText(
-                        this@ViewStockDetails,
+                        this@ViewMoveStockDetails,
                         "please try again later",
                         Toast.LENGTH_LONG
                     ).show()
@@ -314,26 +322,26 @@ class ViewStockDetails : AppCompatActivity() {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
-//                viewUtils.showToast(this@ViewStockDetails,"Connection failed,please try again later",Toast.LENGTH_SHORT)
                 Toast.makeText(
-                    this@ViewStockDetails,
+                    this@ViewMoveStockDetails,
                     "Connection failed,please try again later",
                     Toast.LENGTH_LONG
                 ).show()
             }
         })
+
     }
-    private fun stockByItem(stockByItemDtlResponseList: List<StockByItemDtlResponse>?) {
+    private fun stockByItem(stockByItemDtlResponseList: List<MoveByItemModel.Stock>?) {
         val inflater = LayoutInflater.from(this)
         tblContact.removeAllViews()
         stockByItemDtlResponseList?.forEachIndexed { index, element ->
-            setValues(index,"Location", element.shopName, element.quantity)
+            setValues(index,"Location", element.toShopName, element.quantity)
         }
     }
-    private fun stockByLocation(stockByLocDtlResponseList: List<StockByLocDtlResponse>?) {
+    private fun stockByLocation(stockByLocDtlResponseList: MoveByLocationModel) {
         val inflater = LayoutInflater.from(this)
         tblContact.removeAllViews()
-        stockByLocDtlResponseList?.forEachIndexed { index, element ->
+        stockByLocDtlResponseList.stock?.forEachIndexed { index, element ->
             setValues(index,"Item", element.itemName, element.quantity)
         }
     }

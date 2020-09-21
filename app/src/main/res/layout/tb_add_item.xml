@@ -53,6 +53,7 @@
                android:layout_height="wrap_content"
                android:hint="Type here..."
                android:layout_weight="1"
+               android:textSize="@dimen/dimen_12sp"
                android:textColorHint="@color/black"
                android:imeOptions="actionNext"
                android:inputType="text"
@@ -84,6 +85,7 @@
           android:textColorHint="@color/black"
           android:imeOptions="actionNext"
           android:inputType="number"
+          android:textSize="@dimen/dimen_12sp"
           android:textColor="@color/black" />
 
         </LinearLayout>

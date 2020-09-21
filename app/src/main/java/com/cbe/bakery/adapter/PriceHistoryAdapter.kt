@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cbe.bakery.R
 import com.cbe.bakery.ViewSingleItem
 import com.cbe.bakery.model.ItemHistoryModel
+import com.cbe.bakery.utils.ViewUtils
 import kotlinx.android.synthetic.main.price_history_recyclerview_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -26,10 +27,13 @@ class PriceHistoryAdapter(
 
     var mContext: Context
 
+    var viewUtils: ViewUtils
+
     class CountryHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     init {
         filterList = itemHistList
+        viewUtils= ViewUtils()
         mContext= homeActivity
     }
 
@@ -49,9 +53,9 @@ class PriceHistoryAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        holder.itemView.costPrice.text = "Cost Price: " + filterList[position].costPrice.toString()
-        holder.itemView.sellingPrice.text = "Selling Price: " + filterList[position].sellingPrice.toString()
-        holder.itemView.modifiedOn.text = "Modified On: " + filterList[position].modifiedOn.toString()
+        holder.itemView.costPrice.text =  filterList[position].costPrice.toString()
+        holder.itemView.sellingPrice.text = filterList[position].sellingPrice.toString()
+        holder.itemView.modifiedOn.text = viewUtils.dateConversion(filterList[position].modifiedOn.toString())
     }
 
     override fun getFilter(): Filter {

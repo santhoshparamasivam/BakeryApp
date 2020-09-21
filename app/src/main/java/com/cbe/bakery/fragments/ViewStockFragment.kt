@@ -140,6 +140,7 @@ class ViewStockFragment : Fragment(){
     private fun viewStockMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()

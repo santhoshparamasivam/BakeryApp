@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
+    >
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/rectangle_bg">
+
+        <LinearLayout
+            android:id="@+id/frame_lay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:textSize="@dimen/dimen_15sp"
+                    android:hint="@string/tolocation"
+                    android:id="@+id/txt_field_name"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black" />
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/edtFieldValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Type here..."
+                    android:layout_weight="1"
+                    android:textSize="@dimen/dimen_12sp"
+                    android:textColorHint="@color/black"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:hint="@string/qty_move"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+
+
+                <EditText
+                    android:id="@+id/edtQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColorHint="@color/black"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textSize="@dimen/dimen_12sp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:hint="@string/available_qty"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+
+
+                <EditText
+                    android:id="@+id/available_qty"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColorHint="@color/black"
+                    android:imeOptions="actionNext"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:editable="false"
+                    android:inputType="number"
+                    android:textSize="@dimen/dimen_12sp"
+                    android:textColor="@color/black" />
+               <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:hint="@string/mrp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+
+
+                <EditText
+                    android:id="@+id/mrp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColorHint="@color/black"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:editable="false"
+                    android:imeOptions="actionNext"
+                    android:textSize="@dimen/dimen_12sp"
+                    android:inputType="number"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/availQtyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:padding="5dp"
+                    android:hint="Avl. Qty"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+
+
+                <EditText
+                    android:id="@+id/edtAvailableQuantity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:padding="5dp"
+                    android:enabled="false"
+                    android:cursorVisible="false"
+                    android:textColorHint="@color/black"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/ic_minus" />
+    </LinearLayout>
+</TableRow>

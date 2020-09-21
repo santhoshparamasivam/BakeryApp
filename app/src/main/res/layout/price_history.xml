@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
+    android:background="@drawable/draw_white_border"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/white" />
+        >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/price_history_recyclerview"
         android:layout_width="match_parent"
@@ -21,4 +20,5 @@
         android:layout_marginBottom="10dp"
         android:layout_height="match_parent"
         />
+    </LinearLayout>
 </LinearLayout>

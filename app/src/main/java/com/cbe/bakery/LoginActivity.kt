@@ -11,6 +11,7 @@ import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
+import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
@@ -24,10 +25,12 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var sessionManager: SessionManager
     lateinit var id:String
+    private lateinit var viewUtils: ViewUtils
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         supportActionBar?.hide()
+        viewUtils = ViewUtils()
           sessionManager = SessionManager(this)
         loginBtn.setOnClickListener {
             if (loginEmailId.text.isEmpty()){
@@ -52,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
         val progressDialog = ProgressDialog(this@LoginActivity)
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         val requestInterface = Retrofit.Builder()
             .baseUrl(ApiManager.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -78,20 +82,20 @@ class LoginActivity : AppCompatActivity() {
                            SessionKeys.AUTH_TOKEN,
                            response.body().tokenType + " " + response.body().accessToken
                        )
+//                       viewUtils.showToast(this@LoginActivity,"Logged In Successfully",Toast.LENGTH_SHORT)
                        Toast.makeText(
-                           applicationContext,
+                           this@LoginActivity,
                            "Logged In Successfully",
                            Toast.LENGTH_LONG
-                       )
-                           .show()
+                       ).show()
                        intent = Intent(applicationContext, HomeActivity::class.java)
                        startActivity(intent)
                        finish()
                    } else {
                        progressDialog.dismiss()
-                       Log.e("response", response.message() + "")
+//                       viewUtils.showToast(this@LoginActivity,"Please Check Username And Password and try again later",Toast.LENGTH_SHORT)
                        Toast.makeText(
-                           applicationContext,
+                           this@LoginActivity,
                            "Please Check Username And Password and try again later",
                            Toast.LENGTH_LONG
                        ).show()
@@ -101,7 +105,12 @@ class LoginActivity : AppCompatActivity() {
            override fun onFailure(call: Call<LoginModel>, t: Throwable) {
                progressDialog.dismiss()
                 t.printStackTrace()
-               Toast.makeText(applicationContext, "Log in failed, Please try again later",Toast.LENGTH_LONG).show()
+//               viewUtils.showToast(this@LoginActivity,"Connection failed. please try again later",Toast.LENGTH_SHORT)
+               Toast.makeText(
+                   this@LoginActivity,
+                   "Connection failed. please try again later",
+                   Toast.LENGTH_LONG
+               ).show()
            }
         })
     }

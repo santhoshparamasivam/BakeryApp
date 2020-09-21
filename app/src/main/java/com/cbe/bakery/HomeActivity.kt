@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.cbe.bakery.fragments.HomeFragment
 import com.cbe.bakery.fragments.ViewItemsFragment
+import com.cbe.bakery.fragments.ViewMoveFragment
 import com.cbe.bakery.fragments.ViewStockFragment
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
@@ -66,6 +67,12 @@ class HomeActivity : AppCompatActivity() {
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar, 0, 0
         )
+        move_stock_menu.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+//            intent = Intent(applicationContext, MoveStockActivity::class.java)
+//            startActivity(intent)
+            loadFragment(ViewMoveFragment())
+        }
 
         add_stock_menu.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -100,29 +107,8 @@ class HomeActivity : AppCompatActivity() {
             loadFragment(ViewItemsFragment())
         }
 
-//        remove_stock_menu.setOnClickListener {
-//
-//        }
 
         logout_menu.setOnClickListener {
-//            viewUtils.alertViewDialog(
-//                this,
-//                "Are you sure you want to Logout?",
-//                "Yes",
-//                "No",
-//                true,
-//                positiveDialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                    dialog.dismiss()
-//                    sessionManager.clearSession()
-//                    Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
-//                    intent = Intent(applicationContext, LoginActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                },
-//                negative_dialogInterface = DialogInterface.OnClickListener { dialog, which ->
-//                    dialog.dismiss()
-//
-//                }
             viewUtils.bakeryAlert(
                 this,
                 "Are you sure you want to Logout?",
@@ -130,7 +116,12 @@ class HomeActivity : AppCompatActivity() {
              DialogInterface.OnClickListener { dialog, which ->
                     dialog.dismiss()
                  sessionManager.clearSession()
-                    Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
+                 Toast.makeText(
+                     this@HomeActivity,
+                     "Logged Out Successfully",
+                     Toast.LENGTH_LONG
+                 ).show()
+//                 viewUtils.showToast(this@HomeActivity,"Logged Out Successfully",Toast.LENGTH_SHORT)
                     intent = Intent(applicationContext, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -181,11 +172,18 @@ class HomeActivity : AppCompatActivity() {
         if (doubleBackToExitPressedOnce) {
 
             super.onBackPressed()
+            finish()
             return
         }
 
         this.doubleBackToExitPressedOnce = true
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+//        viewUtils.showToast(this@HomeActivity,"Please click BACK again to exit",Toast.LENGTH_SHORT)
+        Toast.makeText(
+            this@HomeActivity,
+            "Please click BACK again to exit",
+            Toast.LENGTH_LONG
+        ).show()
         Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
 
     }

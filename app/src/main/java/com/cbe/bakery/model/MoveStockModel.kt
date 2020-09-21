@@ -1,16 +1,16 @@
 package com.cbe.bakery.model
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
-class StockModel {
+class MoveStockModel {
     @SerializedName("id")
     @Expose
     var id: Int? = null
 
     @SerializedName("transId")
     @Expose
-    var name: String? = null
+    var transId: String? = null
 
     @SerializedName("shopId")
     @Expose
@@ -18,7 +18,7 @@ class StockModel {
 
     @SerializedName("itemId")
     @Expose
-    var itemId: Long? = null
+    var itemId: Any? = null
 
     @SerializedName("shop")
     @Expose
@@ -27,6 +27,10 @@ class StockModel {
     @SerializedName("item")
     @Expose
     var item: Any? = null
+
+    @SerializedName("action")
+    @Expose
+    var action: String? = null
 
     @SerializedName("createdBy")
     @Expose
@@ -43,5 +47,4 @@ class StockModel {
     @SerializedName("modifiedBy")
     @Expose
     var modifiedBy: Any? = null
-
 }

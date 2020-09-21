@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_above="@+id/btn_void"
         >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorAccent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            android:theme="@style/MyThemeOverlay_Toolbar2"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/move_stock"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    />
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -27,11 +53,12 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/location"
+                        android:text="@string/item"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
                         android:layout_weight="0.4"
                         android:textSize="16sp"
+                        android:id="@+id/txt_item"
                         android:gravity="start" />
                     <!--                    <TextView-->
                     <!--                        android:layout_width="wrap_content"-->
@@ -48,10 +75,10 @@
                         android:hint=""
                         android:editable="false"
                         android:focusable="false"
+                        android:clickable="false"
                         android:layout_weight="1"
                         android:inputType="text"
-                        android:clickable="false"
-                        android:id="@+id/edt_location"
+                        android:id="@+id/edt_category"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />
@@ -59,14 +86,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="10dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/item_units"
+                        android:text="Location"
                         android:layout_gravity="center"
                         android:layout_weight="0.4"
+                        android:id="@+id/txt_toLocation"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
@@ -87,7 +114,8 @@
                         android:inputType="text"
                         android:editable="false"
                         android:clickable="false"
-                        android:id="@+id/edt_item"
+                        android:focusable="false"
+                        android:id="@+id/edt_tolocation"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />
@@ -107,15 +135,6 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:gravity="start" />
-                    <!--                    <TextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:text=" : "-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="16sp"-->
-                    <!--                        android:gravity="start" />-->
-
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -137,61 +156,17 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginTop="10dp" />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/lyt_add_item"
-                    android:layout_marginTop="10dp">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_plus"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="@string/add_item"
-                        android:layout_gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:gravity="start"
-                        android:layout_marginLeft="10dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/bottomView"
-                    android:orientation="vertical"
-                    >
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/create_stock_text"
-                        android:layout_margin="5sp"
-                        android:id="@+id/create_stock"
-                        android:background="@color/colorAccent"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        />
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/remove_stock"
-                        android:layout_margin="5sp"
-                        android:id="@+id/removeStock"
-                        android:background="@color/colorAccent"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/void_stock"
+        android:id="@+id/btn_void"
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>

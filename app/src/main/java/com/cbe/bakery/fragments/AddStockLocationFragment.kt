@@ -61,7 +61,7 @@ class AddStockLocationFragment : Fragment(){
     var shopList: ArrayList<ShopModel> = ArrayList()
     var finalShopList: ArrayList<ShopModel> = ArrayList()
     var shopId: Long = 0L
-    lateinit var edtCategory: EditText
+    lateinit var edtLocation: EditText
     private lateinit var createStock: Button
     private lateinit var removeStock: Button
     private lateinit var lytAddItem: LinearLayout
@@ -77,7 +77,7 @@ class AddStockLocationFragment : Fragment(){
         sessionManager =
             SessionManager(activity)
         progressDialog = ProgressDialog(activity)
-        edtCategory=view.findViewById(R.id.edt_category)
+        edtLocation=view.findViewById(R.id.edt_location)
         createStock=view.findViewById(R.id.create_stock)
         removeStock=view.findViewById(R.id.removeStock)
         lytAddItem=view.findViewById(R.id.lyt_add_item)
@@ -97,22 +97,22 @@ class AddStockLocationFragment : Fragment(){
 
             multiItemAdded()
         }
-        edtCategory.setOnClickListener {
+        edtLocation.setOnClickListener {
 
             getShopName()
 
         }
         removeStock.setOnClickListener {
-            if (edtCategory.text.toString().isEmpty()) {
-                edtCategory.error = "Please Enter Category.."
+            if (edtLocation.text.toString().isEmpty()) {
+                edtLocation.error = "Please Enter Category.."
             } else {
                 removeStockMethod()
 
             }
         }
         createStock.setOnClickListener {
-            if (edtCategory.text.toString().isEmpty()) {
-                edtCategory.error = "Please Enter Category.."
+            if (edtLocation.text.toString().isEmpty()) {
+                edtLocation.error = "Please Enter Category.."
             } else {
                 addStockToServer()
 
@@ -142,6 +142,7 @@ class AddStockLocationFragment : Fragment(){
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
@@ -166,7 +167,7 @@ class AddStockLocationFragment : Fragment(){
                         Toast.LENGTH_LONG
                     ).show()
                     tblContact.removeAllViews()
-                    edtCategory.text=null
+                    edtLocation.text=null
                     edt_item.text=null
                     edt_sell_Price.text=null
                 } else {
@@ -210,6 +211,7 @@ class AddStockLocationFragment : Fragment(){
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
@@ -234,7 +236,7 @@ class AddStockLocationFragment : Fragment(){
                         Toast.LENGTH_LONG
                     ).show()
                     tblContact.removeAllViews()
-                    edtCategory.text=null
+                    edtLocation.text=null
                     edt_item.text=null
                     edt_sell_Price.text=null
                 } else {
@@ -358,6 +360,7 @@ class AddStockLocationFragment : Fragment(){
     private fun getShopName() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
+        progressDialog.setCancelable(false)
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
@@ -442,7 +445,7 @@ class AddStockLocationFragment : Fragment(){
                         if (shopDialog.isShowing) {
                             shopDialog.dismiss()
                         }
-                        edtCategory.setText(finalShopList[position].name.toString())
+                        edtLocation.setText(finalShopList[position].name.toString())
                         shopId = finalShopList[position].id!!
                     }
                 })
@@ -455,6 +458,9 @@ class AddStockLocationFragment : Fragment(){
         shopDialog.show()
     }
     private fun getProductName() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        progressDialog.setCancelable(false)
         itemList.clear()
         newList.clear()
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN)
@@ -474,19 +480,25 @@ class AddStockLocationFragment : Fragment(){
                 call: Call<ArrayList<ItemsModel>>,
                 response: Response<ArrayList<ItemsModel>>
             ) {
+                progressDialog.dismiss()
                 if (response.code() == 200) {
+
+                    progressDialog.dismiss()
                     itemList = response.body()
                     for(items in itemList){
                         searchList.add(items.name!!)
                         itemsMap.put(items.name!!, items)
                     }
                 } else {
+                    progressDialog.dismiss()
                     Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
                         .show()
+
                 }
             }
             override fun onFailure(call: Call<ArrayList<ItemsModel>>, t: Throwable) {
                 t.printStackTrace()
+                progressDialog.dismiss()
                 Toast.makeText(
                     activity,
                     "Connection failed,Please try again later",

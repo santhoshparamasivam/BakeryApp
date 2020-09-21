@@ -24,13 +24,75 @@
             android:background="@color/white"
             android:textColor="@color/white" />
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/please_enter_passcode"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            />
+        <LinearLayout
             android:id="@+id/messageTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginStart="@dimen/dimen_15sp"
+            android:layout_marginEnd="@dimen/dimen_15sp"
+            android:layout_marginTop="@dimen/dimen_15sp"
+            android:orientation="horizontal"
             android:padding="@dimen/dimen_10sp"
-            android:text="Lets display alert message here"
-            android:textColor="@color/black" />
+            android:textColor="@color/black" >
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="0.1"
+                android:maxLength="1"
+
+                android:id="@+id/edt_one"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:layout_weight="0.1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+
+                android:maxLength="1"
+
+                android:id="@+id/edt_two"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:layout_weight="0.1"
+                android:gravity="center"
+
+                android:maxLength="1"
+                android:layout_margin="5dp"
+
+                android:id="@+id/edt_three"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:layout_weight="0.1"
+
+                android:id="@+id/edt_four"
+                android:gravity="center"
+                android:maxLength="1"
+                android:layout_margin="5dp"
+
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,7 +111,7 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="6dp"
                 android:layout_margin="8dp"
-                android:text="@string/alert_no"
+                android:text="@string/alert_cancel"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_15sp" />
 
@@ -63,7 +125,7 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="6dp"
                 android:layout_margin="8dp"
-                android:text="@string/alert_yes"
+                android:text="@string/alert_confirm"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_15sp" />
         </LinearLayout>
