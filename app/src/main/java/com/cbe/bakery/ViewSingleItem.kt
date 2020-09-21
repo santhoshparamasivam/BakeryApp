@@ -101,6 +101,7 @@ class ViewSingleItem : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         mContext= this
         supportActionBar?.title ="View Items"
+
         sessionManager= SessionManager(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
