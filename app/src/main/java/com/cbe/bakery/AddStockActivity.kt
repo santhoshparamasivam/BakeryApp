@@ -18,9 +18,6 @@ import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
 import com.cbe.bakery.utils.ViewUtils
-import com.cbe.bakery.R
-import com.cbe.bakery.fragments.MoveStockItemFragment
-import com.cbe.bakery.fragments.MoveStockLocationFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -56,7 +53,13 @@ class AddStockActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         navBottomView=findViewById(R.id.nav_bottomView)
         setSupportActionBar(toolbar)
+        if(type=="removeStock") {
+            supportActionBar?.title = "Remove Stock"
+        }else if(type=="addStock") {
             supportActionBar?.title = "Add Stock"
+        }
+
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {

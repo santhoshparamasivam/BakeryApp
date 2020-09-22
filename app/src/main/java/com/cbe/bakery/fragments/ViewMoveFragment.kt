@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.cbe.bakery.*
 import com.cbe.bakery.adapter.MoveStockAdapter
-import com.cbe.bakery.model.ItemsModel
 import com.cbe.bakery.model.MoveStockModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService

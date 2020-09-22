@@ -31,7 +31,6 @@ import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_add_stock.*
-import kotlinx.android.synthetic.main.tb_add_item.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -85,13 +84,13 @@ class AddStockItemFragment : Fragment(){
         if(type=="removeStock") {
             createStock.visibility=View.GONE
             removeStock.visibility=View.VISIBLE
-        }else if(type=="adStock") {
+        }else if(type=="addStock") {
             createStock.visibility = View.VISIBLE
             removeStock.visibility = View.GONE
         }
 
         lytAddItem.setOnClickListener {
-            multiStockList.add(MultiStockAdd("1", "1"))
+            multiStockList.add(MultiStockAdd("", ""))
 
             multiItemAdded()
         }
@@ -102,18 +101,30 @@ class AddStockItemFragment : Fragment(){
 
 
         createStock.setOnClickListener {
-            if(edtCategory.text.toString().isEmpty()){
-                edtCategory.error="Please Enter Category.."
-            }else
+
+            var containsError = false;
+
+            for(item in multiStockList) {
+                if(item.location == null || item.quantity == null || Integer.parseInt(item.quantity!!)<=0){
+                    containsError = true;
+                    break;
+                }
+            }
+
+            if(edtCategory.text.toString().isEmpty()) {
+                edtCategory.error="Please enter item."
+            } else if(containsError) {
+                Toast.makeText(activity, "Please enter valid details.", Toast.LENGTH_LONG).show()
+            } else {
                 addStockToServer()
+            }
         }
 
         removeStock.setOnClickListener {
             if (edtCategory.text.toString().isEmpty()) {
-                edtCategory.error = "Please Enter Category.."
+                edtCategory.error = "Please enter item."
             } else {
                 removeStockMethod()
-
             }
         }
 
@@ -311,7 +322,7 @@ class AddStockItemFragment : Fragment(){
 
             if(type=="removeStock") {
                 availQtyLayout.visibility = View.GONE
-            }else if(type=="adStock") {
+            }else if(type=="addStock") {
                 availQtyLayout.visibility = View.VISIBLE
             }
 

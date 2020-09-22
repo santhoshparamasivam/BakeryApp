@@ -30,7 +30,6 @@ import com.cbe.bakery.utils.RecyclerItemClickListener
 import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_add_stock.*
 import kotlinx.android.synthetic.main.fragment_move_stock_location.*
 import okhttp3.OkHttpClient
 import okhttp3.Request

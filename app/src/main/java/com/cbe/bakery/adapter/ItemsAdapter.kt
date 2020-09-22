@@ -50,7 +50,7 @@ class ItemsAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val encodedURL: String = URLEncoder.encode(finalList[position].imageFileName, "UTF-8").replace("+", "%20")
-        var uri= BASE_URL+"downloadfile/item/"+encodedURL
+        var uri= BASE_URL+"/downloadfile/item/"+encodedURL
 
         Glide.with(mContext).load( uri).into(holder.itemView.imageView)
 

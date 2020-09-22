@@ -59,8 +59,9 @@ class ViewStockFragment : Fragment(){
         swipeRefresh=view.findViewById(R.id.swipeRefresh)
         if(type=="removeStock") {
             activity?.title = "Remove Stock"
-        }else if(type=="adStock")
+        }else if(type=="addStock") {
             activity?.title = "View Stock"
+        }
 
 
         progressDialog= ProgressDialog(activity)
@@ -120,17 +121,18 @@ class ViewStockFragment : Fragment(){
                 object :
                     RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
-                        val intent = Intent(
-                            context,
-                            ViewStockDetails::class.java
-                        )
-                        intent.putExtra("ItemId", stockList[position].id);
-                        if (stockList[position].item != null)
-                            intent.putExtra("stockBy", "ByItem");
-                        if (stockList[position].shop != null)
-                            intent.putExtra("stockBy", "ByLocation");
+                           val intent = Intent(
+                                context,
+                                ViewStockDetails::class.java
+                            )
+                            intent.putExtra("ItemId", stockList[position].id);
+                            if (stockList[position].item != null)
+                                intent.putExtra("stockBy", "ByItem");
+                            if (stockList[position].shop != null)
+                                intent.putExtra("stockBy", "ByLocation");
 
-                        context!!.startActivity(intent)
+                            context!!.startActivity(intent)
+
                     }
                 })
         )
@@ -153,31 +155,60 @@ class ViewStockFragment : Fragment(){
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
-        requestInterface.getViewStock().enqueue(object : Callback<ArrayList<StockModel>> {
-            override fun onResponse(
-                call: Call<ArrayList<StockModel>>,
-                response: Response<ArrayList<StockModel>>
-            ) {
-                progressDialog.dismiss()
-                if (response.code() == 200) {
-                    progressDialog.dismiss()
-                    stockList = response.body()
-                    setAdapterMethod(stockList)
-                } else {
-                    progressDialog.dismiss()
-                }
-            }
 
-            override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
-                t.printStackTrace()
-                progressDialog.dismiss()
-                Toast.makeText(
-                    activity,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
+        if(type=="addStock") {
+            requestInterface.getAddStock().enqueue(object : Callback<ArrayList<StockModel>> {
+                override fun onResponse(
+                    call: Call<ArrayList<StockModel>>,
+                    response: Response<ArrayList<StockModel>>
+                ) {
+                    progressDialog.dismiss()
+                    if (response.code() == 200) {
+                        progressDialog.dismiss()
+                        stockList = response.body()
+                        setAdapterMethod(stockList)
+                    } else {
+                        progressDialog.dismiss()
+                    }
+                }
+
+                override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
+                    t.printStackTrace()
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        activity,
+                        "Connection failed,Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+        } else if(type=="removeStock") {
+            requestInterface.getRemoveStock().enqueue(object : Callback<ArrayList<StockModel>> {
+                override fun onResponse(
+                    call: Call<ArrayList<StockModel>>,
+                    response: Response<ArrayList<StockModel>>
+                ) {
+                    progressDialog.dismiss()
+                    if (response.code() == 200) {
+                        progressDialog.dismiss()
+                        stockList = response.body()
+                        setAdapterMethod(stockList)
+                    } else {
+                        progressDialog.dismiss()
+                    }
+                }
+
+                override fun onFailure(call: Call<ArrayList<StockModel>>, t: Throwable) {
+                    t.printStackTrace()
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        activity,
+                        "Connection failed,Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+        }
     }
     private fun setAdapterMethod(stockList: ArrayList<StockModel>) {
         recyclerview.layoutManager = LinearLayoutManager(recyclerview.context)

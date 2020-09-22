@@ -9,7 +9,6 @@ import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
-import com.cbe.bakery.R
 import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonObject
 import retrofit2.Call

@@ -77,7 +77,7 @@ class HomeActivity : AppCompatActivity() {
         add_stock_menu.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
             val bundle = Bundle()
-            bundle.putString("type", "adStock")
+            bundle.putString("type", "addStock")
             val fragment= ViewStockFragment()
             fragment.arguments = bundle;
             val transaction = supportFragmentManager.beginTransaction()

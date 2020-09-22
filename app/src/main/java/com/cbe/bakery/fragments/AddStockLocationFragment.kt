@@ -87,7 +87,7 @@ class AddStockLocationFragment : Fragment(){
         if(type=="removeStock") {
             createStock.visibility=View.GONE
             removeStock.visibility=View.VISIBLE
-        }else if(type=="adStock") {
+        }else if(type=="addStock") {
             createStock.visibility = View.VISIBLE
             removeStock.visibility = View.GONE
         }
@@ -111,8 +111,19 @@ class AddStockLocationFragment : Fragment(){
             }
         }
         createStock.setOnClickListener {
+
+            var containsError = false;
+            for(item in multiStockList) {
+                if(item.location == null || item.quantity == null || Integer.parseInt(item.quantity!!)<=0) {
+                    containsError = true;
+                    break;
+                }
+            }
+
             if (edtLocation.text.toString().isEmpty()) {
                 edtLocation.error = "Please Enter Category.."
+            } else if(containsError) {
+                Toast.makeText(activity, "Please enter valid details.", Toast.LENGTH_LONG).show()
             } else {
                 addStockToServer()
 
@@ -121,7 +132,8 @@ class AddStockLocationFragment : Fragment(){
         getProductName()
         multiItemAdded()
 
-        return view }
+        return view
+    }
 
     private fun removeStockMethod() {
         var objects = JsonObject()
@@ -288,7 +300,7 @@ class AddStockLocationFragment : Fragment(){
 
             if(type=="removeStock") {
                 availQtyLayout.visibility = View.GONE
-            }else if(type=="adStock") {
+            }else if(type=="addStock") {
                 availQtyLayout.visibility = View.VISIBLE
             }
 

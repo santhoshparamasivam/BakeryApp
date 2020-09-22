@@ -7,27 +7,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.AsyncTask
 import android.text.TextUtils
 import android.view.View
 import android.view.Window
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentActivity
 import com.cbe.bakery.R
-import com.cbe.bakery.model.AvailableQuantity
-import com.cbe.bakery.retrofitService.ApiManager
-import com.cbe.bakery.retrofitService.ApiService
-import com.cbe.bakery.sessionManager.SessionKeys
-import com.cbe.bakery.sessionManager.SessionManager
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 

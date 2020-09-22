@@ -1,11 +1,8 @@
 package com.cbe.bakery.utils
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.AsyncTask
-import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.cbe.bakery.model.AvailableQuantity
 import com.cbe.bakery.retrofitService.ApiManager

@@ -2,7 +2,6 @@ package com.cbe.bakery
 
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -24,7 +23,6 @@ import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
 import com.cbe.bakery.utils.ViewUtils
-import com.cbe.bakery.R
 import com.cbe.bakery.model.PinVerificationModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_view_stock_details.*

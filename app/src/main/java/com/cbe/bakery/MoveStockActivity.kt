@@ -10,8 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.cbe.bakery.fragments.AddStockItemFragment
-import com.cbe.bakery.fragments.AddStockLocationFragment
 import com.cbe.bakery.fragments.MoveStockItemFragment
 import com.cbe.bakery.fragments.MoveStockLocationFragment
 import com.cbe.bakery.model.ShopModel

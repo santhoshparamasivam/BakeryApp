@@ -54,8 +54,11 @@ interface ApiService {
         ) id: Long
     ): Call<ArrayList<ItemHistoryModel>>
 
-    @GET("/stock")
-    fun getViewStock(): Call<ArrayList<StockModel>>
+    @GET("/stock/getAddStockList")
+    fun getAddStock(): Call<ArrayList<StockModel>>
+
+    @GET("/stock/getRemoveStockList")
+    fun getRemoveStock(): Call<ArrayList<StockModel>>
 
     @GET("/items/getAvailableQuantity/{shopId}/{itemId}")
     fun getAvailableQuantity(@Path(value = "shopId", encoded = true) shopId: Long, @Path(value = "itemId", encoded = true) itemId: Long): Call<AvailableQuantity>
