@@ -468,6 +468,8 @@ class MoveStockItemFragment : Fragment(){
                     toLocation.tag as MoveMultiStockAdd
                 multiStockList.remove(multiContact)
                 multiItemAdded()
+                var accumulatedItemCount = getAccumulatedItemCount(0)
+                txt_qty.setText((actualFromAvlQty - accumulatedItemCount).toString())
             }
 
             userEnteredQuantity.addTextChangedListener(object : TextWatcher {

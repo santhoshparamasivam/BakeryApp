@@ -824,7 +824,7 @@ class ViewSingleItem : AppCompatActivity() {
                             "+",
                             "%20"
                         )
-                    var uri = BASE_URL + "/downloadfile/item/" + encodedURL
+                    var uri = BASE_URL + "downloadfile/item/" + encodedURL
 
                     Glide.with(mContext as ViewSingleItem).load(uri).into(itemImageView)
 

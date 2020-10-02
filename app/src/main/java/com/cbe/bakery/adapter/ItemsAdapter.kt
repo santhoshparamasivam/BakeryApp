@@ -50,7 +50,7 @@ class ItemsAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val encodedURL: String = URLEncoder.encode(finalList[position].imageFileName, "UTF-8").replace("+", "%20")
-        var uri= BASE_URL+"/downloadfile/item/"+encodedURL
+        var uri= BASE_URL+"downloadfile/item/"+encodedURL
 
         Glide.with(mContext).load( uri).into(holder.itemView.imageView)
 
@@ -64,35 +64,4 @@ class ItemsAdapter(
             mContext.startActivity(intent)
         }
     }
-
-
-//    fun getFilter(): Filter {
-//        return object : Filter() {
-//            override fun performFiltering(constraint: CharSequence?): FilterResults {
-//                val charSearch = constraint.toString()
-//                if (charSearch.isEmpty()) {
-//                    finalList =  itemList
-//                } else {
-//                    val resultList = ArrayList<ItemsModel>()
-//                    for (row in itemList) {
-//                        if (row.name.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)) ||row.itemCategory.toString().toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
-//                            resultList.add(row)
-//                        }
-//                    }
-//                    finalList = resultList
-//                }
-//                val filterResults = FilterResults()
-//                filterResults.values = finalList
-//                return filterResults
-//            }
-//
-//            @Suppress("UNCHECKED_CAST")
-//            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-//                finalList = results?.values as  ArrayList<ItemsModel>
-//                notifyDataSetChanged()
-//            }
-//
-//        }
-//    }
-
 }
