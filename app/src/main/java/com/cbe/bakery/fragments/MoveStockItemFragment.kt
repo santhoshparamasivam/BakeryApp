@@ -19,6 +19,7 @@ import com.cbe.bakery.R
 import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
 import com.cbe.bakery.model.ItemsModel
+import com.cbe.bakery.model.MoveMultiStockAdd
 import com.cbe.bakery.model.MultiStockAdd
 import com.cbe.bakery.model.ShopModel
 import com.cbe.bakery.retrofitService.ApiManager
@@ -44,7 +45,7 @@ import kotlin.math.roundToInt
 
 class MoveStockItemFragment : Fragment(){
 
-    var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
+    var multiStockList: ArrayList<MoveMultiStockAdd> = ArrayList()
     private lateinit var  viewUtils: ViewUtils
     lateinit var toolbar: Toolbar
     var itemList: ArrayList<ItemsModel> = ArrayList()
@@ -69,6 +70,7 @@ class MoveStockItemFragment : Fragment(){
     private lateinit var createStock: Button
 //    private lateinit var removeStock: Button
     var shopId: Long = 0L
+    var totalCount:Int = 0
     private lateinit var lytAddItem: LinearLayout
     lateinit var tblContact: TableLayout
     lateinit var  type: String
@@ -93,7 +95,7 @@ class MoveStockItemFragment : Fragment(){
 
         lytAddItem.setOnClickListener {
             if (edtLocation.text.isNotEmpty()) {
-                multiStockList.add(MultiStockAdd("1", "1"))
+                multiStockList.add(MoveMultiStockAdd("1", "1","1","1"))
                 multiItemAdded()
             }else{
             Toast.makeText(
@@ -411,11 +413,13 @@ class MoveStockItemFragment : Fragment(){
             edtContact.setText(contact.location)
             edtContact.isClickable=false
             edtType.setText(contact.quantity)
+            edtmrp.setText(contact.price)
+            edtAvailableQuantity.setText(contact.availability)
 
 
             btnDelete.setOnClickListener {
-                val multiContact: MultiStockAdd =
-                    edtContact.tag as MultiStockAdd
+                val multiContact: MoveMultiStockAdd =
+                    edtContact.tag as MoveMultiStockAdd
                 multiStockList.remove(multiContact)
                 multiItemAdded()
             }
@@ -438,8 +442,8 @@ class MoveStockItemFragment : Fragment(){
                         if (edtLocation.text.toString() == edtContact.text.toString()) {
                             edtContact.error = "Please select Different location..."
                         } else {
-                            val multiContact: MultiStockAdd =
-                                edtContact.tag as MultiStockAdd
+                            val multiContact: MoveMultiStockAdd =
+                                edtContact.tag as MoveMultiStockAdd
                             multiStockList.remove(multiContact)
                             multiContact.location = edtContact.text.toString()
                             multiStockList.add(multiContact)
@@ -482,10 +486,12 @@ class MoveStockItemFragment : Fragment(){
                         val second=Integer.parseInt(edtType.text.toString())
                             Log.e("first value",first.toString()+" "+second.toString())
                         if(second<= first){
-                            val multiContact: MultiStockAdd =
-                                edtContact.tag as MultiStockAdd
+                            val multiContact: MoveMultiStockAdd =
+                                edtContact.tag as MoveMultiStockAdd
                             multiStockList.remove(multiContact)
                             multiContact.quantity=edtType.text.toString()
+                            multiContact.availability=edtAvailableQuantity.text.toString()
+                            multiContact.price=edtmrp.text.toString()
                             multiStockList.add(multiContact)
                             createStock.visibility==View.VISIBLE;
                         }else {

@@ -21,13 +21,25 @@
             <RelativeLayout
                 android:id="@+id/appBar"
                 android:layout_width="match_parent"
+                android:gravity="center_vertical"
                 android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_add"
+                    android:layout_margin="10dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/img_icon"
+                    />
                 <SearchView
                     android:id="@+id/searchView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:iconifiedByDefault="false"
                     android:queryHint="Search"
+                    android:layout_toRightOf="@+id/img_icon"
+                    android:layout_margin="5dp"
                     android:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
                     app:showAsAction="always|collapseActionView"
                     android:layout_centerHorizontal="true" />
@@ -60,9 +72,13 @@
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="20dp"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/white"
         app:elevation="6dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_plus"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:maxImageSize="40dp"
+       >
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

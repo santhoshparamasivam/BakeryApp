@@ -121,6 +121,7 @@ class ViewSingleItem : AppCompatActivity() {
         edt_radio_service.isEnabled=false
 
         img_query.setOnClickListener {
+            img_query.visibility=View.GONE
             edt_category.isEnabled = true
             edt_category.isCursorVisible=false
             edt_name.isEnabled  = true
@@ -134,7 +135,8 @@ class ViewSingleItem : AppCompatActivity() {
             edt_trackInventory.isEnabled=true
             edt_radio_product.isEnabled=false
             edt_radio_service.isEnabled=false
-            itemImageView.isClickable=true
+            itemImageView.isEnabled=false
+            itemImageView.isClickable=false
             updateItem.visibility= View.VISIBLE
             priceHistory.visibility=View.GONE
             edt_category.requestFocus()
@@ -822,7 +824,7 @@ class ViewSingleItem : AppCompatActivity() {
                             "+",
                             "%20"
                         )
-                    var uri = BASE_URL + "downloadfile/item/" + encodedURL
+                    var uri = BASE_URL + "/downloadfile/item/" + encodedURL
 
                     Glide.with(mContext as ViewSingleItem).load(uri).into(itemImageView)
 

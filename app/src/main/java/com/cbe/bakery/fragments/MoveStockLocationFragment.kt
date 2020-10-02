@@ -19,6 +19,7 @@ import com.cbe.bakery.R
 import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
 import com.cbe.bakery.model.ItemsModel
+import com.cbe.bakery.model.MoveMultiStockAdd
 import com.cbe.bakery.model.MultiStockAdd
 import com.cbe.bakery.model.ShopModel
 import com.cbe.bakery.retrofitService.ApiManager
@@ -42,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.math.roundToInt
 
 class MoveStockLocationFragment : Fragment() {
-    var multiStockList: ArrayList<MultiStockAdd> = ArrayList()
+    var multiStockList: ArrayList<MoveMultiStockAdd> = ArrayList()
     private lateinit var viewUtils: ViewUtils
     lateinit var toolbar: Toolbar
     var itemList: ArrayList<ItemsModel> = ArrayList()
@@ -94,7 +95,7 @@ class MoveStockLocationFragment : Fragment() {
         edtToid = view.findViewById(R.id.edt_to_id)
         lytAddItem.setOnClickListener {
             if (edtLocation.text.isNotEmpty()) {
-                multiStockList.add(MultiStockAdd("1", "1"))
+                multiStockList.add(MoveMultiStockAdd("1", "1","1","1"))
                 multiItemAdded()
             }else{
                 Toast.makeText(
@@ -390,11 +391,12 @@ class MoveStockLocationFragment : Fragment() {
             edtContact.setText(contact.location)
             edtContact.isClickable = false
             edtType.setText(contact.quantity)
-
+            available_qty.setText(contact.availability)
+            mrp.setText(contact.price)
 
             btnDelete.setOnClickListener {
-                val multiContact: MultiStockAdd =
-                    edtContact.tag as MultiStockAdd
+                val multiContact: MoveMultiStockAdd =
+                    edtContact.tag as MoveMultiStockAdd
                 multiStockList.remove(multiContact)
                 multiItemAdded()
             }
@@ -415,8 +417,8 @@ class MoveStockLocationFragment : Fragment() {
                     count: Int
                 ) {
                     if (s.isNotEmpty()) {
-                        val multiContact: MultiStockAdd =
-                            edtContact.tag as MultiStockAdd
+                        val multiContact: MoveMultiStockAdd =
+                            edtContact.tag as MoveMultiStockAdd
                         multiStockList.remove(multiContact)
                         multiContact.location = edtContact.text.toString()
                         multiStockList.add(multiContact)
@@ -456,10 +458,12 @@ class MoveStockLocationFragment : Fragment() {
                         val first=Integer.parseInt(available_qty.text.toString())
                         val second=Integer.parseInt(edtType.text.toString())
                         if(second<= first){
-                            val multiContact: MultiStockAdd =
-                                edtContact.tag as MultiStockAdd
+                            val multiContact: MoveMultiStockAdd =
+                                edtContact.tag as MoveMultiStockAdd
                             multiStockList.remove(multiContact)
                             multiContact.quantity = edtType.text.toString()
+                            multiContact.availability=available_qty.text.toString()
+                            multiContact.price=mrp.text.toString()
                             multiStockList.add(multiContact)
                             moveStock.visibility==View.VISIBLE;
                         }else {

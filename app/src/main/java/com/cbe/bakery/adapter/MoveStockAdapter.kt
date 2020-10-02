@@ -1,10 +1,13 @@
 package com.cbe.bakery.adapter
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.cbe.bakery.R
@@ -48,23 +51,40 @@ class MoveStockAdapter(
         return filterList.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.imageView.visibility=View.GONE
         if (filterList[position].item==null && filterList[position].shop==null){
             holder.itemView.name_text.text = "Item Name :  No values"
         }
-        if (filterList[position].item!=null)
-            holder.itemView.name_text.text = "Item Name :  "+filterList[position].item
+        if (filterList[position].item!=null) {
+            holder.itemView.name_text.text = "Item Name :  " + filterList[position].item
+//            holder.itemView.lay_container.setBackgroundColor(R.color.background_color);
+             }
+        if (filterList[position].shop!=null) {
+            holder.itemView.name_text.text = "Shop Name :  " + filterList[position].shop
+//            holder.itemView.lay_container.setBackgroundColor(R.color.colorAccent);
+//            holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.colorAccent));
 
-        if (filterList[position].shop!=null)
-            holder.itemView.name_text.text = "Shop Name :  "+filterList[position].shop
+        }
+
+            if(filterList[position].action=="MoveByLocation"){
+                holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.byItem));
+
+            }else{
+                holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.byLocation));
+
+            }
+
 
         holder.itemView.stockId.text = "ID: " + filterList[position].transId.toString()
 
-        if(null != filterList[position].createdOn)
-            holder.itemView.stockName.text = "Created On: " + (filterList[position].createdOn.toString())
-        else
+        if(null != filterList[position].createdOn) {
+            holder.itemView.stockName.text =
+                "Created On: " + (filterList[position].createdOn.toString())
+        } else {
             holder.itemView.stockName.text = "Created On: "
+        }
     }
 
 

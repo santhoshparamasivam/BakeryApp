@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,7 @@ import kotlin.collections.ArrayList
 class ViewStockFragment : Fragment(){
     private lateinit var  createItem: ImageView
     private lateinit var  viewItem: ImageView
+    private lateinit var  pageHeaderTxt: TextView
     lateinit var  recyclerview: RecyclerView
     lateinit var sessionManager: SessionManager
     lateinit var progressDialog: ProgressDialog
@@ -57,10 +59,16 @@ class ViewStockFragment : Fragment(){
         viewItem=view.findViewById(R.id.view_item)
         recyclerview=view.findViewById(R.id.recyclerview)
         swipeRefresh=view.findViewById(R.id.swipeRefresh)
+        pageHeaderTxt=view.findViewById(R.id.pageHeaderTxt)
         if(type=="removeStock") {
             activity?.title = "Remove Stock"
+            pageHeaderTxt.text= "Remove Stock"
+            (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_minus))
         }else if(type=="addStock") {
             activity?.title = "View Stock"
+            pageHeaderTxt.text= "View Stock"
+            (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_add))
+
         }
 
 
@@ -80,6 +88,9 @@ class ViewStockFragment : Fragment(){
             activity?.startActivity(intent)
 
         }
+
+
+
 
         (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.searchView!!.setOnQueryTextListener(object :

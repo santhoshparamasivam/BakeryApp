@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,7 +39,7 @@ class ViewMoveFragment : Fragment() {
     var itemList: ArrayList<MoveStockModel> = ArrayList()
     private lateinit var itemsAdapter: MoveStockAdapter
     private lateinit var swipeRefresh: SwipeRefreshLayout
-
+    private lateinit var  pageHeaderTxt: TextView
     @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +52,10 @@ class ViewMoveFragment : Fragment() {
         sessionManager =
             SessionManager(activity)
         progressDialog = ProgressDialog(activity)
+        pageHeaderTxt=view.findViewById(R.id.pageHeaderTxt)
         activity?.title = "Move Stock"
+        pageHeaderTxt.text= "Move Stock"
+        (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_add))
         (activity as HomeActivity?)?.searchView!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.setOnClickListener {

@@ -116,7 +116,7 @@
                     android:focusable="false"
                     android:editable="false"
                     android:textSize="@dimen/dimen_12sp"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textColor="@color/black" />
                 <TextView
                     android:layout_width="0dp"
@@ -139,7 +139,7 @@
                     android:focusable="false"
                     android:editable="false"
                     android:imeOptions="actionNext"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textSize="@dimen/dimen_12sp"
                     android:textColor="@color/black" />
 

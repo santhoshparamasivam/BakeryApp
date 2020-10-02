@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.Toast
@@ -45,12 +46,13 @@ class HomeActivity : AppCompatActivity() {
 
     private var doubleBackToExitPressedOnce = false
     lateinit var appBar: RelativeLayout
+    lateinit var img_icon: ImageView
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+        img_icon=findViewById(R.id.img_icon)
         toolbar = findViewById(R.id.toolbar)
         appBar = findViewById<RelativeLayout>(R.id.appBar)
         appBar.visibility = View.GONE
