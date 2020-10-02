@@ -20,13 +20,12 @@ import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
 import com.cbe.bakery.model.ItemsModel
 import com.cbe.bakery.model.MoveMultiStockAdd
-import com.cbe.bakery.model.MultiStockAdd
 import com.cbe.bakery.model.ShopModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
-import com.cbe.bakery.utils.AsyncTaskExample
+import com.cbe.bakery.utils.AsyncTaskAvailQty
 import com.cbe.bakery.utils.AsyncTaskPrice
 import com.cbe.bakery.utils.RecyclerItemClickListener
 import com.cbe.bakery.utils.ViewUtils
@@ -68,6 +67,7 @@ class MoveStockItemFragment : Fragment(){
     lateinit var txt_qty: EditText
     lateinit var edt_reason: EditText
     private lateinit var createStock: Button
+    var actualFromAvlQty: Int = 0
 //    private lateinit var removeStock: Button
     var shopId: Long = 0L
     var totalCount:Int = 0
@@ -79,7 +79,7 @@ class MoveStockItemFragment : Fragment(){
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view:View= inflater.inflate(R.layout.fragment_move_stock_item,container,false)
+        val view:View= inflater.inflate(R.layout.move_stock_by_item_parent,container,false)
         viewUtils= ViewUtils()
         sessionManager =
             SessionManager(activity)
@@ -94,20 +94,21 @@ class MoveStockItemFragment : Fragment(){
 
 
         lytAddItem.setOnClickListener {
-            if (edtLocation.text.isNotEmpty()) {
+            if (edtLocation.text.isNotEmpty() &&  edtCategory.text.isNotEmpty()) {
+                actualFromAvlQty = Integer.parseInt(txt_qty.text.toString())
                 multiStockList.add(MoveMultiStockAdd("1", "1","1","1"))
                 multiItemAdded()
             }else{
             Toast.makeText(
                 activity,
-                "Please select Shop Name first",
+                "Please select shop and item",
                 Toast.LENGTH_LONG
             ).show()
         }
         }
         edtCategory.setOnClickListener {
             if (edtLocation.text.isNotEmpty()) {
-                getProductName()
+                getItems()
             }else
                 Toast.makeText(
                     activity,
@@ -395,78 +396,81 @@ class MoveStockItemFragment : Fragment(){
         tblContact.removeAllViews()
         for (contact in multiStockList) {
             val row =
-                inflater.inflate(R.layout.tbl_move_stock, null) as TableRow
+                inflater.inflate(R.layout.move_stock_by_item_child, null) as TableRow
             val btnDelete =
                 row.findViewById<View>(R.id.btnDelete) as ImageView
-            val edtContact =
+            val toLocation =
                 row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
-            val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
+            val userEnteredQuantity = row.findViewById<View>(R.id.edtQuantity) as EditText
             val edtmrp = row.findViewById<View>(R.id.mrp) as EditText
-            val edtAvailableQuantity = row.findViewById<View>(R.id.edtAvailableQuantity) as EditText
+            val edtAvailableQuantity = row.findViewById<View>(R.id.available_qty) as EditText
 
             val adapter: ArrayAdapter<String>? =
                 activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
-            edtContact.threshold = 2
-            edtContact.setAdapter(adapter)
+            toLocation.threshold = 2
+            toLocation.setAdapter(adapter)
 
-            edtContact.tag = contact
-            edtContact.setText(contact.location)
-            edtContact.isClickable=false
-            edtType.setText(contact.quantity)
+            toLocation.tag = contact
+            toLocation.setText(contact.location)
+            toLocation.isClickable=false
+            userEnteredQuantity.setText(contact.quantity)
             edtmrp.setText(contact.price)
             edtAvailableQuantity.setText(contact.availability)
-
-
-            btnDelete.setOnClickListener {
-                val multiContact: MoveMultiStockAdd =
-                    edtContact.tag as MoveMultiStockAdd
-                multiStockList.remove(multiContact)
-                multiItemAdded()
-            }
-            edtContact.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
+            toLocation.setOnItemClickListener(object : AdapterView.OnItemClickListener {
+                override
+                fun onItemClick(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
                 ) {
-                }
-                override fun onTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    before: Int,
-                    count: Int
-                ) {
-                    if (s.isNotEmpty()) {
-                        if (edtLocation.text.toString() == edtContact.text.toString()) {
-                            edtContact.error = "Please select Different location..."
-                        } else {
-                            val multiContact: MoveMultiStockAdd =
-                                edtContact.tag as MoveMultiStockAdd
-                            multiStockList.remove(multiContact)
-                            multiContact.location = edtContact.text.toString()
-                            multiStockList.add(multiContact)
-                            if (s.length > 5) {
-                                Log.e("shopid", shopMap.size.toString() + "  ")
-                                var shopId = shopMap.get(edtContact.text.toString())?.id
-                                Log.e("shopid", shopId?.toString() + "  ")
-                                if (shopId != null && shopId > 0) {
-                                    var task = AsyncTaskPrice(
-                                        activity,
-                                        shopId,
-                                        itemId,
-                                        edtAvailableQuantity,
-                                        edtmrp
-                                    ).execute().get()
-//                               viewUtils.priceloadMethod(activity,shopId,itemId,edtAvailableQuantity,edtmrp)
-                                }
-                            }
+
+                    for(moveMultiStockAdd in multiStockList) {
+                        if(moveMultiStockAdd.location.equals(toLocation.text.toString())) {
+                            Toast.makeText(
+                                context,
+                                "Shop already selected. Please select another item.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            toLocation.setText("")
+                            return
                         }
+                    }
+
+                    toLocation.setText(searchList.get(position))
+                    if (edtLocation.text.toString() == toLocation.text.toString()) {
+                        toLocation.error = "Please select different location..."
+                    } else {
+                        val multiContact: MoveMultiStockAdd =
+                            toLocation.tag as MoveMultiStockAdd
+                        multiStockList.remove(multiContact)
+                        multiContact.location = toLocation.text.toString()
+                        multiStockList.add(multiContact)
+                    }
+
+                    Log.e("shopMap.size", shopMap.size.toString() + "  ")
+                    var shopId = shopMap.get(toLocation.text.toString())?.id
+                    Log.e("shopid", shopId?.toString() + "  ")
+                    if (shopId != null && shopId > 0) {
+                        var task = AsyncTaskPrice(
+                            activity,
+                            shopId,
+                            itemId,
+                            edtAvailableQuantity,
+                            edtmrp
+                        ).execute().get()
                     }
                 }
             })
-            edtType.addTextChangedListener(object : TextWatcher {
+
+            btnDelete.setOnClickListener {
+                val multiContact: MoveMultiStockAdd =
+                    toLocation.tag as MoveMultiStockAdd
+                multiStockList.remove(multiContact)
+                multiItemAdded()
+            }
+
+            userEnteredQuantity.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -482,22 +486,30 @@ class MoveStockItemFragment : Fragment(){
                     count: Int
                 ) {
                     if (s.isNotEmpty()) {
-                        val first=Integer.parseInt(txt_qty.text.toString())
-                        val second=Integer.parseInt(edtType.text.toString())
-                            Log.e("first value",first.toString()+" "+second.toString())
-                        if(second<= first){
+                       val selectedLocationUserEnteredQty=Integer.parseInt(userEnteredQuantity.text.toString())
+
+                        val accumulatedItemCount =
+                            getAccumulatedItemCount(selectedLocationUserEnteredQty)
+
+
+                        if(accumulatedItemCount <= actualFromAvlQty){
                             val multiContact: MoveMultiStockAdd =
-                                edtContact.tag as MoveMultiStockAdd
+                                toLocation.tag as MoveMultiStockAdd
                             multiStockList.remove(multiContact)
-                            multiContact.quantity=edtType.text.toString()
-                            multiContact.availability=edtAvailableQuantity.text.toString()
-                            multiContact.price=edtmrp.text.toString()
+                            multiContact.quantity = userEnteredQuantity.text.toString()
+                            multiContact.availability = edtAvailableQuantity.text.toString()
+                            multiContact.price = edtmrp.text.toString()
                             multiStockList.add(multiContact)
                             createStock.visibility==View.VISIBLE;
+                            txt_qty.setText((actualFromAvlQty - accumulatedItemCount).toString())
                         }else {
-                            edtType.error = "Please enter valid count.."
+                            userEnteredQuantity.error = "Please enter valid count.."
                             createStock.visibility == View.GONE;
                         }
+                    } else {
+                        val accumulatedItemCount =
+                            getAccumulatedItemCount(0)
+                        txt_qty.setText((actualFromAvlQty - accumulatedItemCount).toString())
                     }
 
                 }
@@ -505,44 +517,21 @@ class MoveStockItemFragment : Fragment(){
             tblContact.addView(row)
         }
     }
-    private fun getSearchShopName() {
-        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-            val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $userToken")
-                .build()
-            chain.proceed(newRequest)
-        }.build()
-        val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
-        requestInterface.getShopsList().enqueue(object : Callback<ArrayList<ShopModel>> {
-            override fun onResponse(
-                call: Call<ArrayList<ShopModel>>,
-                response: Response<ArrayList<ShopModel>>
-            ) {
-                if (response.code() == 200) {
-                    shopList = response.body()
-                    for(items in shopList){
-                        searchList.add(items.name!!)
-                        shopMap[items.name!!] = items
-                    }
-                }
+
+    private fun getAccumulatedItemCount(currentValue: Int): Int {
+        var temp = 0;
+
+        if(multiStockList.size>1) {
+            for (moveMultiStockAdd in multiStockList) {
+                temp += Integer.parseInt(moveMultiStockAdd.quantity.toString());
             }
-            override fun onFailure(call: Call<ArrayList<ShopModel>>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(
-                    activity,
-                    "Connection failed,Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        })
+        }
+
+        temp += currentValue;
+        return temp
     }
 
-    private fun getProductName() {
+    private fun getItems() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         progressDialog.setCancelable(false)
@@ -638,7 +627,7 @@ class MoveStockItemFragment : Fragment(){
                     }else if(itemId==0L){
                         Toast.makeText(activity,"Please Select Item ",Toast.LENGTH_SHORT).show()
                     }else
-                        AsyncTaskExample(activity, shopId, itemId, txt_qty).execute().get()
+                        AsyncTaskAvailQty(activity, shopId, itemId, txt_qty).execute().get()
                 }
 
             }

@@ -26,7 +26,7 @@ import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
-import com.cbe.bakery.utils.AsyncTaskExample
+import com.cbe.bakery.utils.AsyncTaskAvailQty
 import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -368,7 +368,7 @@ class AddStockItemFragment : Fragment(){
                             var shopId = shopMap.get(edtContact.text.toString())?.id
 
                             if(shopId!! >0) {
-                                var task = AsyncTaskExample(activity, shopId, itemId, edtAvailableQuantity).execute().get()
+                                var task = AsyncTaskAvailQty(activity, shopId, itemId, edtAvailableQuantity).execute().get()
                             }
                         }
                     }

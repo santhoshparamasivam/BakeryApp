@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 @SuppressLint("StaticFieldLeak")
-class AsyncTaskExample(
+class AsyncTaskAvailQty(
     private var activity: FragmentActivity?,
     private var shopId: Long,
     private var itemId: Long,
@@ -31,9 +31,6 @@ class AsyncTaskExample(
 
     override fun onPreExecute() {
         super.onPreExecute()
-//        progressDialog = ProgressDialog(activity)
-//        progressDialog.setMessage("Loading...")
-//        progressDialog.show()
     }
 
     override fun doInBackground(vararg req: Any?): Any? {
@@ -61,16 +58,12 @@ class AsyncTaskExample(
                 if (response.code() == 200 && response.body() != null) {
                     returnVal = response.body().availableQuantity!!
                     edtAvailableQuantity.setText(returnVal.toString())
-
-//                    progressDialog.dismiss()
                 } else {
                     edtAvailableQuantity.setText("0")
-//                    progressDialog.dismiss()
                 }
             }
             override fun onFailure(call: Call<AvailableQuantity>, t: Throwable) {
                 t.printStackTrace()
-//                progressDialog.dismiss()
             }
         })
 

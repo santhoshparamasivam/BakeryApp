@@ -90,7 +90,8 @@
     //move stock
 
     <string name="from_location">From Location</string>
-    <string name="available_qty">Avail Qty</string>
+    <string name="available_qty">Avl. Qty</string>
+    <string name="to_available_qty">To Loc Avl. Qty</string>
     <string name="reason">Reason</string>
     <string name="tolocation">To Location</string>
     <string name="qty_move">Quantity to Move</string>

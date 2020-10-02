@@ -20,7 +20,6 @@ import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
 import com.cbe.bakery.model.ItemsModel
 import com.cbe.bakery.model.MoveMultiStockAdd
-import com.cbe.bakery.model.MultiStockAdd
 import com.cbe.bakery.model.ShopModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
@@ -31,7 +30,7 @@ import com.cbe.bakery.utils.RecyclerItemClickListener
 import com.cbe.bakery.utils.ViewUtils
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.fragment_move_stock_location.*
+import kotlinx.android.synthetic.main.move_stock_by_location_parent.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
@@ -79,7 +78,7 @@ class MoveStockLocationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_move_stock_location, container, false)
+        val view: View = inflater.inflate(R.layout.move_stock_by_location_parent, container, false)
         activity?.title = "Move Stock"
         viewUtils = ViewUtils()
         sessionManager =
@@ -373,7 +372,7 @@ class MoveStockLocationFragment : Fragment() {
         tblContact.removeAllViews()
         for (contact in multiStockList) {
             val row =
-                inflater.inflate(R.layout.tbl_move_location, null) as TableRow
+                inflater.inflate(R.layout.move_stock_by_location_child, null) as TableRow
             val btnDelete =
                 row.findViewById<View>(R.id.btnDelete) as ImageView
             val edtContact =
