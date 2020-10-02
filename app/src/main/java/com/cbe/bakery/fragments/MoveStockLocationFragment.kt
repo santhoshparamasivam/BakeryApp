@@ -427,11 +427,19 @@ class MoveStockLocationFragment : Fragment() {
 
                             var itemId = shopitem.get(edtContact.text.toString())?.id
 
-                            if(multiStockList.size>1 &&
-                                multiStockList.get(0).location.equals(edtContact.text.toString())) {
-                                Toast.makeText(context, "Item already selected. Please select another item.",Toast.LENGTH_SHORT).show()
-                                edtContact.setText("")
-                                return
+                            if(multiStockList.size>1) {
+
+                                for(moveMultiStockAdd in multiStockList) {
+                                    if(moveMultiStockAdd.location.equals(edtContact.text.toString())) {
+                                        Toast.makeText(
+                                            context,
+                                            "Item already selected. Please select another item.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        edtContact.setText("")
+                                        return
+                                    }
+                                }
                             }
 
                             if (itemId != null && itemId > 0) {
