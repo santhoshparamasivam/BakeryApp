@@ -91,8 +91,6 @@ class MoveStockItemFragment : Fragment(){
         edtLocation=view.findViewById(R.id.edt_location)
         txt_qty=view.findViewById(R.id.txt_qty)
         edt_reason=view.findViewById(R.id.edt_reason)
-
-
         lytAddItem.setOnClickListener {
             if (edtLocation.text.isNotEmpty() &&  edtCategory.text.isNotEmpty()) {
                 actualFromAvlQty = Integer.parseInt(txt_qty.text.toString())
@@ -402,11 +400,11 @@ class MoveStockItemFragment : Fragment(){
             val toLocation =
                 row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
             val userEnteredQuantity = row.findViewById<View>(R.id.edtQuantity) as EditText
-            val edtmrp = row.findViewById<View>(R.id.mrp) as EditText
-            val edtAvailableQuantity = row.findViewById<View>(R.id.available_qty) as EditText
+            val edtmrp = row.findViewById<View>(R.id.mrp) as TextView
+            val edtAvailableQuantity = row.findViewById<View>(R.id.available_qty) as TextView
 
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+                activity?.let { ArrayAdapter(it, R.layout.autocomplete_select_item,R.id.autoText, searchList) }
             toLocation.threshold = 2
             toLocation.setAdapter(adapter)
 

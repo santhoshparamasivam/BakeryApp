@@ -285,9 +285,13 @@ class AddStockLocationFragment : Fragment(){
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
             val txtLocation = row.findViewById<View>(R.id.txt_field_name) as TextView
             txtLocation.text = "Item"
+//            val adapter: ArrayAdapter<String>? =
+//                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+//            edtContact.threshold = 1
+//            edtContact.setAdapter(adapter)
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
-            edtContact.threshold = 1
+                activity?.let { ArrayAdapter(it, R.layout.autocomplete_select_item,R.id.autoText, searchList) }
+            edtContact.threshold = 2
             edtContact.setAdapter(adapter)
 
             edtContact.tag = contact

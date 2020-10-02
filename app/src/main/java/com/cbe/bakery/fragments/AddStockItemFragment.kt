@@ -326,8 +326,12 @@ class AddStockItemFragment : Fragment(){
                 availQtyLayout.visibility = View.VISIBLE
             }
 
+//            val adapter: ArrayAdapter<String>? =
+//                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+//            edtContact.threshold = 2
+//            edtContact.setAdapter(adapter)
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+                activity?.let { ArrayAdapter(it, R.layout.autocomplete_select_item,R.id.autoText, searchList) }
             edtContact.threshold = 2
             edtContact.setAdapter(adapter)
 

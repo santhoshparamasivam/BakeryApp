@@ -378,11 +378,15 @@ class MoveStockLocationFragment : Fragment() {
             val edtContact =
                 row.findViewById<View>(R.id.edtFieldValue) as AutoCompleteTextView
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
-            val available_qty = row.findViewById<View>(R.id.available_qty) as EditText
-            val mrp = row.findViewById<View>(R.id.mrp) as EditText
+            val available_qty = row.findViewById<View>(R.id.available_qty) as TextView
+            val mrp = row.findViewById<View>(R.id.mrp) as TextView
 
+//            val adapter: ArrayAdapter<String>? =
+//                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+//            edtContact.threshold = 2
+//            edtContact.setAdapter(adapter)
             val adapter: ArrayAdapter<String>? =
-                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
+                activity?.let { ArrayAdapter(it, R.layout.autocomplete_select_item,R.id.autoText, searchList) }
             edtContact.threshold = 2
             edtContact.setAdapter(adapter)
 

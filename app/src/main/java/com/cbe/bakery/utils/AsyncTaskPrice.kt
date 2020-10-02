@@ -1,7 +1,7 @@
 package com.cbe.bakery.utils
 
 import android.os.AsyncTask
-import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.cbe.bakery.model.AvailableQuantity
 import com.cbe.bakery.retrofitService.ApiManager
@@ -16,12 +16,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AsyncTaskPrice  (
+class AsyncTaskPrice(
     private var activity: FragmentActivity?,
     private var shopId: Long,
     private var itemId: Long,
-    var edtAvailableQuantity: EditText,
-    var edtAvailablePrice: EditText
+    var edtAvailableQuantity: TextView,
+    var edtAvailablePrice: TextView
 ) : AsyncTask<Any, Int, Any?>() {
 
     var returnVal = 0
