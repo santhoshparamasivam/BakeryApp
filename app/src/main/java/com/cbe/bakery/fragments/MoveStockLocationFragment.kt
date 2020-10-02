@@ -424,7 +424,16 @@ class MoveStockLocationFragment : Fragment() {
                         multiStockList.add(multiContact)
 
                         if (s.length > 5) {
+
                             var itemId = shopitem.get(edtContact.text.toString())?.id
+
+                            if(multiStockList.size>1 &&
+                                multiStockList.get(0).location.equals(edtContact.text.toString())) {
+                                Toast.makeText(context, "Item already selected. Please select another item.",Toast.LENGTH_SHORT).show()
+                                edtContact.setText("")
+                                return
+                            }
+
                             if (itemId != null && itemId > 0) {
                                 var task = AsyncTaskPrice(
                                     activity,
@@ -476,14 +485,5 @@ class MoveStockLocationFragment : Fragment() {
             })
             tblContact.addView(row)
         }
-    }
-
-
-
-
-
-    private fun availableQtyMethod() {
-
-
     }
 }
