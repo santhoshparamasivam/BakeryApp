@@ -160,6 +160,7 @@ class MoveStockLocationFragment : Fragment() {
             ) {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
+                    searchList.clear()
                     progressDialog.dismiss()
                     itemList = response.body()
                     for (items in itemList) {

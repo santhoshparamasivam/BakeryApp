@@ -92,7 +92,7 @@ class MoveStockItemFragment : Fragment(){
         txt_qty=view.findViewById(R.id.txt_qty)
         edt_reason=view.findViewById(R.id.edt_reason)
         lytAddItem.setOnClickListener {
-            if (edtLocation.text.isNotEmpty() &&  edtCategory.text.isNotEmpty()) {
+            if (edtLocation.text.isNotEmpty() &&  edtCategory.text.isNotEmpty() && txt_qty.text.isNotEmpty()) {
                 actualFromAvlQty = Integer.parseInt(txt_qty.text.toString())
                 multiStockList.add(MoveMultiStockAdd("1", "1","1","1"))
                 multiItemAdded()
@@ -156,6 +156,7 @@ class MoveStockItemFragment : Fragment(){
             ) {
                 progressDialog.dismiss()
                 if (response.code() == 200) {
+                    searchList.clear()
                     shopList = response.body()
                     for(items in shopList){
                         searchList.add(items.name!!)

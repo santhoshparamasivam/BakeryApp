@@ -337,6 +337,20 @@ class AddStockLocationFragment : Fragment(){
                         multiStockList.add(multiContact)
 
                         if(s.length>5) {
+                            if(multiStockList.size>1) {
+
+                                for(moveMultiStockAdd in multiStockList) {
+                                    if(moveMultiStockAdd.location.equals(edtContact.text.toString())) {
+                                        Toast.makeText(
+                                            context,
+                                            "Item already selected. Please select another item.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        edtContact.setText("")
+                                        return
+                                    }
+                                }
+                            }
                             var itemId = itemsMap.get(edtContact.text.toString())?.id
 
                             if(itemId!! >0) {

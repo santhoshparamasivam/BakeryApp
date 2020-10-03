@@ -8,10 +8,7 @@
         android:orientation="vertical"
         >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +124,18 @@
                         android:textSize="16sp"
                         />
                 </LinearLayout>
-
+            </LinearLayout>+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
                 <TableLayout
                     android:id="@+id/tblContact"

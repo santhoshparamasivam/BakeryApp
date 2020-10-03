@@ -10,7 +10,7 @@ class ApiManager {
 
 //        const val BASE_URL = "http://18.222.152.24:8080/"
 //        const val BASE_URL = "http://arasubakery.pagekite.me/"
-        const val BASE_URL = "https://b4c1c9091879.ngrok.io/"
+        const val BASE_URL = "https://96b1740950c1.ngrok.io/"
     }
 
     init {
