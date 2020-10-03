@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="end">
+    tools:openDrawer="start">
 
     <include
         layout="@layout/app_bar_main"
@@ -34,6 +34,18 @@
                 android:orientation="vertical"
                 android:id="@+id/Dashboard"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/logo"
+                        android:padding="10dp"
+                        android:layout_marginRight="5dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -41,6 +53,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/dashboard">
                 </TextView>
+                </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1px"
@@ -208,6 +221,18 @@
                 android:orientation="vertical"
                 android:id="@+id/buy_sell_menu"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/logo"
+                        android:padding="10dp"
+                        android:layout_marginRight="5dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -215,6 +240,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/buy_sell">
                 </TextView>
+                </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1px"
@@ -229,6 +255,18 @@
                 android:orientation="vertical"
                 android:id="@+id/crew_craft_menu"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/logo"
+                        android:padding="10dp"
+                        android:layout_marginRight="5dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -236,6 +274,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/crew_craft">
                 </TextView>
+                </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1px"
@@ -249,6 +288,18 @@
                 android:orientation="vertical"
                 android:id="@+id/reports_menu"
                 >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/logo"
+                        android:padding="10dp"
+                        android:layout_marginRight="5dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -256,6 +307,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/menu_reports">
                 </TextView>
+                </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1px"
@@ -269,7 +321,18 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:id="@+id/logout_menu"
+                ><LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/logo"
+                    android:padding="10dp"
+                    android:layout_marginRight="5dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -277,6 +340,8 @@
                     android:gravity="center_vertical"
                     android:text="@string/log_out">
                 </TextView>
+            </LinearLayout>
+
                 <View
                     android:layout_width="fill_parent"
                     android:layout_height="1px"
