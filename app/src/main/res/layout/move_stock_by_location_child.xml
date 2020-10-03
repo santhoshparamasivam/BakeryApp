@@ -99,7 +99,6 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:hint="@string/to_available_qty"
-                    android:gravity="center"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="@dimen/dimen_15sp" />
@@ -111,12 +110,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:textColorHint="@color/black"
-                    android:imeOptions="actionNext"
                     android:clickable="false"
                     android:focusable="false"
+                    android:gravity="center"
                     android:editable="false"
                     android:textSize="@dimen/dimen_12sp"
-                    android:inputType="text"
                     android:textColor="@color/black" />
                 <TextView
                     android:layout_width="0dp"
@@ -138,8 +136,7 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:editable="false"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:gravity="center"
                     android:textSize="@dimen/dimen_12sp"
                     android:textColor="@color/black" />
 
