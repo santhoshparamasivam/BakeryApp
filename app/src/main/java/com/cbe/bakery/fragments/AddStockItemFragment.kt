@@ -318,13 +318,13 @@ class AddStockItemFragment : Fragment(){
             val edtType = row.findViewById<View>(R.id.edtQuantity) as EditText
             val edtAvailableQuantity = row.findViewById<View>(R.id.edtAvailableQuantity) as EditText
 
-            availQtyLayout = row.findViewById(R.id.availQtyLayout)
+//            availQtyLayout = row.findViewById(R.id.availQtyLayout)
 
-            if(type=="removeStock") {
-                availQtyLayout.visibility = View.GONE
-            }else if(type=="addStock") {
-                availQtyLayout.visibility = View.VISIBLE
-            }
+//            if(type=="removeStock") {
+//                availQtyLayout.visibility = View.GONE
+//            }else if(type=="addStock") {
+//                availQtyLayout.visibility = View.VISIBLE
+//            }
 
 //            val adapter: ArrayAdapter<String>? =
 //                activity?.let { ArrayAdapter(it, android.R.layout.select_dialog_item, searchList) }
@@ -362,18 +362,33 @@ class AddStockItemFragment : Fragment(){
                     count: Int
                 ) {
                     if (s.isNotEmpty()) {
-                        val multiContact: MultiStockAdd =
-                            edtContact.tag as MultiStockAdd
-                        multiStockList.remove(multiContact)
-                        multiContact.location=edtContact.text.toString()
-                        multiStockList.add(multiContact)
 
                         if(s.length>5) {
-                            var shopId = shopMap.get(edtContact.text.toString())?.id
+                            if(multiStockList.size>1) {
 
-                            if(shopId!! >0) {
-                                var task = AsyncTaskAvailQty(activity, shopId, itemId, edtAvailableQuantity).execute().get()
+                                for(moveMultiStockAdd in multiStockList) {
+                                    if(moveMultiStockAdd.location.equals(edtContact.text.toString())) {
+                                        Toast.makeText(
+                                            context,
+                                            "Location already selected. Please select another item.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        edtContact.setText("")
+                                        return
+                                    }
+                                }
                             }
+                            val multiContact: MultiStockAdd =
+                                edtContact.tag as MultiStockAdd
+                            multiStockList.remove(multiContact)
+                            multiContact.location=edtContact.text.toString()
+                            multiStockList.add(multiContact)
+//                        if(s.length>5) {
+//                            var shopId = shopMap.get(edtContact.text.toString())?.id
+//
+//                            if(shopId!! >0) {
+//                                var task = AsyncTaskAvailQty(activity, shopId, itemId, edtAvailableQuantity).execute().get()
+//                            }
                         }
                     }
                 }

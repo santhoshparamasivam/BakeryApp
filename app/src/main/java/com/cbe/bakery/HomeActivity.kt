@@ -18,10 +18,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import com.cbe.bakery.fragments.HomeFragment
-import com.cbe.bakery.fragments.ViewItemsFragment
-import com.cbe.bakery.fragments.ViewMoveFragment
-import com.cbe.bakery.fragments.ViewStockFragment
+import com.cbe.bakery.fragments.*
 import com.cbe.bakery.sessionManager.SessionKeys
 import com.cbe.bakery.sessionManager.SessionManager
 import com.cbe.bakery.utils.ViewUtils
@@ -108,7 +105,11 @@ class HomeActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             loadFragment(ViewItemsFragment())
         }
-
+        stock_summary_menu.setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            intent = Intent(applicationContext, StockSummary::class.java)
+            startActivity(intent)
+        }
 
         logout_menu.setOnClickListener {
             viewUtils.bakeryAlert(

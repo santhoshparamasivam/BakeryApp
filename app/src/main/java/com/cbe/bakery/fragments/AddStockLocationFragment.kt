@@ -300,13 +300,13 @@ class AddStockLocationFragment : Fragment(){
             edtType.setText(contact.quantity)
             val edtAvailableQuantity = row.findViewById<View>(R.id.edtAvailableQuantity) as EditText
 
-            availQtyLayout = row.findViewById(R.id.availQtyLayout)
+//            availQtyLayout = row.findViewById(R.id.availQtyLayout)
 
-            if(type=="removeStock") {
-                availQtyLayout.visibility = View.GONE
-            }else if(type=="addStock") {
-                availQtyLayout.visibility = View.VISIBLE
-            }
+//            if(type=="removeStock") {
+//                availQtyLayout.visibility = View.GONE
+//            }else if(type=="addStock") {
+//                availQtyLayout.visibility = View.VISIBLE
+//            }
 
             btnDelete.setOnClickListener {
                 val multiContact: MultiStockAdd =
@@ -330,15 +330,8 @@ class AddStockLocationFragment : Fragment(){
                     count: Int
                 ) {
                     if (s.isNotEmpty()) {
-                        val multiContact: MultiStockAdd =
-                            edtContact.tag as MultiStockAdd
-                        multiStockList.remove(multiContact)
-                        multiContact.location=edtContact.text.toString()
-                        multiStockList.add(multiContact)
-
                         if(s.length>5) {
                             if(multiStockList.size>1) {
-
                                 for(moveMultiStockAdd in multiStockList) {
                                     if(moveMultiStockAdd.location.equals(edtContact.text.toString())) {
                                         Toast.makeText(
@@ -351,12 +344,17 @@ class AddStockLocationFragment : Fragment(){
                                     }
                                 }
                             }
-                            var itemId = itemsMap.get(edtContact.text.toString())?.id
+                            val multiContact: MultiStockAdd =
+                                edtContact.tag as MultiStockAdd
+                            multiStockList.remove(multiContact)
+                            multiContact.location=edtContact.text.toString()
+                            multiStockList.add(multiContact)
+//                            var itemId = itemsMap.get(edtContact.text.toString())?.id
 
-                            if(itemId!! >0) {
-                                var task = AsyncTaskAvailQty(activity, shopId, itemId, edtAvailableQuantity).execute().get()
+//                            if(itemId!! >0) {
+//                                var task = AsyncTaskAvailQty(activity, shopId, itemId, edtAvailableQuantity).execute().get()
                             }
-                        }
+//                        }
                     }
                 }
             })
