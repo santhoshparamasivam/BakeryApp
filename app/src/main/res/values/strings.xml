@@ -111,10 +111,13 @@
 
 
     <string-array name="filterType">
-        <item>ALL</item>
+        <item>All</item>
         <item>Add</item>
         <item>Remove</item>
         <item>Void</item>
+    </string-array>
+    <string-array name="reasonType">
+        <item>All</item>
     </string-array>
 
 </resources>

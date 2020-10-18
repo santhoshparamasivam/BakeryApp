@@ -132,6 +132,11 @@ interface ApiService {
     @GET("/move/void/{id}")
     fun voidStockDetails(@Path(value = "id", encoded = true) id: Int): Call<ResponseBody>
 
+   @POST("/stock/getSummary")
+    fun getSummary(@Body jsonObject: JsonObject): Call<ArrayList<SummaryModel>>
+   @POST("/stock/getAvailabilitySummary")
+    fun getAvailabilitySummary(@Body jsonObject: JsonObject): Call<AvailibitySummary>
+
 
 
 }

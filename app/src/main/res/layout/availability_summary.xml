@@ -51,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/fromdate"
+            android:hint="@string/item"
             android:textColorHint="@color/black"
             android:imeOptions="actionNext"
             android:inputType="text"
@@ -63,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/show"
@@ -74,5 +75,72 @@
             android:textColorHint="@color/white"
             android:textSize="@dimen/dimen_12sp"
             />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/summaryRecycler"
+        android:layout_margin="5dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+<!--        <ImageView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:id="@+id/imageView"-->
+<!--            android:src="@drawable/logo"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:layout_weight="0.5"-->
+<!--            >-->
+<!--        </ImageView>-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:id="@+id/line1"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
+
+
+            <TextView
+                android:id="@+id/shopTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp" />
+            <TextView
+                android:id="@+id/itemTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp"  />
+            <TextView
+                android:id="@+id/dateTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp"  />
+            <TextView
+                android:id="@+id/quantityTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/dimen_15sp" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

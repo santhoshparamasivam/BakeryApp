@@ -2,6 +2,7 @@ package com.cbe.bakery
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.cbe.bakery.model.LoginModel
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
 
         userToken= sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+
         userId= sessionManager.getStringKey(SessionKeys.USER_ID).toString()
         if (userId !="" && userToken !=""){
             getUserToken()

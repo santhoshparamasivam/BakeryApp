@@ -43,8 +43,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         id= sessionManager.getStringKey(SessionKeys.USER_ID).toString()
+      var  userToken= sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
        if (id != ""){
            Log.e("user id",id+"  user")
+           Log.e("token",userToken+" ")
            intent = Intent(applicationContext, HomeActivity::class.java)
            intent.putExtra("UserId",id)
            startActivity(intent)

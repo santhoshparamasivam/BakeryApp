@@ -8,11 +8,13 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.cbe.bakery.R
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -161,6 +163,15 @@ class ViewUtils {
         }
         alertDialog.show()
         return alertDialog
+    }
+    fun convertLongToTime(time: Long): String {
+        Log.e("Time",time.toString()+" ")
+
+        val date = Date(time)
+        Log.e("date",date.toString()+" ")
+        val format = SimpleDateFormat("yyyy/MM/dd")
+        Log.e("format",format.format(date)+" ")
+        return format.format(date)
     }
 
 //    fun priceloadMethod(

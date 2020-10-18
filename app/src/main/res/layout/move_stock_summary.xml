@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColorHint="@color/black"
+
             android:imeOptions="actionNext"
             android:hint="@string/fromdate"
             android:inputType="text"
@@ -53,8 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/fromdate"
-            android:textColorHint="@color/black"
+            android:hint="@string/todate"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:textSize="@dimen/dimen_12sp"
@@ -108,14 +107,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/fromdate"
             android:textColorHint="@color/black"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:textSize="@dimen/dimen_12sp"
             android:textColor="@color/black" />
 
-    </LinearLayout>k
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:hint="@string/location"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="@dimen/dimen_15sp" />
+
+        <EditText
+            android:id="@+id/edtlocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:hint="@string/location"
+            android:textSize="@dimen/dimen_12sp"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,15 +154,15 @@
             android:textColorHint="@color/black"
             android:textSize="@dimen/dimen_15sp" />
 
-        <EditText
+        <Spinner
             android:id="@+id/edtReason"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/fromdate"
             android:textColorHint="@color/black"
             android:imeOptions="actionNext"
             android:inputType="text"
+            android:entries="@array/reasonType"
             android:textSize="@dimen/dimen_12sp"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -146,6 +170,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <Button
             android:id="@+id/show"
@@ -158,5 +183,11 @@
             android:textSize="@dimen/dimen_12sp"
             />
     </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/summaryRecycler"
+        android:layout_margin="5dp"
+        />
 
 </LinearLayout>
