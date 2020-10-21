@@ -66,6 +66,7 @@ class AvailabilityFragment : Fragment(){
     lateinit var progressDialog: ProgressDialog
     lateinit var sessionManager: SessionManager
     private lateinit var  viewUtils: ViewUtils
+    lateinit var line1:LinearLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view:View= inflater.inflate(R.layout.availability_summary,container,false)
         edtItem=view.findViewById(R.id.edtItem);
@@ -73,7 +74,7 @@ class AvailabilityFragment : Fragment(){
         show=view.findViewById(R.id.show)
 //        summaryRecycler=view.findViewById(R.id.summaryRecycler)
 //        summaryRecycler
-
+        line1=view.findViewById(R.id.line1);
         shopTxt=view.findViewById(R.id.shopTxt)
         itemTxt=view.findViewById(R.id.itemTxt)
         dateTxt=view.findViewById(R.id.dateTxt)
@@ -82,6 +83,7 @@ class AvailabilityFragment : Fragment(){
         viewUtils= ViewUtils()
         sessionManager =
             SessionManager(activity)
+        line1.visibility=View.GONE
         edtItem.isFocusable=false
         edtItem.isCursorVisible=false
         edtlocation.isFocusable=false
@@ -123,11 +125,11 @@ class AvailabilityFragment : Fragment(){
                 Log.e("response",response.code().toString()+" ")
                 if (response.code() == 200) {
 //                    var summaryList: ArrayList<AvailibitySummary> = ArrayList()
-
-                    shopTxt.setText("Shop Name "+ response.body().shopName)
-                    itemTxt.setText("Item Name "+ response.body().itemName)
-                    dateTxt.setText("Quantity      "+ response.body().quantity)
-                    quantityTxt.setText("Date      "+viewUtils.convertLongToTime(response.body().modifiedOn))
+                    line1.visibility=View.VISIBLE
+                    shopTxt.setText(response.body().shopName)
+                    itemTxt.setText(response.body().itemName)
+                    dateTxt.setText(response.body().quantity.toString())
+                quantityTxt.setText(viewUtils.convertLongToTime(response.body().modifiedOn))
 //                    summaryList=response.body()
 //                    Log.e("response code",response.code().toString()+" "+response.body().size.toString()+" ")
 //                    summaryRecycler.layoutManager = LinearLayoutManager(recyclerview.context)

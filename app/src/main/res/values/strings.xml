@@ -107,7 +107,9 @@
     <string name="todate">To Date</string>
     <string name="transaction">Transaction</string>
     <string name="show">Show</string>
-
+    <string name="shopName">ShopName</string>
+    <string name="addItem">AddItem</string>
+    <string name="date">Date</string>
 
 
     <string-array name="filterType">

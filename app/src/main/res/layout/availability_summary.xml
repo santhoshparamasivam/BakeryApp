@@ -81,12 +81,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/summaryRecycler"
         android:layout_margin="5dp"
+        android:visibility="gone"
         />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+
 
 <!--        <ImageView-->
 <!--            android:layout_width="0dp"-->
@@ -101,46 +98,109 @@
 <!--        </ImageView>-->
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="10dp"
             android:id="@+id/line1"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="5dp"
-            android:orientation="vertical"
-            android:layout_marginLeft="5dp">
+           android:layout_margin="10dp"
+            android:orientation="vertical">
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/shopName"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp" />
             <TextView
                 android:id="@+id/shopTxt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:padding="10dp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_15sp" />
-            <TextView
-                android:id="@+id/itemTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_15sp"  />
-            <TextView
-                android:id="@+id/dateTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_15sp"  />
-            <TextView
-                android:id="@+id/quantityTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-
                 android:textSize="@dimen/dimen_15sp" />
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/item"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+            <TextView
+                android:id="@+id/itemTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp"  />
+            </LinearLayout>
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/quantity"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+            <TextView
+                android:id="@+id/dateTxt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp"  />
+              </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/date"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_15sp" />
+            <TextView
+                android:id="@+id/quantityTxt"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_15sp" />
+            </LinearLayout>
     </LinearLayout>
 </LinearLayout>
