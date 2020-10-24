@@ -113,16 +113,34 @@ class AddStockItemFragment : Fragment(){
 
             if(edtCategory.text.toString().isEmpty()) {
                 edtCategory.error="Please enter item."
-            } else if(containsError) {
+            }else if(multiStockList!=null && multiStockList.size<=0){
+                Toast.makeText(activity, "Please enter Location details.", Toast.LENGTH_LONG).show()
+            }
+            else if(containsError) {
                 Toast.makeText(activity, "Please enter valid details.", Toast.LENGTH_LONG).show()
-            } else {
+            }
+            else {
                 addStockToServer()
             }
         }
 
         removeStock.setOnClickListener {
-            if (edtCategory.text.toString().isEmpty()) {
-                edtCategory.error = "Please enter item."
+            var containsError = false;
+
+            for(item in multiStockList) {
+                if(item.location == null || item.quantity == null || Integer.parseInt(item.quantity!!)<=0){
+                    containsError = true;
+                    break;
+                }
+            }
+
+            if(edtCategory.text.toString().isEmpty()) {
+                edtCategory.error="Please enter item."
+            }else if(multiStockList!=null && multiStockList.size<=0){
+                Toast.makeText(activity, "Please enter Location details.", Toast.LENGTH_LONG).show()
+            }
+            else if(containsError) {
+                Toast.makeText(activity, "Please enter valid details.", Toast.LENGTH_LONG).show()
             } else {
                 removeStockMethod()
             }
@@ -186,7 +204,7 @@ class AddStockItemFragment : Fragment(){
                 if (response.code() == 200) {
                     Toast.makeText(
                         activity,
-                        "Stock Added SuccessFully",
+                        "Stock Removed SuccessFully",
                         Toast.LENGTH_LONG
                     ).show()
 //                    viewUtils.showToast(activity!!,"Stock Removed SuccessFully",Toast.LENGTH_SHORT)
@@ -195,6 +213,8 @@ class AddStockItemFragment : Fragment(){
                     edtCategory.text=null
                     edt_item.text=null
                     edt_sell_Price.text=null
+                    multiStockList.clear()
+                    activity?.finish()
                 } else {
                     progressDialog.dismiss()
                     Toast.makeText(
@@ -559,6 +579,7 @@ class AddStockItemFragment : Fragment(){
             if (productDialog.isShowing){
                 productDialog.dismiss()
                 edtCategory.setText(newList[position].name)
+//                edt_sell_Price.setText(newList[position])
                 itemId= newList[position].id!!
             }
         }

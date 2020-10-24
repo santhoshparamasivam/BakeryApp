@@ -52,7 +52,9 @@
                 android:layout_margin="5dp"
                 android:layout_weight="0.1"
                 android:maxLength="1"
-
+                android:focusable="true"
+                android:inputType="phone"
+                android:focusableInTouchMode="true"
                 android:id="@+id/edt_one"
                 />
             <EditText
@@ -62,9 +64,10 @@
                 android:layout_weight="0.1"
                 android:gravity="center"
                 android:layout_margin="5dp"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:maxLength="1"
-
+                android:inputType="phone"
                 android:id="@+id/edt_two"
                 />
             <EditText
@@ -73,10 +76,11 @@
                 android:hint="0"
                 android:layout_weight="0.1"
                 android:gravity="center"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:maxLength="1"
                 android:layout_margin="5dp"
-
+                android:inputType="phone"
                 android:id="@+id/edt_three"
                 />
             <EditText
@@ -84,9 +88,11 @@
                 android:layout_height="wrap_content"
                 android:hint="0"
                 android:layout_weight="0.1"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/edt_four"
                 android:gravity="center"
+                android:inputType="phone"
                 android:maxLength="1"
                 android:layout_margin="5dp"
 

@@ -121,8 +121,21 @@ class MoveStockItemFragment : Fragment(){
         }
 
         createStock.setOnClickListener {
-            if(edtCategory.text.toString().isEmpty()){
-                edtCategory.error="Please Enter Category.."
+            var containsError = false;
+            for(item in multiStockList) {
+                if(item.location == null || item.quantity == null || Integer.parseInt(item.quantity!!)<=0) {
+                    containsError = true;
+                    break;
+                }
+            }
+
+            if (edtLocation.text.toString().isEmpty()) {
+                edtLocation.error = "Please Enter Category.."
+            }else if(multiStockList!=null && multiStockList.size<=0){
+                Toast.makeText(activity, "Please enter Item details.", Toast.LENGTH_LONG).show()
+            }
+            else if(containsError) {
+                Toast.makeText(activity, "Please enter valid Location details.", Toast.LENGTH_LONG).show()
             }else {
 //                addStockToServer()
                 addStockToServer()

@@ -122,6 +122,8 @@ interface ApiService {
     @POST("/move/byLocation")
     fun moveStockByLocation(@Body jsonObject: JsonObject): Call<ResponseBody>
 
+    @GET("/units")
+    fun getAllUnitsList():Call<ArrayList<UnitsModel>>
 
     @GET("/move")
     fun getAllMoveStockList():Call<ArrayList<MoveStockModel>>

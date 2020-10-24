@@ -90,6 +90,7 @@ class ViewStockDetails : AppCompatActivity() {
                 response: Response<PinVerificationModel>
             ) {
                 progressDialog.dismiss()
+                Log.e("pin verify",response.code().toString()+"  ");
                 if (response.code() == 200) {
                     progressDialog.dismiss()
                     Log.e("pin verify",response.body().pin+"  ");
@@ -133,7 +134,7 @@ class ViewStockDetails : AppCompatActivity() {
         edt_one.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (edt_one.length() == 1) {
-                    edt_two.isFocusable = true
+                    edt_two.requestFocus()
                 }
 
             }
@@ -146,7 +147,9 @@ class ViewStockDetails : AppCompatActivity() {
         edt_two.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (edt_two.length() == 1) {
-                    edt_three.isFocusable = true
+                    edt_three.requestFocus()
+                }else if (edt_two.length()==0){
+                    edt_one.requestFocus()
                 }
 
             }
@@ -159,11 +162,11 @@ class ViewStockDetails : AppCompatActivity() {
         edt_three.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (edt_three.length() == 1) {
-                    edt_four.isFocusable = true
+                    edt_four.requestFocus()
+                }else if (edt_three.length()==0){
+                    edt_two.requestFocus()
                 }
-
             }
-
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, aft: Int) {}
             override fun afterTextChanged(s: Editable) {
 
@@ -172,11 +175,12 @@ class ViewStockDetails : AppCompatActivity() {
         edt_four.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (edt_four.length() == 1) {
-                    edt_four.isFocusable = false
+                    edt_four.requestFocus()
                 }
-
+                else if (edt_four.length()==0){
+                    edt_three.requestFocus()
+                }
             }
-
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, aft: Int) {}
             override fun afterTextChanged(s: Editable) {
 

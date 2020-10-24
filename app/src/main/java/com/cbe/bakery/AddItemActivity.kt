@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cbe.bakery.adapter.ItemCategoryAdapter
 import com.cbe.bakery.model.ItemCategoryModel
+import com.cbe.bakery.model.UnitsModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
 import com.cbe.bakery.sessionManager.SessionKeys
@@ -71,6 +72,8 @@ class AddItemActivity : AppCompatActivity() {
     lateinit var type: String
     private lateinit var file:File
     lateinit var simple:String
+    var unitsList:ArrayList<UnitsModel> = ArrayList()
+    var unitsNameList:ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,19 +97,18 @@ class AddItemActivity : AppCompatActivity() {
           finish()
         }
 
-        val dropdown: Spinner = findViewById(R.id.edt_units)
-        val items = arrayOf(
-            "KG",
-            "Gram",
-            "Litre",
-            "Ml",
-            "Box",
-            "Dozen",
-            "Each/Piece"
-        )
-        val adapter: ArrayAdapter<String> =
-        ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        dropdown.adapter = adapter
+//        val dropdown: Spinner = findViewById(R.id.edt_units)
+         unitsMethods()
+//        val items = arrayOf(
+//            "KG",
+//            "Gram",
+//            "Litre",
+//            "Ml",
+//            "Box",
+//            "Dozen",
+//            "Each/Piece"
+//        )
+
 
         edtCategory.setOnClickListener {
             getItemCategory()
@@ -156,13 +158,71 @@ class AddItemActivity : AppCompatActivity() {
                     errorText.error = ""
                     errorText.setTextColor(Color.RED) //just to highlight that this is an error
                     errorText.text = "Select unit"
-                }itemImageView.drawable == null ->{
+                }
+                itemImageView.drawable == null ->{
                 Toast.makeText(this,"Please select image and try again",Toast.LENGTH_SHORT).show()
-            }else -> {
+            }
+                edt_units.selectedItem ==("Please Select Unit")  -> {
+                    Toast.makeText(this,"Please Select Unit",Toast.LENGTH_SHORT).show()
+                }
+                else -> {
                     addItemMethod()
                 }
             }
         }
+    }
+
+    private fun unitsMethods() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $userToken")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+        requestInterface.getAllUnitsList().enqueue(object :
+            Callback<ArrayList<UnitsModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<UnitsModel>>,
+                response: Response<ArrayList<UnitsModel>>
+            ) {
+                progressDialog.dismiss()
+                if (response.code() == 200) {
+                    unitsNameList.add("Please Select Unit")
+                    for (units in response.body()){
+                        unitsNameList.add(units.unit.toString())
+                    }
+                    val adapter: ArrayAdapter<String> =
+                        ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, unitsNameList)
+                    edt_units.adapter = adapter
+
+                } else {
+                    progressDialog.dismiss()
+                   Toast.makeText(
+                        this@AddItemActivity,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            override fun onFailure(call: Call<ArrayList<UnitsModel>>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+               Toast.makeText(
+                    this@AddItemActivity,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+
     }
 
     @NonNull
@@ -202,73 +262,92 @@ class AddItemActivity : AppCompatActivity() {
                     .build()
                 chain.proceed(newRequest)
             }.build()
-            val requestInterface = Retrofit.Builder()
-                .baseUrl(ApiManager.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build().create(ApiService::class.java)
-            requestInterface.saveItems(
-                body,
-                itemType,
-                itemName,
-                itemCategory,
-                costPrice,
-                sellPrice,
-                taxPercentage,
-                unitMeasures,
-                taxIncluded,
-                saleTaxIncluded,
-                costTaxIncluded,
-                hsnCode,
-                sku
-            ).enqueue(object : Callback<ResponseBody> {
-                @SuppressLint("NewApi")
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    Log.e("response code",response.code().toString()+" "+response.message())
-                    progressDialog.dismiss()
-                    if (response.code() == 200) {
-                        progressDialog.dismiss()
-                        edtCategory.text = null
-                        edt_item.text = null
-                        edt_sku.text = null
-                        edt_price.text = null
-                        edt_sell_Price.text = null
-                        edt_tax.text = null
-                        edt_hsn.text = null
-                        itemImageView.background=null
-                        checkbox_cost_tax.isChecked=false
-                        checkbox_sell_tax.isChecked=false
-//                        viewUtils.showToast(this@AddItemActivity,"SuccessFully Saved",Toast.LENGTH_SHORT)
-                        Toast.makeText(
-                            this@AddItemActivity,
-                            "SuccessFully Saved",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        progressDialog.dismiss()
-                        Toast.makeText(
-                            this@AddItemActivity,
-                            "Please try again later",
-                            Toast.LENGTH_LONG
-                        ).show()
-//                        viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
-                    }
-                }
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+        var call=requestInterface.saveItems(
+            body,
+            itemType,
+            itemName,
+            itemCategory,
+            costPrice,
+            sellPrice,
+            taxPercentage,
+            unitMeasures,
+            taxIncluded,
+            saleTaxIncluded,
+            costTaxIncluded,
+            hsnCode,
+            sku
+        )
+        Log.e("call",call.request().url().toString()+" ")
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    t.printStackTrace()
+        requestInterface.saveItems(
+            body,
+            itemType,
+            itemName,
+            itemCategory,
+            costPrice,
+            sellPrice,
+            taxPercentage,
+            unitMeasures,
+            taxIncluded,
+            saleTaxIncluded,
+            costTaxIncluded,
+            hsnCode,
+            sku
+        ).enqueue(object : Callback<ResponseBody> {
+            @SuppressLint("NewApi")
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                Log.e("response code", response.code().toString() + " " + response.message())
+                progressDialog.dismiss()
+                if (response.code() == 200) {
                     progressDialog.dismiss()
-//                    viewUtils.showToast(this@AddItemActivity,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
+                    edtCategory.text = null
+                    edt_item.text = null
+                    edt_sku.text = null
+                    edt_price.text = null
+                    edt_sell_Price.text = null
+                    edt_tax.text = null
+                    edt_hsn.text = null
+                    itemImageView.background = null
+                    checkbox_cost_tax.isChecked = false
+                    checkbox_sell_tax.isChecked = false
+                    itemImageView.setImageURI(null)
+                    checkbox_tax.isChecked = false
+//                        viewUtils.showToast(this@AddItemActivity,"SuccessFully Saved",Toast.LENGTH_SHORT)
                     Toast.makeText(
                         this@AddItemActivity,
-                        "Connection failed,Please try again later",
+                        "SuccessFully Saved",
                         Toast.LENGTH_LONG
                     ).show()
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@AddItemActivity,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+//                        viewUtils.showToast(this@AddItemActivity,"Please try again later",Toast.LENGTH_SHORT)
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+//                    viewUtils.showToast(this@AddItemActivity,"Connection failed,Please try again later",Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    this@AddItemActivity,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
     private fun checkRunTimePermission() {

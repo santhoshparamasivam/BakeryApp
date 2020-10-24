@@ -120,13 +120,27 @@ class MoveStockLocationFragment : Fragment() {
         }
 
         moveStock.setOnClickListener {
+
+            var containsError = false;
+            for(item in multiStockList) {
+                if(item.location == null || item.quantity == null || Integer.parseInt(item.quantity!!)<=0) {
+                    containsError = true;
+                    break;
+                }
+            }
             if (edtLocation.text.toString().isEmpty()) {
                 edtLocation.error = "Please Select From Location.."
             } else if (edt_tolocation.text.toString().isEmpty()) {
                 edtLocation.error = "Please Select To Location.."
             }else if(edtLocation.text.toString() == edt_tolocation.text.toString()){
                 edtLocation.error = "From and To Location are same..."
+            }else if(multiStockList!=null && multiStockList.size<=0){
+                Toast.makeText(activity, "Please enter Item details.", Toast.LENGTH_LONG).show()
             }
+            else if(containsError) {
+                Toast.makeText(activity, "Please enter valid Location details.", Toast.LENGTH_LONG).show()
+            }
+
             else{
                 moveStockLocation()
             }

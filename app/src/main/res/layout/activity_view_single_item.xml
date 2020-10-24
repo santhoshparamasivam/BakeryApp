@@ -12,14 +12,16 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         android:theme="@style/MyThemeOverlay_Toolbar2"
         app:popupTheme="@style/AppTheme.PopupOverlay" >
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:gravity="center_vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/view_item"
+                android:layout_weight="1"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 />
@@ -27,13 +29,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/img_query"
+                android:padding="10dp"
                 android:src="@drawable/ic_edit"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp" />
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </androidx.appcompat.widget.Toolbar>

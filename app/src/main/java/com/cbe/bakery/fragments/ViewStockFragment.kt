@@ -88,10 +88,6 @@ class ViewStockFragment : Fragment(){
             activity?.startActivity(intent)
 
         }
-
-
-
-
         (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.searchView!!.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
@@ -108,7 +104,7 @@ class ViewStockFragment : Fragment(){
                                 Locale.ROOT
                             )
                         )
-                        || item.name.toString().toLowerCase(Locale.ROOT).contains(
+                        || item.transId.toString().toLowerCase(Locale.ROOT).contains(
                             newText.toLowerCase(
                                 Locale.ROOT
                             )

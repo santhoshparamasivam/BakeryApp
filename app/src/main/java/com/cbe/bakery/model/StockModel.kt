@@ -10,7 +10,7 @@ class StockModel {
 
     @SerializedName("transId")
     @Expose
-    var name: String? = null
+    var transId: String? = null
 
     @SerializedName("shopId")
     @Expose
@@ -38,7 +38,7 @@ class StockModel {
 
     @SerializedName("modifiedOn")
     @Expose
-    var modifiedOn:  String?  = null
+    var modifiedOn:  Long?  = null
 
     @SerializedName("modifiedBy")
     @Expose

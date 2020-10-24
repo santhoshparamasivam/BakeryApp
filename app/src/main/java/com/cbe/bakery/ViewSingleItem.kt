@@ -31,12 +31,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.cbe.bakery.adapter.ItemCategoryAdapter
 import com.cbe.bakery.adapter.PriceHistoryAdapter
-import com.cbe.bakery.model.ItemCategoryModel
-import com.cbe.bakery.model.ItemHistoryModel
-import com.cbe.bakery.model.ItemsModel
-import com.cbe.bakery.model.PinVerificationModel
+import com.cbe.bakery.model.*
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiManager.Companion.BASE_URL
 import com.cbe.bakery.retrofitService.ApiService
@@ -46,7 +44,15 @@ import com.cbe.bakery.utils.RecyclerItemClickListener
 import com.cbe.bakery.utils.ViewUtils
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_view_single_item.*
+import kotlinx.android.synthetic.main.activity_view_single_item.checkbox_cost_tax
+import kotlinx.android.synthetic.main.activity_view_single_item.checkbox_sell_tax
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_category
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_price
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_sell_Price
+import kotlinx.android.synthetic.main.activity_view_single_item.edt_sku
+import kotlinx.android.synthetic.main.itemsview_row.view.*
 import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -84,7 +90,7 @@ class ViewSingleItem : AppCompatActivity() {
     private var costTaxIncluded : Boolean=false
     var itemCategoryModelList: ArrayList<ItemCategoryModel> = ArrayList()
     lateinit var edt_units: Spinner
-
+    var unitsNameList:ArrayList<String> = ArrayList()
     lateinit var body:MultipartBody.Part
     lateinit var simple:String
 
@@ -92,10 +98,9 @@ class ViewSingleItem : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_single_item)
         itemImageView=findViewById(R.id.itemImageView)
-        itemImageView.isEnabled=false
-        itemImageView.isClickable=false
         id = intent.getLongExtra("id", 0)
         toolbar = findViewById(R.id.toolbar)
+        edt_units = findViewById(R.id.edt_units)
         setSupportActionBar(toolbar)
         viewUtils = ViewUtils()
         progressDialog = ProgressDialog(this)
@@ -119,7 +124,9 @@ class ViewSingleItem : AppCompatActivity() {
         edt_trackInventory.isEnabled=false
         edt_radio_product.isEnabled=false
         edt_radio_service.isEnabled=false
-
+        itemImageView.isEnabled=false
+        itemImageView.isClickable=false
+        voidItem.visibility=View.GONE
         img_query.setOnClickListener {
             img_query.visibility=View.GONE
             edt_category.isEnabled = true
@@ -135,19 +142,54 @@ class ViewSingleItem : AppCompatActivity() {
             edt_trackInventory.isEnabled=true
             edt_radio_product.isEnabled=false
             edt_radio_service.isEnabled=false
-            itemImageView.isEnabled=false
-            itemImageView.isClickable=false
+            itemImageView.isEnabled=true
+            itemImageView.isClickable=true
             updateItem.visibility= View.VISIBLE
             priceHistory.visibility=View.GONE
             edt_category.requestFocus()
+            voidItem.visibility=View.VISIBLE
             if(edt_category.requestFocus()) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.CUPCAKE) {
                     window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
                 }
             }
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, unitsNameList)
+            edt_units.adapter = adapter
+            edt_units.isEnabled=true
         }
         updateItem.setOnClickListener {
-            updateItemMethod()
+            when {
+                type.isEmpty() -> {
+                    val lastRadioBtn = findViewById<RadioButton>(R.id.radio_product)
+                    lastRadioBtn.error = "Select Type"
+                }
+                edt_category.text.toString().isEmpty() -> {
+                    edt_category.error = "Please Select Category"
+                }
+                edt_name.text.toString().isEmpty() -> {
+                    edt_name.error="Please Enter Item Name"
+                }
+                edt_sku.text.toString().isEmpty() -> {
+                    edt_sku.error="Please Enter SKU"
+                }
+                edt_units.selectedItem == null -> {
+                    val errorText = edt_units.selectedView as TextView
+                    errorText.error = ""
+                    errorText.setTextColor(Color.RED) //just to highlight that this is an error
+                    errorText.text = "Select unit"
+                }
+//                itemImageView.drawable == null ->{
+//                    Toast.makeText(this,"Please select image and try again",Toast.LENGTH_SHORT).show()
+//                }
+                edt_units.selectedItem ==("Please Select Unit")  -> {
+                    Toast.makeText(this,"Please Select Unit",Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    updateItemMethod()
+                }
+            }
+
         }
 
         edt_category.setOnClickListener {
@@ -172,19 +214,20 @@ class ViewSingleItem : AppCompatActivity() {
         }
 
 //        val dropdown: Spinner = findViewById(R.id.edt_units)
-        edt_units = findViewById(R.id.edt_units)
-        val items = arrayOf(
-            "KG",
-            "Gram",
-            "Litre",
-            "Ml",
-            "Box",
-            "Dozen",
-            "Each/Piece"
-        )
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, items)
-        edt_units.adapter = adapter
+
+        unitsMethods()
+//        val items = arrayOf(
+//            "KG",
+//            "Gram",
+//            "Litre",
+//            "Ml",
+//            "Box",
+//            "Dozen",
+//            "Each/Piece"
+//        )
+//        val adapter: ArrayAdapter<String> =
+//            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, unitsNameList)
+//        edt_units.adapter = adapter
 
         voidItem.setOnClickListener {
 //            viewUtils.bakeryAlert(
@@ -204,6 +247,56 @@ class ViewSingleItem : AppCompatActivity() {
 
         }
      loadSingleItem()
+    }
+
+    private fun unitsMethods() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.show()
+        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest: Request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer $userToken")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        val requestInterface = Retrofit.Builder()
+            .baseUrl(ApiManager.BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
+        requestInterface.getAllUnitsList().enqueue(object :
+            Callback<ArrayList<UnitsModel>> {
+            override fun onResponse(
+                call: Call<ArrayList<UnitsModel>>,
+                response: Response<ArrayList<UnitsModel>>
+            ) {
+                progressDialog.dismiss()
+                if (response.code() == 200) {
+                    unitsNameList.add("Please Select Unit")
+                    for (units in response.body()){
+                        unitsNameList.add(units.unit.toString())
+                    }
+
+                } else {
+                    progressDialog.dismiss()
+                    Toast.makeText(
+                        this@ViewSingleItem,
+                        "Please try again later",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            override fun onFailure(call: Call<ArrayList<UnitsModel>>, t: Throwable) {
+                t.printStackTrace()
+                progressDialog.dismiss()
+                Toast.makeText(
+                    this@ViewSingleItem,
+                    "Connection failed,Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+
     }
 
     private fun pinVerificationAlert(pin: String) {
@@ -296,7 +389,6 @@ class ViewSingleItem : AppCompatActivity() {
     private fun verificationMethod() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
-        progressDialog.dismiss()
         var userId = sessionManager.getStringKey(SessionKeys.USER_ID).toString()
         var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
@@ -767,6 +859,7 @@ class ViewSingleItem : AppCompatActivity() {
                         "Successfully Saved",
                         Toast.LENGTH_LONG
                     ).show()
+                    finish()
                 } else {
                     progressDialog.dismiss()
 //                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
@@ -825,9 +918,10 @@ class ViewSingleItem : AppCompatActivity() {
                             "%20"
                         )
                     var uri = BASE_URL + "downloadfile/item/" + encodedURL
-
-                    Glide.with(mContext as ViewSingleItem).load(uri).into(itemImageView)
-
+                    Glide.with(mContext).load(uri)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(itemImageView)
                     edt_category.setText(itemsModel.itemCategory)
                     edt_name.setText(itemsModel.name)
                     edt_hsnCode.setText(itemsModel.hsnCode)
@@ -850,6 +944,22 @@ class ViewSingleItem : AppCompatActivity() {
                     saleTaxIncluded = itemsModel.saleTaxIncluded!!
                     taxIncluded = itemsModel.trackInventory!!
                     simple = "noFile"
+                    if (itemsModel.unitOfMeasure!=null){
+//                        for (units in unitsNameList){
+//                            if (units.equals(itemsModel.unitOfMeasure)){
+                                var unitsList:ArrayList<String> =ArrayList()
+                                unitsList.add(itemsModel.unitOfMeasure!!)
+                                val adapter: ArrayAdapter<String> =
+                                    ArrayAdapter(applicationContext, android.R.layout.simple_spinner_dropdown_item, unitsList)
+                                edt_units.adapter = adapter
+                        edt_units.isPressed=false
+//                                edt_units.isEnabled=false
+//                                edt_units.isClickable=false
+//                            }
+//                        }
+
+                    }
+
                 } else {
                     progressDialog.dismiss()
 //                    viewUtils.showToast(this@ViewSingleItem,"Please try again later",Toast.LENGTH_SHORT)
