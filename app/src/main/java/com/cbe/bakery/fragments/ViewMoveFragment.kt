@@ -55,6 +55,7 @@ class ViewMoveFragment : Fragment() {
         pageHeaderTxt=view.findViewById(R.id.pageHeaderTxt)
         activity?.title = "Move Stock"
         pageHeaderTxt.text= "Move Stock"
+        (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_add))
         (activity as HomeActivity?)?.searchView!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.visibility = View.VISIBLE
@@ -73,6 +74,8 @@ class ViewMoveFragment : Fragment() {
                                 Locale.ROOT
                             )
                         ) || item.item.toString().toLowerCase(
+                            Locale.ROOT
+                        ).contains(newText.toLowerCase(Locale.ROOT)) || item.transId.toString().toLowerCase(
                             Locale.ROOT
                         ).contains(newText.toLowerCase(Locale.ROOT))
                     ) {

@@ -165,12 +165,13 @@ class ViewUtils {
         return alertDialog
     }
     fun convertLongToTime(time: Long): String {
-        Log.e("Time",time.toString()+" ")
+//        Log.e("Time",time.toString()+" ")
 
         val date = Date(time)
-        Log.e("date",date.toString()+" ")
-        val format = SimpleDateFormat("yyyy/MM/dd")
-        Log.e("format",format.format(date)+" ")
+//        Log.e("date",date.toString()+" ")
+//        val format = SimpleDateFormat("yyyy/MM/dd")
+        val format = SimpleDateFormat("dd/MM/yyyy")
+//        Log.e("format",format.format(date)+" ")
         return format.format(date)
     }
 

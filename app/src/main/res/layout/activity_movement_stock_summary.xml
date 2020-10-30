@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MovementStockSummary">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorAccent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/MyThemeOverlay_Toolbar2"
+        app:popupTheme="@style/AppTheme.PopupOverlay" >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:gravity="end"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:id="@+id/export"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_add"/>
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/summaryRecycler"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        />
+</LinearLayout>

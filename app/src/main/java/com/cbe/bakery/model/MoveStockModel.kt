@@ -38,7 +38,7 @@ class MoveStockModel {
 
     @SerializedName("createdOn")
     @Expose
-    var createdOn:  String? = null
+    var createdOn:  Long? = null
 
     @SerializedName("modifiedOn")
     @Expose

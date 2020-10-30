@@ -10,11 +10,11 @@ class AvailibitySummary {
 
     @SerializedName("shopName")
     @Expose
-    var shopName: String? = null
+    var shopName: String = ""
 
     @SerializedName("itemName")
     @Expose
-    var itemName: String? = null
+    var itemName: String = ""
 
     @SerializedName("shopId")
     @Expose

@@ -1,6 +1,7 @@
 package com.cbe.bakery.fragments
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cbe.bakery.R
+import com.cbe.bakery.SummaryViewActivity
 import com.cbe.bakery.adapter.AvailableSummaryAdapter
 import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
@@ -100,61 +102,66 @@ class AvailabilityFragment : Fragment(){
    return view
     }
     private fun showSummary() {
-        var objects= JsonObject()
-        objects.addProperty("shopId",shopId)
-        objects.addProperty("itemId",itemId)
-        Log.e("objects", "$objects  ")
-        progressDialog.setMessage("Loading...")
-        progressDialog.show()
-        progressDialog.setCancelable(false)
-        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-            val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $userToken")
-                .build()
-            chain.proceed(newRequest)
-        }.build()
-        val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
-        requestInterface.getAvailabilitySummary(objects).enqueue(object : Callback<AvailibitySummary> {
-            override fun onResponse(call: Call<AvailibitySummary>, response: Response<AvailibitySummary>) {
-                progressDialog.dismiss()
-                Log.e("response",response.code().toString()+" ")
-                if (response.code() == 200) {
-//                    var summaryList: ArrayList<AvailibitySummary> = ArrayList()
-                    line1.visibility=View.VISIBLE
-                    shopTxt.setText(response.body().shopName)
-                    itemTxt.setText(response.body().itemName)
-                    dateTxt.setText(response.body().quantity.toString())
-                quantityTxt.setText(viewUtils.convertLongToTime(response.body().modifiedOn))
-//                    summaryList=response.body()
-//                    Log.e("response code",response.code().toString()+" "+response.body().size.toString()+" ")
-//                    summaryRecycler.layoutManager = LinearLayoutManager(recyclerview.context)
-//                    summaryRecycler.setHasFixedSize(true)
-//                    summaryAdapter =
-//                        AvailableSummaryAdapter(summaryList, activity)
-//                    summaryRecycler.adapter =summaryAdapter
-                } else {
-                    progressDialog.dismiss()
-                    Toast.makeText(
-                        activity,
-                        "Please Check Store name and try again later",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+        var intent=Intent(activity,SummaryViewActivity::class.java)
+        intent.putExtra("shopId",shopId)
+        intent.putExtra("itemId",itemId)
+        startActivity(intent)
+//        var objects= JsonObject()
+//        objects.addProperty("shopId",shopId)
+//        objects.addProperty("itemId",itemId)
+//        Log.e("objects", "$objects  ")
+//        progressDialog.setMessage("Loading...")
+//        progressDialog.show()
+//        progressDialog.setCancelable(false)
+//        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+//        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+//            val newRequest: Request = chain.request().newBuilder()
+//                .addHeader("Authorization", "Bearer $userToken")
+//                .build()
+//            chain.proceed(newRequest)
+//        }.build()
+//        val requestInterface = Retrofit.Builder()
+//            .baseUrl(ApiManager.BASE_URL)
+//            .client(client)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build().create(ApiService::class.java)
+//        requestInterface.getAvailabilitySummary(objects).enqueue(object : Callback<AvailibitySummary> {
+//            override fun onResponse(call: Call<AvailibitySummary>, response: Response<AvailibitySummary>) {
+//                progressDialog.dismiss()
+//                Log.e("response",response.code().toString()+" ")
+//                if (response.code() == 200) {
+////                    var summaryList: ArrayList<AvailibitySummary> = ArrayList()
+//                    line1.visibility=View.VISIBLE
+//                    shopTxt.setText(response.body().shopName)
+//                    itemTxt.setText(response.body().itemName)
+//                    dateTxt.setText(response.body().quantity.toString())
+//                quantityTxt.setText(viewUtils.convertLongToTime(response.body().modifiedOn))
+////                    summaryList=response.body()
+////                    Log.e("response code",response.code().toString()+" "+response.body().size.toString()+" ")
+////                    summaryRecycler.layoutManager = LinearLayoutManager(recyclerview.context)
+////                    summaryRecycler.setHasFixedSize(true)
+////                    summaryAdapter =
+////                        AvailableSummaryAdapter(summaryList, activity)
+////                    summaryRecycler.adapter =summaryAdapter
+//                } else {
+//                    progressDialog.dismiss()
+//                    Toast.makeText(
+//                        activity,
+//                        "Please Check Store name and try again later",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//
+//            }
+//            override fun onFailure(call: Call<AvailibitySummary>, t: Throwable) {
+//                progressDialog.dismiss()
+//                t.printStackTrace()
+//                Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG).show()
+//            }
+//        })
 
-            }
-            override fun onFailure(call: Call<AvailibitySummary>, t: Throwable) {
-                progressDialog.dismiss()
-                t.printStackTrace()
-                Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG).show()
-            }
-        })
-
-    } private fun getShopName() {
+    }
+    private fun getShopName() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         progressDialog.setCancelable(false)

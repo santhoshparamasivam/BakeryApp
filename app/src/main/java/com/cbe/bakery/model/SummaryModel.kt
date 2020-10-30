@@ -10,11 +10,11 @@ class SummaryModel {
 
     @SerializedName("itemName")
     @Expose
-    var itemName: String? = null
+    var itemName: String = ""
 
     @SerializedName("shopName")
     @Expose
-    var shopName: String? = null
+    var shopName: String = ""
 
     @SerializedName("hdrId")
     @Expose

@@ -54,9 +54,9 @@ class MoveStockAdapter(
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         holder.itemView.imageView.visibility=View.GONE
-        if (filterList[position].item==null && filterList[position].shop==null){
-            holder.itemView.name_text.text = "Item Name :  No values"
-        }
+//        if (filterList[position].item==null && filterList[position].shop==null){
+//            holder.itemView.name_text.text = "Item Name :  No values"
+//        }
         if (filterList[position].item!=null) {
             holder.itemView.name_text.text = "Item Name :  " + filterList[position].item
 //            holder.itemView.lay_container.setBackgroundColor(R.color.background_color);
@@ -77,14 +77,15 @@ class MoveStockAdapter(
             }
 
 
-        holder.itemView.stockId.text = "ID: " + filterList[position].transId.toString()
+        holder.itemView.stockId.text = "Transaction ID: " + filterList[position].transId.toString()
 
         if(null != filterList[position].createdOn) {
             holder.itemView.stockName.text =
-                "Created On: " + (filterList[position].createdOn.toString())
-        } else {
-            holder.itemView.stockName.text = "Created On: "
+                "Created On: " + viewUtils.convertLongToTime(filterList[position].createdOn!!)
         }
+//        else {
+//            holder.itemView.stockName.text = "Created On: "
+//        }
     }
 
 

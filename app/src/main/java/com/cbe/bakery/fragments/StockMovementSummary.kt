@@ -1,7 +1,9 @@
 package com.cbe.bakery.fragments
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +17,9 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cbe.bakery.MovementStockSummary
 import com.cbe.bakery.R
+import com.cbe.bakery.SummaryViewActivity
 import com.cbe.bakery.adapter.CustomListAdapter
 import com.cbe.bakery.adapter.StoreAdapter
 import com.cbe.bakery.adapter.SummaryAdapter
@@ -109,7 +113,15 @@ class StockMovementSummary : Fragment(){
             pickDateTime(edttoDate)
         }
         show.setOnClickListener {
-            showSummary()
+
+            var intent= Intent(activity, MovementStockSummary::class.java)
+            intent.putExtra("shopId",shopId)
+            intent.putExtra("itemId",itemId)
+            intent.putExtra("fromDate",edtfromDate.text.toString())
+            intent.putExtra("toDate",edttoDate.text.toString())
+            intent.putExtra("transaction",transactionSpinner.selectedItem.toString())
+            startActivity(intent)
+//            showSummary()
         }
         edtItem.setOnClickListener {
             getItems()
@@ -119,61 +131,71 @@ class StockMovementSummary : Fragment(){
         }
    return view }
 
-    private fun showSummary() {
-        var objects= JsonObject()
-        objects.addProperty("fromDate","2020-10-11")
-        objects.addProperty("toDate","2020-10-12")
-        objects.addProperty("transaction",transactionSpinner.selectedItem.toString())
-        objects.addProperty("shopId",shopId)
-        objects.addProperty("itemId",itemId)
-        Log.e("objects", "$objects  ")
+//    private fun showSummary() {
+//        var objects= JsonObject()
+//        objects.addProperty("fromDate", edtfromDate.text.toString())
+//        objects.addProperty("toDate", edttoDate.text.toString())
+//        objects.addProperty("transaction", transactionSpinner.selectedItem.toString())
+//        objects.addProperty("shopId", shopId)
+//        objects.addProperty("itemId", itemId)
+//        Log.e("objects", "$objects  ")
+//
+//        progressDialog.setMessage("Loading...")
+//        progressDialog.show()
+//        progressDialog.setCancelable(false)
+//        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
+//        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+//            val newRequest: Request = chain.request().newBuilder()
+//                .addHeader("Authorization", "Bearer $userToken")
+//                .build()
+//            chain.proceed(newRequest)
+//        }.build()
+//        val requestInterface = Retrofit.Builder()
+//            .baseUrl(ApiManager.BASE_URL)
+//            .client(client)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build().create(ApiService::class.java)
+//         requestInterface.getSummary(objects).enqueue(object : Callback<ArrayList<SummaryModel>> {
+//             override fun onResponse(
+//                 call: Call<ArrayList<SummaryModel>>,
+//                 response: Response<ArrayList<SummaryModel>>
+//             ) {
+//                 progressDialog.dismiss()
+//                 if (response!=null)
+////                 Log.e("response",response.code().toString() + " " + response.body().size.toString()+ " ")
+//                 if (response.code() == 200) {
+//                     var summaryList: ArrayList<SummaryModel> = ArrayList()
+//                     summaryList = response.body()
+//                     Log.e(
+//                         "response code",
+//                         response.code().toString() + " " + response.body().size.toString() + " "
+//                     )
+//                     summaryRecycler.layoutManager = LinearLayoutManager(summaryRecycler.context)
+//                     summaryRecycler.setHasFixedSize(true)
+//                     summaryAdapter =
+//                         SummaryAdapter(summaryList, activity)
+//                     summaryRecycler.adapter = summaryAdapter
+//                 } else {
+//                     progressDialog.dismiss()
+//                     Toast.makeText(
+//                         activity,
+//                         "Please Check Store name and try again later",
+//                         Toast.LENGTH_LONG
+//                     ).show()
+//                 }
+//
+//             }
+//
+//             override fun onFailure(call: Call<ArrayList<SummaryModel>>, t: Throwable) {
+//                 progressDialog.dismiss()
+//                 t.printStackTrace()
+//                 Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG).show()
+//             }
+//         })
+//
+//    }
 
-        progressDialog.setMessage("Loading...")
-        progressDialog.show()
-        progressDialog.setCancelable(false)
-        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-            val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $userToken")
-                .build()
-            chain.proceed(newRequest)
-        }.build()
-        val requestInterface = Retrofit.Builder()
-            .baseUrl(ApiManager.BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiService::class.java)
-         requestInterface.getSummary(objects).enqueue(object : Callback<ArrayList<SummaryModel>> {
-            override fun onResponse(call: Call<ArrayList<SummaryModel>>, response: Response<ArrayList<SummaryModel>>) {
-                progressDialog.dismiss()
-                Log.e("response",response.code().toString()+" "+response.body().size.toString()+" ")
-                if (response.code() == 200) {
-                    var summaryList: ArrayList<SummaryModel> = ArrayList()
-                    summaryList=response.body()
-                    Log.e("response code",response.code().toString()+" "+response.body().size.toString()+" ")
-                    summaryRecycler.layoutManager = LinearLayoutManager(recyclerview.context)
-                    summaryRecycler.setHasFixedSize(true)
-                    summaryAdapter =
-                        SummaryAdapter(summaryList, activity)
-                    summaryRecycler.adapter =summaryAdapter
-                } else {
-                    progressDialog.dismiss()
-                    Toast.makeText(
-                        activity,
-                        "Please Check Store name and try again later",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-            }
-            override fun onFailure(call: Call<ArrayList<SummaryModel>>, t: Throwable) {
-                progressDialog.dismiss()
-                t.printStackTrace()
-                Toast.makeText(activity, "Please try again later",Toast.LENGTH_LONG).show()
-            }
-        })
-
-    } private fun getShopName() {
+    private fun getShopName() {
         progressDialog.setMessage("Loading...")
         progressDialog.show()
         progressDialog.setCancelable(false)
@@ -198,7 +220,7 @@ class StockMovementSummary : Fragment(){
                 if (response.code() == 200) {
                     searchList.clear()
                     shopList = response.body()
-                    for(items in shopList){
+                    for (items in shopList) {
                         searchList.add(items.name!!)
                         shopMap.put(items.name!!, items)
                     }
@@ -209,6 +231,7 @@ class StockMovementSummary : Fragment(){
                         .show()
                 }
             }
+
             override fun onFailure(call: Call<ArrayList<ShopModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
@@ -247,6 +270,7 @@ class StockMovementSummary : Fragment(){
                 }!!
                 recyclerview.adapter = storeAdapter
             }
+
             override fun afterTextChanged(editable: Editable) {}
         })
         finalShopList.addAll(shopList)
@@ -305,14 +329,14 @@ class StockMovementSummary : Fragment(){
                 if (response.code() == 200) {
                     itemList = response.body()
                     showItemDialog()
-                }
-                else {
+                } else {
                     progressDialog.dismiss()
                     Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG)
                         .show()
 
                 }
             }
+
             override fun onFailure(call: Call<ArrayList<ItemsModel>>, t: Throwable) {
                 t.printStackTrace()
                 progressDialog.dismiss()
@@ -378,20 +402,56 @@ class StockMovementSummary : Fragment(){
         productDialog.show()
     }
     private fun pickDateTime(dateSelect: EditText) {
-        val currentDateTime = Calendar.getInstance()
-        val startYear = currentDateTime.get(Calendar.YEAR)
-        val startMonth = currentDateTime.get(Calendar.MONTH)
-        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+//        val currentDateTime = Calendar.getInstance()
+//        val startYear = currentDateTime.get(Calendar.YEAR)
+//        val startMonth = currentDateTime.get(Calendar.MONTH)
+//        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+
+        val c = Calendar.getInstance()
+        val  mYear = c[Calendar.YEAR]
+        val  mMonth = c[Calendar.MONTH]
+        val   mDay = c[Calendar.DAY_OF_MONTH]
 
 
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, day ->
-                dateSelect.setText("$day/$month/$year")
-            },
-            startYear,
-            startMonth,
-            startDay
-        ).show()
+        val datePickerDialog = DatePickerDialog(
+            context!!,
+            object : OnDateSetListener {
+                var fmonth: String? = null
+                var fDate: String? = null
+                var month = 0
+                override fun onDateSet(
+                    view: DatePicker?, year: Int,
+                    monthOfYear: Int, dayOfMonth: Int
+                ) {
+                    try {
+                        if (monthOfYear < 10 && dayOfMonth < 10) {
+                            fmonth = "0$monthOfYear"
+                            month = fmonth!!.toInt() + 1
+//                            fDate = "0$dayOfMonth"
+                            fDate = "$dayOfMonth"
+                            val paddedMonth = String.format("%02d", month)
+//                            dateSelect.setText("$fDate/$paddedMonth/$year")
+                            dateSelect.setText("$year/$paddedMonth/$fDate")
+                        } else {
+//                            fmonth = "0$monthOfYear"
+                            fmonth = "$monthOfYear"
+                            month = fmonth!!.toInt() + 1
+                            val paddedMonth = String.format("%02d", month)
+//                            dateSelect.setText("$dayOfMonth/$paddedMonth/$year")
+                            dateSelect.setText("$year/$paddedMonth/$dayOfMonth")
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }, mYear, mMonth, mDay
+        )
+        val oneDay = 90*24 * 60 * 60 * 1000L
+
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
+        datePickerDialog.datePicker.minDate = (System.currentTimeMillis() -  oneDay)
+        datePickerDialog.show()
+
     }
 }

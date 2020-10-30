@@ -17,6 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".MovementStockSummary"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SummaryViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+<!--        <activity android:name=".createpdf.SummaryViewActivity"-->
+<!--            -->
+<!--            ></activity>-->
         <activity
             android:name=".StockSummary"
             android:theme="@style/AppTheme.NoActionBar" />
