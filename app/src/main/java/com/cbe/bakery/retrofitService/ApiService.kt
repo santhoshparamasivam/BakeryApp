@@ -1,6 +1,7 @@
 package com.cbe.bakery.retrofitService
 
 import com.cbe.bakery.model.*
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -137,7 +138,7 @@ interface ApiService {
    @POST("/stock/getSummary")
     fun getSummary(@Body jsonObject: JsonObject): Call<ArrayList<SummaryModel>>
    @POST("/stock/getAvailabilitySummary")
-    fun getAvailabilitySummary(@Body jsonObject: JsonObject): Call<AvailibitySummary>
+    fun getAvailabilitySummary(@Body jsonObject: JsonObject): Call<JsonElement>
 
 
 

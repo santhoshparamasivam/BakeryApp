@@ -3,20 +3,24 @@ package com.cbe.bakery
 import android.Manifest
 import android.app.ProgressDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cbe.bakery.adapter.SummaryAdapter
 import com.cbe.bakery.createpdf.PDFUtility
-import com.cbe.bakery.model.ShopModel
 import com.cbe.bakery.model.SummaryModel
 import com.cbe.bakery.retrofitService.ApiManager
 import com.cbe.bakery.retrofitService.ApiService
@@ -32,6 +36,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
     var shopId: Long = 0L
@@ -47,17 +55,22 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
     private lateinit var  viewUtils: ViewUtils
     lateinit var sessionManager: SessionManager
     lateinit var exportDialog: ProgressDialog
+    lateinit var noDataTxt: TextView
+    var FILEEXTENSION = ".pdf"
     var summaryList: ArrayList<SummaryModel> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movement_stock_summary)
         summaryRecycler=findViewById(R.id.summaryRecycler)
+        noDataTxt=findViewById(R.id.noDataTxt)
         progressDialog = ProgressDialog(this)
         viewUtils= ViewUtils()
         sessionManager =
             SessionManager(this)
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
         supportActionBar?.title ="Movement"
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -66,6 +79,7 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
             finish()
         }
         export=findViewById(R.id.export)
+        export.visibility=View.GONE
         var intent=intent
         if (intent!=null) {
             shopId = intent.getLongExtra("shopId", 0)
@@ -115,14 +129,20 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
     }
 
     private fun createPdf() {
-        exportDialog = ProgressDialog(this)
-        exportDialog.setMessage("Exporting data please wait....")
-        exportDialog.show()
-        val path = Environment.getExternalStorageDirectory().toString() + "/Availability.pdf"
+
+        val path = Environment.getExternalStorageDirectory().toString() + "/Availability"
+        val df: DateFormat = SimpleDateFormat("yyyyMMddhhmmss")
+        val filename: String = path + df.format(Date()).toString() + FILEEXTENSION
+        Log.e("filename", filename+" ")
         try {
-            PDFUtility.createPdf(applicationContext, this@MovementStockSummary, sampleData, path, true)
+            PDFUtility.createPdf(
+                applicationContext,
+                this@MovementStockSummary,
+                sampleData,
+                filename,
+                true
+            )
         } catch (e: Exception) {
-            exportDialog.dismiss()
             e.printStackTrace()
             Log.e("TAG", "Error Creating Pdf")
             Toast.makeText(applicationContext, "Error Creating Pdf", Toast.LENGTH_SHORT).show()
@@ -138,12 +158,12 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
             DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
                 checkStoragePermission()
-            },"Cancel",
+            }, "Cancel",
 
             DialogInterface.OnClickListener { dialog, which ->
                 dialog.dismiss()
 
-            },true
+            }, true
         )
 
     }
@@ -156,19 +176,51 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
             }
             val temp: MutableList<Array<String>> = java.util.ArrayList()
             for (i in 0 until count) {
-                temp.add(arrayOf(summaryList.get(i).shopName, summaryList.get(i).itemName , summaryList.get(i).quantity.toString() , viewUtils.convertLongToTime(summaryList.get(i).modifiedOn)))
+                temp.add(
+                    arrayOf(
+                        summaryList.get(i).shopName,
+                        summaryList.get(i).itemName,
+                        summaryList.get(
+                            i
+                        ).quantity.toString(),
+                        viewUtils.convertLongToTime(summaryList.get(i).modifiedOn)
+                    )
+                )
             }
             return temp
         }
+
     override fun onPDFDocumentClose(file: File?) {
-        exportDialog.dismiss()
-        Toast.makeText(this, " Pdf Created", Toast.LENGTH_SHORT).show()
+        viewUtils.bakeryAlert(
+            this,
+            "Pdf exported,You want to open?",
+            "yes",
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+                openPdf(file)
+            }, "no",
+
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+
+            }, true
+        )
+
+    }
+
+    private fun openPdf(file: File?) {
+//        val file = File(Environment.getExternalStorageDirectory().absolutePath + "/example.pdf")
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(Uri.fromFile(file), "application/pdf")
+        intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+        startActivity(intent)
+
     }
     private fun showSummary() {
         var objects= JsonObject()
-        objects.addProperty("fromDate", "2020-10-01")
-        objects.addProperty("toDate","2020-10-30")
-        objects.addProperty("transaction",transaction)
+        objects.addProperty("fromDate", fromDate)
+        objects.addProperty("toDate", toDate)
+        objects.addProperty("transaction", transaction)
         objects.addProperty("shopId", shopId)
         objects.addProperty("itemId", itemId)
         Log.e("objects", "$objects  ")
@@ -194,20 +246,22 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
                 response: Response<ArrayList<SummaryModel>>
             ) {
                 progressDialog.dismiss()
-                if (response!=null)
-//                 Log.e("response",response.code().toString() + " " + response.body().size.toString()+ " ")
+                if (response != null)
                     if (response.code() == 200) {
-
                         summaryList = response.body()
-                        Log.e(
-                            "response code",
-                            response.code().toString() + " " + response.body().size.toString() + " "
-                        )
-                        summaryRecycler.layoutManager = LinearLayoutManager(summaryRecycler.context)
-                        summaryRecycler.setHasFixedSize(true)
-                        summaryAdapter =
-                            SummaryAdapter(summaryList, this@MovementStockSummary)
-                        summaryRecycler.adapter = summaryAdapter
+                        if (summaryList.size <= 0 && summaryList.size == 0) {
+                            noDataTxt.visibility = View.VISIBLE
+                            export.visibility = View.GONE
+                        } else {
+                            export.visibility = View.VISIBLE
+                            noDataTxt.visibility = View.GONE
+                            summaryRecycler.layoutManager =
+                                LinearLayoutManager(summaryRecycler.context)
+                            summaryRecycler.setHasFixedSize(true)
+                            summaryAdapter =
+                                SummaryAdapter(summaryList, this@MovementStockSummary)
+                            summaryRecycler.adapter = summaryAdapter
+                        }
                     } else {
                         progressDialog.dismiss()
                         Toast.makeText(
@@ -222,7 +276,11 @@ class MovementStockSummary : AppCompatActivity(), PDFUtility.OnDocumentClose {
             override fun onFailure(call: Call<ArrayList<SummaryModel>>, t: Throwable) {
                 progressDialog.dismiss()
                 t.printStackTrace()
-                Toast.makeText(this@MovementStockSummary, "Please try again later", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@MovementStockSummary,
+                    "Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
 

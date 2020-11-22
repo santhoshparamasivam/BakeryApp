@@ -11,11 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.4"
+            android:gravity=""
             android:hint="@string/fromdate"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
@@ -38,12 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.4"
             android:hint="@string/todate"
+            android:gravity=""
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="@dimen/dimen_15sp" />
@@ -64,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
@@ -92,12 +97,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.4"
             android:hint="@string/item"
+            android:gravity=""
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="@dimen/dimen_15sp" />
@@ -118,12 +125,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.4"
             android:hint="@string/location"
+            android:gravity=""
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textSize="@dimen/dimen_15sp" />
@@ -144,10 +153,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+         android:layout_marginTop="5dp"
         >
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.4"
             android:hint="@string/reason"
             android:textColor="@color/black"
@@ -166,23 +176,19 @@
             android:textSize="@dimen/dimen_12sp"
             android:textColor="@color/black" />
     </LinearLayout>
-    <LinearLayout
+
+
+
+    <Button
+        android:id="@+id/show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/show"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/show"
-            android:textColor="@color/white"
-            android:background="@color/colorAccent"
-            android:textColorHint="@color/white"
-            android:textSize="@dimen/dimen_12sp"
-            />
-    </LinearLayout>
+        android:text="@string/show"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

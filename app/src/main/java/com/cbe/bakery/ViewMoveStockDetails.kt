@@ -36,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ViewMoveStockDetails : AppCompatActivity() {
     var itemId:Int = 0
     var stockBy:String = ""
+    var transactionId:String = ""
     lateinit var txtItem:TextView
     lateinit var edtCategory:EditText
     lateinit var toolbar: Toolbar
@@ -44,6 +45,7 @@ class ViewMoveStockDetails : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var txt_toLocation: TextView
     lateinit var edt_tolocation: EditText
+    lateinit var edtTransaction: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class ViewMoveStockDetails : AppCompatActivity() {
         val intent=intent
         itemId= intent?.getIntExtra("ItemId", 0)!!
         stockBy= intent.getStringExtra("moveBy")!!
+        transactionId= intent.getStringExtra("TransactionId")!!
         Log.e("item id", "$itemId   ")
         Log.e("moveBy", "$stockBy   ")
         progressDialog = ProgressDialog(this)
@@ -62,6 +65,8 @@ class ViewMoveStockDetails : AppCompatActivity() {
         edtCategory=findViewById(R.id.edt_category)
         txt_toLocation=findViewById(R.id.txt_toLocation)
         edt_tolocation=findViewById(R.id.edt_tolocation)
+        edtTransaction=findViewById(R.id.edtTransaction)
+        edtTransaction.setText(transactionId)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             finish()

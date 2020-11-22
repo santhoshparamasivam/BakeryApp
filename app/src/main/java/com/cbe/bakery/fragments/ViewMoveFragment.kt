@@ -56,7 +56,7 @@ class ViewMoveFragment : Fragment() {
         activity?.title = "Move Stock"
         pageHeaderTxt.text= "Move Stock"
         (activity as HomeActivity?)?.appBar!!.visibility = View.VISIBLE
-        (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_add))
+        (activity as HomeActivity?)?.img_icon!!.setImageDrawable(resources.getDrawable(R.drawable.ic_add    ))
         (activity as HomeActivity?)?.searchView!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.visibility = View.VISIBLE
         (activity as HomeActivity?)?.fab!!.setOnClickListener {
@@ -102,7 +102,8 @@ class ViewMoveFragment : Fragment() {
                             context,
                             ViewMoveStockDetails::class.java
                         )
-                        intent.putExtra("ItemId", itemList[position].id);
+                        intent.putExtra("ItemId", itemList[position].id)
+                        intent.putExtra("TransactionId", itemList[position].transId)
                         if (itemList[position].action != null && itemList[position].action=="MoveByLocation")
                         intent.putExtra("moveBy", "ByLocation");
                         if (itemList[position].action != null && itemList[position].action=="MoveByItem")

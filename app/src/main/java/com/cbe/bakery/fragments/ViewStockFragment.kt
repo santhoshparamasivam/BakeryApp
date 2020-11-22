@@ -133,6 +133,7 @@ class ViewStockFragment : Fragment(){
                                 ViewStockDetails::class.java
                             )
                             intent.putExtra("ItemId", stockList[position].id);
+                            intent.putExtra("TransactionId", stockList[position].transId);
                             if (stockList[position].item != null)
                                 intent.putExtra("stockBy", "ByItem");
                             if (stockList[position].shop != null)

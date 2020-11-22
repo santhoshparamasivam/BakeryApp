@@ -56,9 +56,10 @@ class StockAdapter(
 //        }
         if (filterStockList[position].item!=null) {
 //            holder.itemView.name_text.text = "Item Name :  " + filterStockList[position].item
-            holder.itemView.stockId.text = "Item Name: " + filterStockList[position].item.toString()
+            holder.itemView.txt_field_name.text = "Item Name"
+            holder.itemView.nameTxt.text=filterStockList[position].item.toString()
             if (filterStockList[position].modifiedOn!=null)
-                holder.itemView.name_text.text = "Date : " +viewUtils.convertLongToTime(filterStockList[position].modifiedOn!!)
+                holder.itemView.dateTxt.text =viewUtils.convertLongToTime(filterStockList[position].modifiedOn!!)
 
 //            holder.itemView.lay_container.setCardBackgroundColor(R.color.background_color)
             holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.byItem));
@@ -66,8 +67,9 @@ class StockAdapter(
         }
         if (filterStockList[position].shop!=null) {
             if (filterStockList[position].modifiedOn!=null)
-            holder.itemView.name_text.text = "Date : " +viewUtils.convertLongToTime(filterStockList[position].modifiedOn!!)
-            holder.itemView.stockId.text = "Shop Name: " + filterStockList[position].shop.toString()
+            holder.itemView.dateTxt.text = viewUtils.convertLongToTime(filterStockList[position].modifiedOn!!)
+            holder.itemView.txt_field_name.text = "Shop Name"
+            holder.itemView.nameTxt.text=filterStockList[position].shop.toString()
 //            holder.itemView.lay_container.setCardBackgroundColor(R.color.colorAccent)
 //            holder.itemView.lay_container.setBackgroundColor(R.color.colorAccent);
             holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.byLocation));
@@ -77,7 +79,7 @@ class StockAdapter(
 
         if(filterStockList[position].transId!=null) {
             Log.e("StockList",filterStockList[position].transId+" ")
-            holder.itemView.stockName.text = "Transaction id: " + filterStockList[position].transId
+            holder.itemView.transTxt.text = filterStockList[position].transId
         }
 //        else {
 //            holder.itemView.stockName.text = "Stock Name: ";

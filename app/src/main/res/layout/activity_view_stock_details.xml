@@ -75,6 +75,7 @@
                         android:hint=""
                         android:editable="false"
                         android:focusable="false"
+                        android:cursorVisible="false"
                         android:clickable="false"
                         android:layout_weight="1"
                         android:inputType="text"
@@ -86,12 +87,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="10dp">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/item_units"
+                        android:text="@string/transaction_id"
                         android:layout_gravity="center"
                         android:layout_weight="0.4"
                         android:textColor="@color/black"
@@ -111,10 +111,12 @@
                         android:layout_height="wrap_content"
                         android:hint=" "
                         android:layout_weight="1"
-                        android:inputType="text"
                         android:editable="false"
+                        android:focusable="false"
+                        android:cursorVisible="false"
                         android:clickable="false"
-                        android:id="@+id/edt_item"
+                        android:inputType="text"
+                        android:id="@+id/edtTransaction"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         />

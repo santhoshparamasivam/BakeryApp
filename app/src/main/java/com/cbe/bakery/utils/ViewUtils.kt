@@ -115,7 +115,7 @@ class ViewUtils {
     @SuppressLint("SimpleDateFormat")
     fun dateConversion(strdate: String): String {
         val myFormat = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
-        val displayFormat = "yyyy-MM-dd HH:mm"
+        val displayFormat = "dd/MM/yyyy hh:mm:ss a"
         val destFormat = SimpleDateFormat(displayFormat)
         val myDate: Date = myFormat.parse(strdate)
         return (destFormat.format(myDate))
@@ -170,7 +170,7 @@ class ViewUtils {
         val date = Date(time)
 //        Log.e("date",date.toString()+" ")
 //        val format = SimpleDateFormat("yyyy/MM/dd")
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy hh:mm:ss a")
 //        Log.e("format",format.format(date)+" ")
         return format.format(date)
     }

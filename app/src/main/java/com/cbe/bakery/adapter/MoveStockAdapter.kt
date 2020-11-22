@@ -58,11 +58,13 @@ class MoveStockAdapter(
 //            holder.itemView.name_text.text = "Item Name :  No values"
 //        }
         if (filterList[position].item!=null) {
-            holder.itemView.name_text.text = "Item Name :  " + filterList[position].item
+            holder.itemView.txt_field_name.text = "Item Name"
+            holder.itemView.nameTxt.text = filterList[position].item.toString()
 //            holder.itemView.lay_container.setBackgroundColor(R.color.background_color);
              }
         if (filterList[position].shop!=null) {
-            holder.itemView.name_text.text = "Shop Name :  " + filterList[position].shop
+            holder.itemView.txt_field_name.text = "Shop Name"
+            holder.itemView.nameTxt.text = filterList[position].shop
 //            holder.itemView.lay_container.setBackgroundColor(R.color.colorAccent);
 //            holder.itemView.lay_container.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.colorAccent));
 
@@ -77,11 +79,12 @@ class MoveStockAdapter(
             }
 
 
-        holder.itemView.stockId.text = "Transaction ID: " + filterList[position].transId.toString()
+        holder.itemView.transTxt.text = filterList[position].transId.toString()
 
         if(null != filterList[position].createdOn) {
-            holder.itemView.stockName.text =
-                "Created On: " + viewUtils.convertLongToTime(filterList[position].createdOn!!)
+            holder.itemView.txtNameDate.text="Created On"
+            holder.itemView.dateTxt.text =
+                 viewUtils.convertLongToTime(filterList[position].createdOn!!)
         }
 //        else {
 //            holder.itemView.stockName.text = "Created On: "

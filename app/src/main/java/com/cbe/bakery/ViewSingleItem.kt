@@ -126,8 +126,12 @@ class ViewSingleItem : AppCompatActivity() {
         edt_radio_service.isEnabled=false
         itemImageView.isEnabled=false
         itemImageView.isClickable=false
+        edt_units.setEnabled(false);
+        edt_units.setClickable(false);
         voidItem.visibility=View.GONE
         img_query.setOnClickListener {
+            edt_units.setEnabled(true);
+            edt_units.setClickable(true);
             img_query.visibility=View.GONE
             edt_category.isEnabled = true
             edt_category.isCursorVisible=false

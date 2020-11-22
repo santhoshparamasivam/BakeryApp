@@ -59,23 +59,16 @@
             android:textColor="@color/black" />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+
         <Button
             android:id="@+id/show"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/show"
-            android:textColor="@color/white"
+            android:text="@string/show"
+            android:layout_margin="10dp"
             android:background="@color/colorAccent"
-            android:textColorHint="@color/white"
-            android:textSize="@dimen/dimen_12sp"
-            />
-    </LinearLayout>
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

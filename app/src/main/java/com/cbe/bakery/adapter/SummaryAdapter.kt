@@ -13,10 +13,6 @@ import com.cbe.bakery.R
 import com.cbe.bakery.model.StockModel
 import com.cbe.bakery.model.SummaryModel
 import com.cbe.bakery.utils.ViewUtils
-import kotlinx.android.synthetic.main.itemsview_row.view.name_text
-import kotlinx.android.synthetic.main.stock_item_row.view.*
-import kotlinx.android.synthetic.main.stock_item_row.view.lay_container
-import kotlinx.android.synthetic.main.stock_item_row.view.stockName
 import kotlinx.android.synthetic.main.summary_item.view.*
 
 

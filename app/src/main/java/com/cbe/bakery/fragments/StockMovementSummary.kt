@@ -73,6 +73,11 @@ class StockMovementSummary : Fragment(){
     private lateinit var  viewUtils: ViewUtils
     lateinit var sessionManager: SessionManager
     var shopMap: HashMap<String, ShopModel> = HashMap<String, ShopModel> ()
+
+    var fmonth: String? = null
+    var fDate: String? = null
+    var month = 0
+    var paddedMonth = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,10 +96,8 @@ class StockMovementSummary : Fragment(){
         viewUtils= ViewUtils()
         sessionManager =
             SessionManager(activity)
-        val sdf = SimpleDateFormat("dd/M/yyyy")
-        val currentDate = sdf.format(Date())
-        edtfromDate.setText(currentDate)
-        edttoDate.setText(currentDate)
+
+        setFromandTodate()
         edtfromDate.isClickable=false
         edtfromDate.isFocusable=false
         edtfromDate.isCursorVisible=false
@@ -113,14 +116,24 @@ class StockMovementSummary : Fragment(){
             pickDateTime(edttoDate)
         }
         show.setOnClickListener {
+            if (edtfromDate.text.toString()==null && edtfromDate.text.toString()==""){
+                edtfromDate.error="Please Select From date"
+            }else if(edttoDate.text.toString()==null && edttoDate.text.toString()==""){
+                edttoDate.error="Please Select To date"
+            }else if(itemId==0L){
+                edtItem.error="Please Select Item"
+            }else if(shopId==0L){
+                edtlocation.error="Please Select Shop"
+            }else{
+                var intent= Intent(activity, MovementStockSummary::class.java)
+                intent.putExtra("shopId",shopId)
+                intent.putExtra("itemId",itemId)
+                intent.putExtra("fromDate",edtfromDate.text.toString())
+                intent.putExtra("toDate",edttoDate.text.toString())
+                intent.putExtra("transaction",transactionSpinner.selectedItem.toString())
+                startActivity(intent)
+            }
 
-            var intent= Intent(activity, MovementStockSummary::class.java)
-            intent.putExtra("shopId",shopId)
-            intent.putExtra("itemId",itemId)
-            intent.putExtra("fromDate",edtfromDate.text.toString())
-            intent.putExtra("toDate",edttoDate.text.toString())
-            intent.putExtra("transaction",transactionSpinner.selectedItem.toString())
-            startActivity(intent)
 //            showSummary()
         }
         edtItem.setOnClickListener {
@@ -131,69 +144,47 @@ class StockMovementSummary : Fragment(){
         }
    return view }
 
-//    private fun showSummary() {
-//        var objects= JsonObject()
-//        objects.addProperty("fromDate", edtfromDate.text.toString())
-//        objects.addProperty("toDate", edttoDate.text.toString())
-//        objects.addProperty("transaction", transactionSpinner.selectedItem.toString())
-//        objects.addProperty("shopId", shopId)
-//        objects.addProperty("itemId", itemId)
-//        Log.e("objects", "$objects  ")
-//
-//        progressDialog.setMessage("Loading...")
-//        progressDialog.show()
-//        progressDialog.setCancelable(false)
-//        var userToken = sessionManager.getStringKey(SessionKeys.USER_TOKEN).toString()
-//        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-//            val newRequest: Request = chain.request().newBuilder()
-//                .addHeader("Authorization", "Bearer $userToken")
-//                .build()
-//            chain.proceed(newRequest)
-//        }.build()
-//        val requestInterface = Retrofit.Builder()
-//            .baseUrl(ApiManager.BASE_URL)
-//            .client(client)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build().create(ApiService::class.java)
-//         requestInterface.getSummary(objects).enqueue(object : Callback<ArrayList<SummaryModel>> {
-//             override fun onResponse(
-//                 call: Call<ArrayList<SummaryModel>>,
-//                 response: Response<ArrayList<SummaryModel>>
-//             ) {
-//                 progressDialog.dismiss()
-//                 if (response!=null)
-////                 Log.e("response",response.code().toString() + " " + response.body().size.toString()+ " ")
-//                 if (response.code() == 200) {
-//                     var summaryList: ArrayList<SummaryModel> = ArrayList()
-//                     summaryList = response.body()
-//                     Log.e(
-//                         "response code",
-//                         response.code().toString() + " " + response.body().size.toString() + " "
-//                     )
-//                     summaryRecycler.layoutManager = LinearLayoutManager(summaryRecycler.context)
-//                     summaryRecycler.setHasFixedSize(true)
-//                     summaryAdapter =
-//                         SummaryAdapter(summaryList, activity)
-//                     summaryRecycler.adapter = summaryAdapter
-//                 } else {
-//                     progressDialog.dismiss()
-//                     Toast.makeText(
-//                         activity,
-//                         "Please Check Store name and try again later",
-//                         Toast.LENGTH_LONG
-//                     ).show()
-//                 }
-//
-//             }
-//
-//             override fun onFailure(call: Call<ArrayList<SummaryModel>>, t: Throwable) {
-//                 progressDialog.dismiss()
-//                 t.printStackTrace()
-//                 Toast.makeText(activity, "Please try again later", Toast.LENGTH_LONG).show()
-//             }
-//         })
-//
-//    }
+    private fun setFromandTodate() {
+        val c = Calendar.getInstance()
+        val  mYear = c[Calendar.YEAR]
+        val  mMonth = c[Calendar.MONTH]
+        val   mDay = c[Calendar.DAY_OF_MONTH]
+
+        try {
+            if (mMonth < 10 && mDay < 10) {
+                fmonth = "0$mMonth"
+                month = fmonth!!.toInt() + 1
+                fDate = "0$mDay"
+                val paddedMonth = String.format("%02d", month)
+                edtfromDate.setText("$mYear-$paddedMonth-$fDate")
+                edttoDate.setText("$mYear-$paddedMonth-$fDate")
+                Log.e("date selected 1",edttoDate.text.toString()+" ");
+                Log.e("date edtfromDate 1",edtfromDate.text.toString()+" ");
+            }else if(mMonth >= 10 && mDay <= 9){
+                fmonth = "$mMonth"
+                month = fmonth!!.toInt() + 1
+                fDate = "0$mDay"
+                val paddedMonth = String.format("%02d", month)
+                edtfromDate.setText("$mYear-$paddedMonth-$fDate")
+                edttoDate.setText("$mYear-$paddedMonth-$fDate")
+                Log.e("date selected 2",edttoDate.text.toString()+" ");
+                Log.e("date edtfromDate 2",edtfromDate.text.toString()+" ");
+            } else
+            {
+                fmonth = "0$mMonth"
+                month = fmonth!!.toInt() + 1
+                val paddedMonth = String.format("%02d", month)
+                edtfromDate.setText("$mYear-$paddedMonth-$mDay")
+                edttoDate.setText("$mYear-$paddedMonth-$mDay")
+                Log.e("date selected 3",edttoDate.text.toString()+" ");
+                Log.e("date edtfromDate 3",edtfromDate.text.toString()+" ");
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
+    }
 
     private fun getShopName() {
         progressDialog.setMessage("Loading...")
@@ -402,11 +393,6 @@ class StockMovementSummary : Fragment(){
         productDialog.show()
     }
     private fun pickDateTime(dateSelect: EditText) {
-//        val currentDateTime = Calendar.getInstance()
-//        val startYear = currentDateTime.get(Calendar.YEAR)
-//        val startMonth = currentDateTime.get(Calendar.MONTH)
-//        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
-
         val c = Calendar.getInstance()
         val  mYear = c[Calendar.YEAR]
         val  mMonth = c[Calendar.MONTH]
@@ -427,18 +413,20 @@ class StockMovementSummary : Fragment(){
                         if (monthOfYear < 10 && dayOfMonth < 10) {
                             fmonth = "0$monthOfYear"
                             month = fmonth!!.toInt() + 1
-//                            fDate = "0$dayOfMonth"
-                            fDate = "$dayOfMonth"
+                            fDate = "0$dayOfMonth"
+//                            fDate = "$dayOfMonth"
                             val paddedMonth = String.format("%02d", month)
 //                            dateSelect.setText("$fDate/$paddedMonth/$year")
-                            dateSelect.setText("$year/$paddedMonth/$fDate")
+                            dateSelect.setText("$year-$paddedMonth-$fDate")
+                            Log.e("date selected 1",dateSelect.text.toString()+" ");
                         } else {
-//                            fmonth = "0$monthOfYear"
-                            fmonth = "$monthOfYear"
+                            fmonth = "0$monthOfYear"
+//                            fmonth = "$monthOfYear"
                             month = fmonth!!.toInt() + 1
                             val paddedMonth = String.format("%02d", month)
 //                            dateSelect.setText("$dayOfMonth/$paddedMonth/$year")
-                            dateSelect.setText("$year/$paddedMonth/$dayOfMonth")
+                            dateSelect.setText("$year-$paddedMonth-$dayOfMonth")
+                            Log.e("date selected 2",dateSelect.text.toString()+" ");
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()

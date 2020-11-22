@@ -14,6 +14,7 @@ import com.cbe.bakery.R
 import com.cbe.bakery.ViewSingleItem
 import com.cbe.bakery.model.ItemsModel
 import com.cbe.bakery.retrofitService.ApiManager.Companion.BASE_URL
+import com.itextpdf.awt.geom.misc.Messages
 import kotlinx.android.synthetic.main.itemsview_row.view.*
 import java.net.URLEncoder
 
@@ -65,7 +66,8 @@ class ItemsAdapter(
 
         holder.itemView.name_text.text = "Name :  "+finalList[position].name
         holder.itemView.units_text.text = "Units :  "+finalList[position].unitOfMeasure
-        holder.itemView.sale_text.text = "Sale Price :  "+finalList[position].sellingPrice
+        holder.itemView.sale_text.text = "Sale Price :  "+finalList[position].sellingPrice+" \u20B9"
+
 
         holder.itemView.layout_container.setOnClickListener{
             val intent = Intent(mContext, ViewSingleItem::class.java)

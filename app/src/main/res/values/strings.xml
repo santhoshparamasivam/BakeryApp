@@ -97,7 +97,7 @@
     <string name="qty_move">Quantity to Move</string>
     <string name="mrp">MRP</string>
     <string name="please_enter_passcode">Please Enter Passcode</string>
-
+    <string name="transaction_id">Transaction ID</string>
 
     //movement
     <string name="movement">MOVEMENT</string>
@@ -110,7 +110,9 @@
     <string name="shopName">ShopName</string>
     <string name="addItem">AddItem</string>
     <string name="date">Date</string>
-
+    <string name="rupeeSymbol">\u20B9</string>
+    <string name="nodata">NoData</string>
+    <string name="viewSummary">View Summary</string>
 
     <string-array name="filterType">
         <item>All</item>

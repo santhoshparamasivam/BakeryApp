@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".SummaryViewActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,21 +18,30 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         android:theme="@style/MyThemeOverlay_Toolbar2"
         app:popupTheme="@style/AppTheme.PopupOverlay" >
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:gravity="end"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="end|center"
+            android:layout_margin="10dp"
             android:layout_height="match_parent">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/viewSummary"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                />
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:layout_weight=".1"
                 android:id="@+id/export"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_add"/>
+                android:src="@drawable/ic_pdf"/>
 
 
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +49,7 @@
         android:layout_weight="1"
         android:padding="10dp"
         android:id="@+id/line1"
+        android:visibility="gone"
         android:layout_margin="10dp"
         android:orientation="vertical">
 
@@ -135,5 +149,24 @@
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_15sp" />
     </LinearLayout>
+
 </LinearLayout>
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/availableRecycler"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/nodata"
+        android:textSize="@dimen/dimen_15sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:id="@+id/noDataTxt"
+        android:visibility="gone"/>
+
+</RelativeLayout>
